@@ -40,7 +40,7 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
               </div>
             </div>
 
-            <!-- Progress Bar -->
+            <!-- Progress Bar (5 pasos: Pagado, Enviado, En camino, En puerta, Entregado) -->
             <div class="progress-bar">
               <div class="progress-step" [class.active]="getProgressLevel(pedido.estado) >= 1" [class.current]="getProgressLevel(pedido.estado) === 1">
                 <div class="step-dot"></div>
@@ -54,10 +54,15 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
               <div class="progress-line" [class.active]="getProgressLevel(pedido.estado) >= 3"></div>
               <div class="progress-step" [class.active]="getProgressLevel(pedido.estado) >= 3" [class.current]="getProgressLevel(pedido.estado) === 3">
                 <div class="step-dot"></div>
-                <span>En Camino</span>
+                <span>En camino</span>
               </div>
               <div class="progress-line" [class.active]="getProgressLevel(pedido.estado) >= 4"></div>
               <div class="progress-step" [class.active]="getProgressLevel(pedido.estado) >= 4" [class.current]="getProgressLevel(pedido.estado) === 4">
+                <div class="step-dot"></div>
+                <span>En puerta</span>
+              </div>
+              <div class="progress-line" [class.active]="getProgressLevel(pedido.estado) >= 5"></div>
+              <div class="progress-step" [class.active]="getProgressLevel(pedido.estado) >= 5" [class.current]="getProgressLevel(pedido.estado) === 5">
                 <div class="step-dot"></div>
                 <span>Entregado</span>
               </div>
@@ -109,6 +114,11 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
     .badge-en-camino { background: rgba(156,39,176,0.1); color: #9C27B0; }
     .badge-entregado { background: rgba(76,175,80,0.1); color: #4CAF50; }
     .badge-pendiente { background: rgba(158,158,158,0.1); color: #9E9E9E; }
+    /* Estados de verificación BLE */
+    .badge-en-puerta { background: rgba(0,150,136,0.1); color: #009688; }
+    .badge-entregado-verificado { background: rgba(46,125,50,0.12); color: #2E7D32; }
+    .badge-entregado-con-danos { background: rgba(255,152,0,0.15); color: #E65100; } /* advertencia */
+    .badge-alerta-integridad { background: rgba(239,83,80,0.15); color: #D32F2F; } /* error */
 
     .progress-bar { display: flex; align-items: center; margin: 20px 0 12px; padding: 0 8px; }
     .progress-step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
@@ -135,6 +145,12 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
       .pedido-header { flex-direction: column; align-items: flex-start; }
       .pedido-right { flex-direction: column; align-items: flex-start; }
     }
+    /* 5 pasos en pantallas de celular: textos y separaciones más compactos */
+    @media (max-width: 480px) {
+      .progress-bar { padding: 0; }
+      .progress-step span { font-size: 0.55rem; white-space: nowrap; }
+      .progress-line { margin: 0 2px; margin-bottom: 18px; }
+    }
   `]
 })
 export class MisPedidosComponent implements OnInit {
@@ -154,21 +170,35 @@ export class MisPedidosComponent implements OnInit {
   }
 
   getProgressLevel(estado: string): number {
-    const levels: Record<string, number> = { pendiente: 0, pagado: 1, enviado: 2, en_camino: 3, entregado: 4 };
+    const levels: Record<string, number> = {
+      pendiente: 0, pagado: 1, enviado: 2, en_camino: 3,
+      en_puerta: 4, alerta_integridad: 4,
+      entregado: 5, entregado_verificado: 5, entregado_con_danos: 5
+    };
     return levels[estado] || 0;
   }
 
   getEstadoClass(estado: string): string {
-    return 'badge-' + estado.replace('_', '-');
+    // Reemplaza TODOS los guiones bajos (p. ej. entregado_con_danos -> badge-entregado-con-danos)
+    return 'badge-' + estado.replace(/_/g, '-');
   }
 
   getEstadoIcon(estado: string): string {
-    const icons: Record<string, string> = { pendiente: '⏳', pagado: '✅', enviado: '📤', en_camino: '🚚', entregado: '📬' };
+    const icons: Record<string, string> = {
+      pendiente: '⏳', pagado: '✅', enviado: '📤', en_camino: '🚚', entregado: '📬',
+      en_puerta: '📍', entregado_verificado: '✅', entregado_con_danos: '⚠️', alerta_integridad: '🚨'
+    };
     return icons[estado] || '📦';
   }
 
   getEstadoLabel(estado: string): string {
-    const labels: Record<string, string> = { pendiente: 'Pendiente', pagado: 'Pagado', enviado: 'Enviado', en_camino: 'En Camino', entregado: 'Entregado' };
+    const labels: Record<string, string> = {
+      pendiente: 'Pendiente', pagado: 'Pagado', enviado: 'Enviado', en_camino: 'En Camino', entregado: 'Entregado',
+      en_puerta: 'En puerta (listo para verificar)',
+      entregado_verificado: 'Entregado y verificado',
+      entregado_con_danos: 'Entregado con daños',
+      alerta_integridad: 'Alerta de integridad'
+    };
     return labels[estado] || estado;
   }
 
@@ -187,6 +217,10 @@ export class MisPedidosComponent implements OnInit {
       case 'enviado': return 'Estimado: En 2 días';
       case 'en_camino': return 'Llega mañana';
       case 'entregado': return 'Entregado';
+      case 'en_puerta': return 'Listo para verificar';
+      case 'entregado_verificado': return 'Entregado y verificado';
+      case 'entregado_con_danos': return 'Entregado con daños';
+      case 'alerta_integridad': return 'Alerta de integridad: revisión pendiente';
       default: return 'Procesando pago...';
     }
   }

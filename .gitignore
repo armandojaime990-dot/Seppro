@@ -1,0 +1,24 @@
+# Compilación de Android (teléfono y reloj): se regenera con Gradle
+**/build/
+**/.gradle/
+**/.kotlin/
+**/.idea/
+*.iml
+**/local.properties
+*.apk
+
+# Angular
+seppro-angular/node_modules/
+seppro-angular/dist/
+seppro-angular/.angular/
+
+# PHP (versión anterior)
+seppro/vendor/
+
+# Copias comprimidas del proyecto
+*.zip
+
+# Editor y sistema
+.vscode/
+.DS_Store
+Thumbs.db

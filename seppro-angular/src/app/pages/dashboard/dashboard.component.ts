@@ -77,7 +77,7 @@ import { ChartConfiguration } from 'chart.js';
                   <td>{{ p.perfiles?.nombre || 'N/A' }}</td>
                   <td class="td-price">\${{ p.total | number:'1.2-2' }}</td>
                   <td>
-                    <span class="badge" [ngClass]="'badge-' + p.estado.replace('_', '-')">
+                    <span class="badge" [ngClass]="'badge-' + p.estado.split('_').join('-')">
                       {{ getEstadoLabel(p.estado) }}
                     </span>
                   </td>
@@ -89,6 +89,10 @@ import { ChartConfiguration } from 'chart.js';
                       <option value="enviado">Enviado</option>
                       <option value="en_camino">En Camino</option>
                       <option value="entregado">Entregado</option>
+                      <option value="en_puerta">En puerta (listo para verificar)</option>
+                      <option value="entregado_verificado">Entregado y verificado</option>
+                      <option value="entregado_con_danos">Entregado con daños</option>
+                      <option value="alerta_integridad">Alerta de integridad</option>
                     </select>
                   </td>
                 </tr>
@@ -151,6 +155,11 @@ import { ChartConfiguration } from 'chart.js';
     .badge-en-camino { background: rgba(156,39,176,0.1); color: #9C27B0; }
     .badge-entregado { background: rgba(76,175,80,0.1); color: #4CAF50; }
     .badge-pendiente { background: rgba(158,158,158,0.1); color: #9E9E9E; }
+    /* Estados de verificación BLE */
+    .badge-en-puerta { background: rgba(0,150,136,0.1); color: #009688; }
+    .badge-entregado-verificado { background: rgba(46,125,50,0.12); color: #2E7D32; }
+    .badge-entregado-con-danos { background: rgba(255,152,0,0.15); color: #E65100; } /* advertencia */
+    .badge-alerta-integridad { background: rgba(239,83,80,0.15); color: #D32F2F; } /* error */
 
     .status-select {
       padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
@@ -256,16 +265,27 @@ export class DashboardComponent implements OnInit {
       this.allPedidos = await this.supabase.getPedidosAdmin();
       this.recentPedidos = this.allPedidos.slice(0, 8);
 
-      // Orders by status chart
-      const statusCounts: Record<string, number> = { pagado: 0, enviado: 0, en_camino: 0, entregado: 0 };
+      // Orders by status chart (estados originales + estados de verificación BLE)
+      const chartEstados: { key: string; label: string; bg: string; border: string }[] = [
+        { key: 'pagado', label: 'Pagado', bg: 'rgba(0,114,198,0.6)', border: '#0072c6' },
+        { key: 'enviado', label: 'Enviado', bg: 'rgba(255,152,0,0.6)', border: '#FF9800' },
+        { key: 'en_camino', label: 'En Camino', bg: 'rgba(156,39,176,0.6)', border: '#9C27B0' },
+        { key: 'entregado', label: 'Entregado', bg: 'rgba(76,175,80,0.6)', border: '#4CAF50' },
+        { key: 'en_puerta', label: 'En puerta', bg: 'rgba(0,150,136,0.6)', border: '#009688' },
+        { key: 'entregado_verificado', label: 'Verificado', bg: 'rgba(46,125,50,0.6)', border: '#2E7D32' },
+        { key: 'entregado_con_danos', label: 'Con daños', bg: 'rgba(230,81,0,0.6)', border: '#E65100' },
+        { key: 'alerta_integridad', label: 'Alerta', bg: 'rgba(211,47,47,0.6)', border: '#D32F2F' }
+      ];
+      const statusCounts: Record<string, number> = {};
+      chartEstados.forEach(e => statusCounts[e.key] = 0);
       this.allPedidos.forEach(p => { if (statusCounts[p.estado] !== undefined) statusCounts[p.estado]++; });
       this.barData = {
-        labels: ['Pagado', 'Enviado', 'En Camino', 'Entregado'],
+        labels: chartEstados.map(e => e.label),
         datasets: [{
           label: 'Pedidos',
-          data: [statusCounts['pagado'], statusCounts['enviado'], statusCounts['en_camino'], statusCounts['entregado']],
-          backgroundColor: ['rgba(0,114,198,0.6)', 'rgba(255,152,0,0.6)', 'rgba(156,39,176,0.6)', 'rgba(76,175,80,0.6)'],
-          borderColor: ['#0072c6', '#FF9800', '#9C27B0', '#4CAF50'],
+          data: chartEstados.map(e => statusCounts[e.key]),
+          backgroundColor: chartEstados.map(e => e.bg),
+          borderColor: chartEstados.map(e => e.border),
           borderWidth: 1, borderRadius: 6
         }]
       };
@@ -275,7 +295,13 @@ export class DashboardComponent implements OnInit {
   }
 
   getEstadoLabel(estado: string): string {
-    const labels: Record<string, string> = { pendiente: 'Pendiente', pagado: 'Pagado', enviado: 'Enviado', en_camino: 'En Camino', entregado: 'Entregado' };
+    const labels: Record<string, string> = {
+      pendiente: 'Pendiente', pagado: 'Pagado', enviado: 'Enviado', en_camino: 'En Camino', entregado: 'Entregado',
+      en_puerta: 'En puerta (listo para verificar)',
+      entregado_verificado: 'Entregado y verificado',
+      entregado_con_danos: 'Entregado con daños',
+      alerta_integridad: 'Alerta de integridad'
+    };
     return labels[estado] || estado;
   }
 

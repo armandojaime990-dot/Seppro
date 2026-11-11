@@ -7,7 +7,7 @@ export interface UserProfile {
   id: string;
   nombre: string;
   email: string;
-  rol: 'admin' | 'usuario' | 'invitado';
+  rol: 'admin' | 'agente' | 'usuario' | 'invitado';
   pin_hash: string | null;
   habilitado: boolean;
   created_at: string;
@@ -27,12 +27,18 @@ export interface Pedido {
   id: number;
   usuario_id: string;
   total: number;
-  estado: 'pendiente' | 'pagado' | 'enviado' | 'en_camino' | 'entregado';
+  estado: 'pendiente' | 'pagado' | 'enviado' | 'en_camino' | 'entregado'
+    // Estados de verificación BLE (Entregable 1, ver supabase-bluetooth.sql)
+    | 'en_puerta' | 'entregado_verificado' | 'entregado_con_danos' | 'alerta_integridad';
   metodo_pago: string;
   nombre_envio: string;
   direccion_envio: string;
   telefono_envio: string;
   created_at: string;
+  // Verificación de integridad con el sensor BLE (Smart Tag)
+  sensor_id?: string | null;
+  golpe_detectado?: boolean | null;
+  fecha_verificacion?: string | null;
   pedido_items?: PedidoItem[];
   perfiles?: any;
 }
@@ -54,6 +60,11 @@ export class SupabaseService {
   private carritoCount = new BehaviorSubject<number>(0);
 
   currentUser$ = this.currentUser.asObservable();
+
+  /** Id del usuario con sesión (o undefined). */
+  get currentUserId(): string | undefined {
+    return this.currentUser.value?.id;
+  }
   currentProfile$ = this.currentProfile.asObservable();
   carritoCount$ = this.carritoCount.asObservable();
 

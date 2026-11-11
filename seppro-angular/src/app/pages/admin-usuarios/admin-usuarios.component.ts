@@ -50,11 +50,11 @@ import { SupabaseService, UserProfile } from '../../services/supabase.service';
                   </td>
                   <td>{{ user.email }}</td>
                   <td>
-                    <span class="badge" [ngClass]="{
-                      'badge-info': user.rol === 'admin',
-                      'badge-success': user.rol === 'usuario',
-                      'badge-warning': user.rol === 'invitado'
-                    }">{{ user.rol }}</span>
+                    <!-- Práctica 7: el administrador asigna roles (admin, agente, usuario, invitado) -->
+                    <select class="rol-select" [value]="user.rol" (change)="cambiarRol(user, $any($event.target).value)"
+                            [disabled]="user.id === miId" title="Rol del usuario">
+                      <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+                    </select>
                   </td>
                   <td>
                     <span class="badge" [ngClass]="user.habilitado ? 'badge-success' : 'badge-danger'">
@@ -82,6 +82,10 @@ import { SupabaseService, UserProfile } from '../../services/supabase.service';
     </section>
   `,
   styles: [`
+    .rol-select {
+      padding: 4px 8px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: #fff; color: #0f172a; font-size: 0.85rem;
+    }
     .admin-hero {
       padding: 120px 0 40px;
       text-align: center;
@@ -190,6 +194,26 @@ export class AdminUsuariosComponent implements OnInit {
     if (this.filter === 'enabled') return this.users.filter(u => u.habilitado);
     if (this.filter === 'disabled') return this.users.filter(u => !u.habilitado);
     return this.users;
+  }
+
+  readonly roles: UserProfile['rol'][] = ['admin', 'agente', 'usuario', 'invitado'];
+
+  /** El admin no puede quitarse su propio rol desde aquí. */
+  get miId(): string | undefined {
+    return this.supabase.currentUserId;
+  }
+
+  async cambiarRol(user: UserProfile, rol: UserProfile['rol']) {
+    const anterior = user.rol;
+    if (rol === anterior) return;
+    try {
+      // El trigger perfiles_proteger_rol solo deja hacerlo al admin
+      await this.supabase.updateProfile(user.id, { rol });
+      user.rol = rol;
+    } catch (e) {
+      user.rol = anterior;
+      alert('No se pudo cambiar el rol. Solo el administrador puede hacerlo.');
+    }
   }
 
   async toggleUser(user: UserProfile, enabled: boolean) {

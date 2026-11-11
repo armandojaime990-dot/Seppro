@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- IDs fijos para que FragmentManager y BottomNavigationView restauren su estado al rotar -->
+    <item name="fragment_container" type="id" />
+    <item name="bottom_nav" type="id" />
+</resources>

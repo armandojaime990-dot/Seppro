@@ -2,6 +2,7 @@ package com.seppro.wearos
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.*
 import androidx.activity.ComponentActivity
@@ -19,6 +20,7 @@ class LoginActivity : ComponentActivity() {
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var statusText: TextView
+    private lateinit var loginBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +49,9 @@ class LoginActivity : ComponentActivity() {
             textSize = 12f
             setHintTextColor(0xFF94A3B8.toInt())
             setTextColor(0xFF0F172A.toInt())
-            inputType = android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            filters = arrayOf(android.text.InputFilter.LengthFilter(ValidacionLogin.MAX_EMAIL))
+            setSingleLine()
             setPadding(16, 12, 16, 12)
             setBackgroundColor(0xFFF1F5F9.toInt()) // Light gray
             layoutParams = LinearLayout.LayoutParams(
@@ -64,6 +68,8 @@ class LoginActivity : ComponentActivity() {
             setHintTextColor(0xFF94A3B8.toInt())
             setTextColor(0xFF0F172A.toInt())
             inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+            filters = arrayOf(android.text.InputFilter.LengthFilter(ValidacionLogin.MAX_PASSWORD))
+            setSingleLine()
             setPadding(16, 12, 16, 12)
             setBackgroundColor(0xFFF1F5F9.toInt()) // Light gray
             layoutParams = LinearLayout.LayoutParams(
@@ -84,7 +90,7 @@ class LoginActivity : ComponentActivity() {
         mainLayout.addView(statusText)
 
         // Login Button
-        val loginBtn = Button(this).apply {
+        loginBtn = Button(this).apply {
             text = "Entrar"
             textSize = 12f
             setTextColor(0xFFFFFFFF.toInt())
@@ -111,20 +117,26 @@ class LoginActivity : ComponentActivity() {
         val email = emailInput.text.toString().trim()
         val password = passwordInput.text.toString()
 
-        if (email.isEmpty() || password.isEmpty()) {
-            statusText.text = "Llena todos los campos"
+        // Práctica 5: validar antes de enviar (la autenticación real la hace Supabase)
+        val error = ValidacionLogin.validar(email, password)
+        if (error != null) {
+            Log.w(TAG, "Intento de inicio de sesión rechazado por validación")
+            statusText.text = error
             statusText.setTextColor(0xFFEF5350.toInt())
             return
         }
 
         statusText.text = "Iniciando sesión..."
         statusText.setTextColor(0xFF4CAF50.toInt())
+        loginBtn.isEnabled = false
 
         thread {
             try {
                 val url = URL("${SupabaseClient.URL}/auth/v1/token?grant_type=password")
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
+                conn.connectTimeout = 15000
+                conn.readTimeout = 15000
                 conn.setRequestProperty("Content-Type", "application/json")
                 conn.setRequestProperty("apikey", SupabaseClient.ANON_KEY)
                 conn.doOutput = true
@@ -142,8 +154,10 @@ class LoginActivity : ComponentActivity() {
                 if (responseCode == 200) {
                     val responseStr = conn.inputStream.bufferedReader().use { it.readText() }
                     val jsonResponse = JSONObject(responseStr)
+                    // El JWT solo vive en memoria y nunca se escribe en Logcat
                     SupabaseClient.accessToken = jsonResponse.getString("access_token")
-                    
+                    Log.i(TAG, "Inicio de sesión correcto")
+
                     runOnUiThread {
                         statusText.text = "¡Conectado!"
                         val intent = Intent(this, MainActivity::class.java)
@@ -151,26 +165,30 @@ class LoginActivity : ComponentActivity() {
                         finish()
                     }
                 } else {
-                    val errorStr = conn.errorStream?.bufferedReader()?.use { it.readText() }
-                    var msg = "Credenciales incorrectas"
-                    try {
-                        if (errorStr != null) {
-                            msg = JSONObject(errorStr).getString("error_description")
-                        }
-                    } catch(e: Exception) {}
-                    
+                    // Mensaje genérico: no se revela si falló el correo o la contraseña
+                    // (ni se muestra el texto del servidor). Solo se registra el código HTTP.
+                    Log.w(TAG, "Inicio de sesión rechazado (HTTP $responseCode)")
                     runOnUiThread {
-                        statusText.text = msg
+                        statusText.text = ValidacionLogin.MENSAJE_GENERICO
                         statusText.setTextColor(0xFFEF5350.toInt())
+                        loginBtn.isEnabled = true
+                        passwordInput.text.clear()
                     }
                 }
+                conn.disconnect()
             } catch (e: Exception) {
-                e.printStackTrace()
+                // Sin printStackTrace: solo el tipo de error, nunca datos del usuario
+                Log.w(TAG, "Error de conexión en el inicio de sesión: ${e.javaClass.simpleName}")
                 runOnUiThread {
                     statusText.text = "Error de conexión"
                     statusText.setTextColor(0xFFEF5350.toInt())
+                    loginBtn.isEnabled = true
                 }
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "SEPPRO_Login"
     }
 }

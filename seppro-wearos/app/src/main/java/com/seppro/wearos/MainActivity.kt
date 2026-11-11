@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                android.util.Log.w("SEPPRO_Pedidos", "Error al cargar pedidos: ${e.javaClass.simpleName}")
                 runOnUiThread {
                     loadingText.text = "Error de red"
                 }
@@ -180,6 +180,31 @@ class MainActivity : ComponentActivity() {
                 color = 0xFF0072C6.toInt()
                 targetProgress = 100
                 etaText = "Entregado"
+            }
+            // ===== Estados de verificación BLE (Entregable 1) =====
+            "en_puerta" -> {
+                icon = "📍"
+                color = 0xFF009688.toInt() // Verde azulado
+                targetProgress = 90
+                etaText = "Listo para verificar"
+            }
+            "entregado_verificado" -> {
+                icon = "✅"
+                color = 0xFF2E7D32.toInt() // Verde
+                targetProgress = 100
+                etaText = "Entregado y verificado"
+            }
+            "entregado_con_danos" -> {
+                icon = "⚠️"
+                color = 0xFFEF5350.toInt() // Rojo
+                targetProgress = 100
+                etaText = "Entregado con daños"
+            }
+            "alerta_integridad" -> {
+                icon = "🚨"
+                color = 0xFFEF5350.toInt() // Rojo
+                targetProgress = 90
+                etaText = "Alerta de integridad"
             }
         }
 
