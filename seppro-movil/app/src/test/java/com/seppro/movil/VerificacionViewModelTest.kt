@@ -109,6 +109,11 @@ class VerificacionViewModelTest {
             (vm.estado.value as EstadoVerificacion.Error).mensaje)
 
         vm.reiniciar()
+        repo.errorVerificar = ApiException(404, "Could not find the function public.verificar_entrega")
+        vm.verificar(42, Lector(Telemetria("SEPPRO-42", 0)), "AA", null)
+        assertEquals(VerificacionViewModel.FUNCION_NO_INSTALADA, (vm.estado.value as EstadoVerificacion.Error).mensaje)
+
+        vm.reiniciar()
         repo.errorVerificar = IOException("timeout")
         vm.verificar(42, Lector(Telemetria("SEPPRO-42", 0)), "AA", null)
         assertTrue((vm.estado.value as EstadoVerificacion.Error).mensaje.startsWith("Sin conexión"))
@@ -125,6 +130,15 @@ class VerificacionViewModelTest {
         val e = vm.estado.value as EstadoVerificacion.Verificado
         assertEquals(false, e.correoEnviado)
         assertEquals("GAR-00001", e.resultado.garantiaFolio)
+    }
+
+    @Test fun alertaPendiente_seResuelveSinReleerElSensor() {
+        vm.mostrarAlertaPendiente(0) // fuera de rango: se ignora
+        assertEquals(EstadoVerificacion.Inactivo, vm.estado.value)
+        vm.mostrarAlertaPendiente(42)
+        assertEquals(EstadoVerificacion.Alerta(42, null), vm.estado.value)
+        vm.aceptarConDanos(42)
+        assertEquals("entregado_con_danos", (vm.estado.value as EstadoVerificacion.Resuelto).resultado.estado)
     }
 
     @Test fun reiniciar_vuelveAInactivo() {

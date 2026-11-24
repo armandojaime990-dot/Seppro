@@ -151,12 +151,13 @@ fun crearTarjetaPedido(
         )
     })
 
-    if (estado == "en_puerta" && onVerificar != null) {
+    // Entregable 3: la alerta de integridad se resuelve en la pestaña Verificar (aceptar o rechazar)
+    if ((estado == "en_puerta" || estado == "alerta_integridad") && onVerificar != null) {
         card.addView(Button(context).apply {
-            text = "Verificar paquete"
+            text = if (estado == "en_puerta") "Verificar paquete" else "Resolver alerta de integridad"
             isAllCaps = false
             setTextColor(0xFFFFFFFF.toInt())
-            background = fondoRedondeado(context, COLOR_ACCENT, 8)
+            background = fondoRedondeado(context, if (estado == "en_puerta") COLOR_ACCENT else 0xFFE65100.toInt(), 8)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT

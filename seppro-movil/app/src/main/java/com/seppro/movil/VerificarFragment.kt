@@ -186,6 +186,17 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onEstado(BleScanner.Estado.INACTIVO)
+        // Si el pedido ya tiene "Alerta de integridad", se ofrece resolverla directamente
+        if (pedidoId > 0) {
+            kotlin.concurrent.thread {
+                try {
+                    val arr = org.json.JSONArray(Api.get("/rest/v1/pedidos?select=estado&id=eq.$pedidoId"))
+                    if (arr.length() > 0 && arr.getJSONObject(0).optString("estado") == "alerta_integridad") {
+                        activity?.runOnUiThread { vm.mostrarAlertaPendiente(pedidoId) }
+                    }
+                } catch (e: Exception) { /* sin conexión: se puede volver a leer el sensor */ }
+            }
+        }
         // El estado de la verificación llega del ViewModel (sobrevive a la rotación)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

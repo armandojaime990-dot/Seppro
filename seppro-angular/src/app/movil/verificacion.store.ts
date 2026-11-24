@@ -5,6 +5,9 @@ import {
 } from './nucleo/telemetria';
 import { ErrorDelServidor, ErrorDeRed } from './nucleo/reintento';
 
+export const FUNCION_NO_INSTALADA =
+  'La verificación no está instalada en el servidor. Ejecuta supabase-entregable3.sql en Supabase.';
+
 /** Respuesta de verificar_entrega. */
 export interface ResultadoVerificacion {
   pedidoId: number; estado: string; golpe: boolean;
@@ -101,7 +104,10 @@ export class VerificacionStore {
       return { tipo: 'error', mensaje: 'Tu sesión expiró. Inicia sesión de nuevo.', sesionExpirada: true };
     }
     if (e instanceof TelemetriaInvalidaError) return { tipo: 'error', mensaje: `Lectura inválida del Smart Tag: ${e.message}` };
-    if (e instanceof ErrorDelServidor) return { tipo: 'error', mensaje: e.message };
+    if (e instanceof ErrorDelServidor) {
+      // PostgREST responde 404 (PGRST202) si la RPC no existe: falta ejecutar el script SQL
+      return { tipo: 'error', mensaje: e.codigo === 404 ? FUNCION_NO_INSTALADA : e.message };
+    }
     if (e instanceof ErrorDeRed) return { tipo: 'error', mensaje: 'Sin conexión. Revisa tu Internet e intenta de nuevo.' };
     if (e instanceof Error && e.name === 'TimeoutError') {
       return { tipo: 'error', mensaje: 'El Smart Tag no respondió. Acércate a la caja e intenta de nuevo.' };

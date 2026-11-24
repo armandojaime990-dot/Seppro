@@ -175,6 +175,13 @@ class VerificacionViewModel(
         }
     }
 
+    /** El pedido ya tiene una alerta pendiente: se puede resolver sin volver a leer el sensor. */
+    fun mostrarAlertaPendiente(pedidoId: Int) {
+        if (_estado.value == EstadoVerificacion.Inactivo && pedidoId > 0) {
+            _estado.value = EstadoVerificacion.Alerta(pedidoId, null)
+        }
+    }
+
     fun aceptarConDanos(pedidoId: Int) = resolver(pedidoId, "aceptar", null)
 
     fun rechazarEquipo(pedidoId: Int, motivo: String?) = resolver(pedidoId, "rechazar", motivo?.trim()?.take(500))
@@ -195,6 +202,12 @@ class VerificacionViewModel(
         }
     }
 
+    companion object {
+        /** PostgREST responde 404 (PGRST202) si la RPC no existe: falta ejecutar el script SQL. */
+        const val FUNCION_NO_INSTALADA =
+            "La verificación no está instalada en el servidor. Ejecuta supabase-entregable3.sql en Supabase."
+    }
+
     fun reiniciar() {
         trabajo?.cancel()
         _estado.value = EstadoVerificacion.Inactivo
@@ -204,7 +217,8 @@ class VerificacionViewModel(
         is SesionExpiradaException -> EstadoVerificacion.Error("Tu sesión expiró. Inicia sesión de nuevo.", sesionExpirada = true)
         is TelemetriaInvalidaException -> EstadoVerificacion.Error("Lectura inválida del Smart Tag: ${e.message}")
         is TimeoutCancellationException -> EstadoVerificacion.Error("El Smart Tag no respondió. Acércate a la caja e intenta de nuevo.")
-        is ApiException -> EstadoVerificacion.Error(e.message ?: "Error del servidor")
+        is ApiException -> EstadoVerificacion.Error(
+            if (e.codigo == 404) FUNCION_NO_INSTALADA else e.message ?: "Error del servidor")
         is SecurityException -> EstadoVerificacion.Error("Falta el permiso de Bluetooth para conectarse al sensor")
         is IOException -> EstadoVerificacion.Error("Sin conexión. Revisa tu Internet e intenta de nuevo.")
         else -> EstadoVerificacion.Error(e.message ?: "Algo salió mal")

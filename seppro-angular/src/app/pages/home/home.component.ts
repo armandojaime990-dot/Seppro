@@ -151,7 +151,7 @@ import { SupabaseService } from '../../services/supabase.service';
           <div class="wearable-content">
             <h2 class="gradient-text">⌚ Lleva SEPPRO en tu muñeca</h2>
             <p>Descarga nuestra aplicación nativa para <strong>Smartwatch (WearOS)</strong>. Monitorea el estado de tus compras en tiempo real, verifica tus fechas de entrega estimadas y disfruta de un diseño premium directo en tu reloj.</p>
-            <a href="https://play.google.com/store/apps/details?id=com.seppro.wearos" target="_blank" class="btn-primary">
+            <a href="https://play.google.com/store/apps/details?id=com.seppro.wearos" target="_blank" rel="noopener noreferrer" class="btn-primary">
               <span class="icon">⬇️</span> Descargar para WearOS
             </a>
           </div>

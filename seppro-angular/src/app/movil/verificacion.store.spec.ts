@@ -1,6 +1,6 @@
 import { ErrorDelServidor, ErrorDeRed } from './nucleo/reintento';
 import { Telemetria, TelemetriaInvalidaError } from './nucleo/telemetria';
-import { LectorTelemetria, RepositorioVerificacion, ResultadoAlerta, ResultadoVerificacion, VerificacionStore } from './verificacion.store';
+import { FUNCION_NO_INSTALADA, LectorTelemetria, RepositorioVerificacion, ResultadoAlerta, ResultadoVerificacion, VerificacionStore } from './verificacion.store';
 
 class RepoFalso implements RepositorioVerificacion {
   llamadas = 0;
@@ -64,6 +64,10 @@ describe('VerificacionStore (AUT-02)', () => {
     repo.error = new ErrorDelServidor(400, 'El pedido no está listo para verificar (estado actual: pagado)');
     await store.verificar(42, lector({ paqueteId: 'SEPPRO-42', estatus: 0 }), 'Tag');
     expect(store.estado()).toEqual({ tipo: 'error', mensaje: 'El pedido no está listo para verificar (estado actual: pagado)' });
+
+    repo.error = new ErrorDelServidor(404, 'Could not find the function public.verificar_entrega');
+    await store.verificar(42, lector({ paqueteId: 'SEPPRO-42', estatus: 0 }), 'Tag');
+    expect(store.estado()).toEqual({ tipo: 'error', mensaje: FUNCION_NO_INSTALADA });
 
     repo.error = new ErrorDeRed();
     await store.verificar(42, lector({ paqueteId: 'SEPPRO-42', estatus: 0 }), 'Tag');
