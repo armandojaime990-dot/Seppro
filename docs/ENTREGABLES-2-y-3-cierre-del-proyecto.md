@@ -112,8 +112,13 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 | Copias de seguridad de Android con preferencias del usuario | `allowBackup=false` y reglas de extracción de datos |
 | Rutas profundas de la web en blanco (sin `<base href>`) | Corregido en `index.html` |
 | Llave de firma de los APK | En `firma/`, fuera de Git (`.gitignore`) |
+| **Contraseña de aplicación de Gmail escrita en `seppro/Config/Config.php`** (versión PHP anterior, publicada en GitHub) | Ahora se lee de variables de entorno. **Hay que revocarla** en Google: Cuenta → Seguridad → Contraseñas de aplicaciones, porque sigue en el historial de Git |
+| CSP y encabezados HTTP ausentes en la web | `vercel.json`: CSP estricta (sin scripts en línea), HSTS, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`. Se verificó que no hay violaciones de CSP |
 
-**Pendientes que dependen del dueño de la cuenta de Supabase:**
+**Integración continua:** cada push ejecuta 108 pruebas, el lint de las dos apps Android, `npm audit` y los builds (ver `PRACTICA13-14-automatizacion-pruebas-ci.md`).
+
+**Pendientes que dependen del dueño de las cuentas:**
+- Revocar la contraseña de aplicación de Gmail que estaba en el código PHP.
 - Ejecutar `supabase-entregable3.sql`.
 - Cambiar la contraseña `123456` de las cuentas de prueba antes de una presentación pública.
 - Activar *Leaked password protection* en Auth.
