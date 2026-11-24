@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SupabaseService, Pedido } from '../../services/supabase.service';
@@ -78,6 +78,22 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
               <div class="pedido-shipping" *ngIf="pedido.nombre_envio">
                 <strong>Envío a:</strong> {{ pedido.nombre_envio }} · {{ pedido.direccion_envio }}
               </div>
+              <!-- Entregable 3: resultado de la verificación con el Smart Tag (sincronizado con el teléfono) -->
+              <div class="pedido-verificacion" *ngIf="pedido.fecha_verificacion">
+                <strong>Verificación Smart Tag:</strong>
+                {{ pedido.golpe_detectado ? '🚨 golpe fuerte registrado' : '✅ viaje sin incidentes' }}
+                · {{ pedido.fecha_verificacion | date:'dd/MM/yyyy HH:mm' }}
+                <span *ngIf="pedido.sensor_id"> · sensor {{ pedido.sensor_id }}</span>
+              </div>
+              <div class="pedido-garantia" *ngIf="garantias[pedido.id] as g">
+                🛡️ <strong>Garantía {{ g.folio }}</strong> activa hasta {{ g.vence | date:'dd/MM/yyyy' }}
+                · {{ g.correo_enviado ? 'certificado enviado a tu correo' : 'certificado disponible aquí' }}
+                <a [routerLink]="['/garantia', pedido.id]" (click)="$event.stopPropagation()">Ver certificado</a>
+              </div>
+              <a *ngIf="pedido.estado === 'en_puerta' || pedido.estado === 'alerta_integridad'" class="btn-primary btn-verificar"
+                 [routerLink]="['/app/verificar']" [queryParams]="{ pedido: pedido.id }" (click)="$event.stopPropagation()">
+                {{ pedido.estado === 'en_puerta' ? 'Verificar con el Smart Tag' : 'Resolver alerta de integridad' }}
+              </a>
             </div>
             <div class="expand-hint">{{ expandedPedido === pedido.id ? '▲ Ocultar detalles' : '▼ Ver detalles' }}</div>
           </div>
@@ -119,6 +135,11 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
     .badge-entregado-verificado { background: rgba(46,125,50,0.12); color: #2E7D32; }
     .badge-entregado-con-danos { background: rgba(255,152,0,0.15); color: #E65100; } /* advertencia */
     .badge-alerta-integridad { background: rgba(239,83,80,0.15); color: #D32F2F; } /* error */
+    .badge-rechazado { background: rgba(109,76,65,0.15); color: #6D4C41; }
+    .pedido-verificacion, .pedido-garantia { margin-top: 10px; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; color: #334155; background: #F1F5F9; }
+    .pedido-garantia { background: rgba(46,125,50,0.08); }
+    .pedido-garantia a { margin-left: 8px; color: #0072c6; font-weight: 600; }
+    .btn-verificar { display: inline-block; margin-top: 12px; }
 
     .progress-bar { display: flex; align-items: center; margin: 20px 0 12px; padding: 0 8px; }
     .progress-step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
@@ -153,16 +174,36 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
     }
   `]
 })
-export class MisPedidosComponent implements OnInit {
+export class MisPedidosComponent implements OnInit, OnDestroy {
   pedidos: Pedido[] = [];
   loading = true;
   expandedPedido: number | null = null;
+  garantias: Record<number, { folio: string; vence: string; correo_enviado: boolean }> = {};
+  private canal?: ReturnType<SupabaseService['client']['channel']>;
 
   constructor(private supabase: SupabaseService) {}
 
   async ngOnInit() {
-    this.pedidos = await this.supabase.getPedidos();
+    await this.cargar();
     this.loading = false;
+    // Sincronización bidireccional: lo que se verifica en el teléfono/PWA aparece aquí al instante
+    const uid = (await this.supabase.getSession())?.user.id;
+    if (uid) {
+      this.canal = this.supabase.client.channel(`mis-pedidos-${uid}`)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos', filter: `usuario_id=eq.${uid}` },
+          () => void this.cargar())
+        .subscribe();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.canal) void this.supabase.client.removeChannel(this.canal);
+  }
+
+  private async cargar() {
+    this.pedidos = await this.supabase.getPedidos();
+    const { data } = await this.supabase.client.from('garantias').select('pedido_id, folio, vence, correo_enviado');
+    this.garantias = Object.fromEntries((data ?? []).map((g: any) => [g.pedido_id, g]));
   }
 
   togglePedido(id: number) {
@@ -172,7 +213,7 @@ export class MisPedidosComponent implements OnInit {
   getProgressLevel(estado: string): number {
     const levels: Record<string, number> = {
       pendiente: 0, pagado: 1, enviado: 2, en_camino: 3,
-      en_puerta: 4, alerta_integridad: 4,
+      en_puerta: 4, alerta_integridad: 4, rechazado: 5,
       entregado: 5, entregado_verificado: 5, entregado_con_danos: 5
     };
     return levels[estado] || 0;
@@ -186,7 +227,7 @@ export class MisPedidosComponent implements OnInit {
   getEstadoIcon(estado: string): string {
     const icons: Record<string, string> = {
       pendiente: '⏳', pagado: '✅', enviado: '📤', en_camino: '🚚', entregado: '📬',
-      en_puerta: '📍', entregado_verificado: '✅', entregado_con_danos: '⚠️', alerta_integridad: '🚨'
+      en_puerta: '📍', entregado_verificado: '✅', entregado_con_danos: '⚠️', alerta_integridad: '🚨', rechazado: '⛔'
     };
     return icons[estado] || '📦';
   }
@@ -197,7 +238,8 @@ export class MisPedidosComponent implements OnInit {
       en_puerta: 'En puerta (listo para verificar)',
       entregado_verificado: 'Entregado y verificado',
       entregado_con_danos: 'Entregado con daños',
-      alerta_integridad: 'Alerta de integridad'
+      alerta_integridad: 'Alerta de integridad',
+      rechazado: 'Equipo rechazado'
     };
     return labels[estado] || estado;
   }
@@ -221,6 +263,7 @@ export class MisPedidosComponent implements OnInit {
       case 'entregado_verificado': return 'Entregado y verificado';
       case 'entregado_con_danos': return 'Entregado con daños';
       case 'alerta_integridad': return 'Alerta de integridad: revisión pendiente';
+      case 'rechazado': return 'Equipo rechazado: devolución en proceso';
       default: return 'Procesando pago...';
     }
   }

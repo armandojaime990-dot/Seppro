@@ -1,0 +1,367 @@
+{
+  "fecha": "2026-11-11T02:47:33.622Z",
+  "servidor": "https://sbhkqjueesxsjkfootuq.supabase.co",
+  "cliente": "Node v25.6.1 / win32",
+  "resultados": [
+    {
+      "id": "WEB-01a",
+      "descripcion": "Login válido (POST /auth/v1/token)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 831.3,
+      "bytes": 1881,
+      "detalle": "access_token=true expira_en=3600s sin_contraseña_en_respuesta=true"
+    },
+    {
+      "id": "WEB-02a",
+      "descripcion": "Login con contraseña incorrecta",
+      "esperado": "400",
+      "obtenido": 400,
+      "ok": "APROBADO",
+      "ms": 186.3,
+      "bytes": 81,
+      "detalle": "400 Invalid login credentials"
+    },
+    {
+      "id": "WEB-02b",
+      "descripcion": "Login con JSON mal formado",
+      "esperado": "400",
+      "obtenido": 400,
+      "ok": "APROBADO",
+      "ms": 347.1,
+      "bytes": 111,
+      "detalle": "400 Could not parse request body as JSON: unexpected end of JSON input"
+    },
+    {
+      "id": "WEB-03a",
+      "descripcion": "Registro con contraseña débil (validación semántica)",
+      "esperado": "422",
+      "obtenido": 422,
+      "ok": "APROBADO",
+      "ms": 197.5,
+      "bytes": 130,
+      "detalle": "422 Password should be at least 6 characters."
+    },
+    {
+      "id": "WEB-04a",
+      "descripcion": "Token inválido -> no autenticado",
+      "esperado": "401",
+      "obtenido": 401,
+      "ok": "APROBADO",
+      "ms": 174.2,
+      "bytes": 93,
+      "detalle": "PGRST301 JWT cryptographic operation failed"
+    },
+    {
+      "id": "WEB-04b",
+      "descripcion": "RPC solo-admin sin sesión (anon) -> 401",
+      "esperado": "401",
+      "obtenido": 401,
+      "ok": "APROBADO",
+      "ms": 201.5,
+      "bytes": 77,
+      "detalle": "42501 Solo el administrador"
+    },
+    {
+      "id": "WEB-04c",
+      "descripcion": "RPC solo-admin con sesión de cliente -> 403",
+      "esperado": "403",
+      "obtenido": 403,
+      "ok": "APROBADO",
+      "ms": 204.6,
+      "bytes": 77,
+      "detalle": "42501 Solo el administrador"
+    },
+    {
+      "id": "WEB-04d",
+      "descripcion": "RPC solo-admin con sesión de admin",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 184.4,
+      "bytes": 1051,
+      "detalle": "agentes=7"
+    },
+    {
+      "id": "WEB-04e",
+      "descripcion": "Pedidos sin sesión: RLS oculta todo (200 y lista vacía)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 157.6,
+      "bytes": 2,
+      "detalle": "filas=0"
+    },
+    {
+      "id": "WEB-01b",
+      "descripcion": "Pedidos del cliente (lo que usa la app)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 194.1,
+      "bytes": 4845,
+      "detalle": "filas=9 estructura_consistente=true solo_suyos=true"
+    },
+    {
+      "id": "WEB-02c",
+      "descripcion": "Recurso (tabla) inexistente",
+      "esperado": "404",
+      "obtenido": 404,
+      "ok": "APROBADO",
+      "ms": 193.4,
+      "bytes": 132,
+      "detalle": "PGRST205 Could not find the table 'public.tabla_que_no_existe' in the schema cache"
+    },
+    {
+      "id": "WEB-02d",
+      "descripcion": "Un solo registro con id inexistente",
+      "esperado": "406",
+      "obtenido": 406,
+      "ok": "APROBADO",
+      "ms": 168.3,
+      "bytes": 131,
+      "detalle": "PGRST116 Cannot coerce the result to a single JSON object"
+    },
+    {
+      "id": "WEB-05s",
+      "descripcion": "Perfiles sin sesión: NO deberían verse correos",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 160.5,
+      "bytes": 575,
+      "detalle": "DEFECTO si filas>0 -> filas_expuestas=12"
+    },
+    {
+      "id": "DB-01",
+      "descripcion": "Insertar reporte válido",
+      "esperado": "201",
+      "obtenido": 201,
+      "ok": "APROBADO",
+      "ms": 180,
+      "bytes": 117,
+      "detalle": "folio=REP008 cliente_forzado=true prioridad=alta (pedido con daño -> alta)"
+    },
+    {
+      "id": "DB-02a",
+      "descripcion": "Insertar con descripción < 10 (CHECK)",
+      "esperado": "400",
+      "obtenido": 400,
+      "ok": "APROBADO",
+      "ms": 179.1,
+      "bytes": 146,
+      "detalle": "23514 new row for relation \"reportes\" violates check constraint \"reportes_descripcion_chec"
+    },
+    {
+      "id": "DB-02b",
+      "descripcion": "Insertar con tipo inválido (CHECK)",
+      "esperado": "400",
+      "obtenido": 400,
+      "ok": "APROBADO",
+      "ms": 159.7,
+      "bytes": 139,
+      "detalle": "23514 new row for relation \"reportes\" violates check constraint \"reportes_tipo_check\""
+    },
+    {
+      "id": "DB-02c",
+      "descripcion": "Insertar sin campo obligatorio (NOT NULL)",
+      "esperado": "400",
+      "obtenido": 400,
+      "ok": "APROBADO",
+      "ms": 167.9,
+      "bytes": 139,
+      "detalle": "23502 null value in column \"tipo\" of relation \"reportes\" violates not-null constraint"
+    },
+    {
+      "id": "DB-02d",
+      "descripcion": "Insertar con pedido de OTRO cliente (trigger)",
+      "esperado": "403",
+      "obtenido": 403,
+      "ok": "APROBADO",
+      "ms": 307.5,
+      "bytes": 89,
+      "detalle": "42501 El pedido no pertenece al cliente"
+    },
+    {
+      "id": "DB-02e",
+      "descripcion": "Insertar con tipo de dato incorrecto",
+      "esperado": "400",
+      "obtenido": 400,
+      "ok": "APROBADO",
+      "ms": 151.4,
+      "bytes": 144,
+      "detalle": "23514 new row for relation \"reportes\" violates check constraint \"reportes_prioridad_check\""
+    },
+    {
+      "id": "DB-02f",
+      "descripcion": "Agregar al carrito (registro creado)",
+      "esperado": "201",
+      "obtenido": 201,
+      "ok": "APROBADO",
+      "ms": 151.2,
+      "bytes": 0,
+      "detalle": ""
+    },
+    {
+      "id": "DB-02g",
+      "descripcion": "Mismo producto otra vez (UNIQUE usuario+producto)",
+      "esperado": "409",
+      "obtenido": 409,
+      "ok": "APROBADO",
+      "ms": 186.1,
+      "bytes": 141,
+      "detalle": "23505 duplicate key value violates unique constraint \"carrito_usuario_id_producto_id_key\""
+    },
+    {
+      "id": "DB-05a",
+      "descripcion": "Eliminar del carrito (sin cuerpo)",
+      "esperado": "204",
+      "obtenido": 204,
+      "ok": "APROBADO",
+      "ms": 160.7,
+      "bytes": 0,
+      "detalle": ""
+    },
+    {
+      "id": "DB-03a",
+      "descripcion": "Consulta por id existente",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 188,
+      "bytes": 27,
+      "detalle": "filas=1"
+    },
+    {
+      "id": "DB-03b",
+      "descripcion": "Consulta por id inexistente (lista vacía)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 157.1,
+      "bytes": 2,
+      "detalle": "filas=0"
+    },
+    {
+      "id": "DB-03c",
+      "descripcion": "Cliente2 consulta reporte de cliente1 (RLS)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 193.8,
+      "bytes": 2,
+      "detalle": "filas=0 (debe ser 0)"
+    },
+    {
+      "id": "DB-04a",
+      "descripcion": "Actualizar descripción (dueño)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 170.7,
+      "bytes": 401,
+      "detalle": ""
+    },
+    {
+      "id": "DB-04b",
+      "descripcion": "Consultar después de actualizar (persistencia)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 165,
+      "bytes": 112,
+      "detalle": "persistió=true"
+    },
+    {
+      "id": "DB-04c",
+      "descripcion": "Cliente intenta reasignar (trigger)",
+      "esperado": "403",
+      "obtenido": 403,
+      "ok": "APROBADO",
+      "ms": 165.3,
+      "bytes": 102,
+      "detalle": "42501 Solo el administrador puede reasignar reportes"
+    },
+    {
+      "id": "DB-06",
+      "descripcion": "Dos PATCH simultáneos al mismo reporte",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 176.6,
+      "bytes": 45,
+      "detalle": "A=200 B=200 final=Escritura A/baja -> gana la última escritura, la otra se pierde sin avis"
+    },
+    {
+      "id": "WEB-03b",
+      "descripcion": "Mensaje de solo espacios (validación del backend)",
+      "esperado": "400",
+      "obtenido": 400,
+      "ok": "APROBADO",
+      "ms": 188.4,
+      "bytes": 140,
+      "detalle": "23514 new row for relation \"mensajes\" violates check constraint \"mensajes_texto_check\""
+    },
+    {
+      "id": "NET-06d",
+      "descripcion": "Mismo mensaje enviado 2 veces (reintento)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 159.3,
+      "bytes": 24,
+      "detalle": "POST1=201 POST2=201 filas_guardadas=2 (1 sería idempotente)"
+    },
+    {
+      "id": "WEB-04f",
+      "descripcion": "Cliente2 escribe en reporte de cliente1 (RLS)",
+      "esperado": "403",
+      "obtenido": 403,
+      "ok": "APROBADO",
+      "ms": 182.6,
+      "bytes": 121,
+      "detalle": "42501 new row violates row-level security policy for table \"mensajes\""
+    },
+    {
+      "id": "DB-05b",
+      "descripcion": "Cliente intenta borrar su reporte (sin permiso)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 146.1,
+      "bytes": 2,
+      "detalle": "filas_borradas=0 (RLS: 0, no lanza error)"
+    },
+    {
+      "id": "DB-05c",
+      "descripcion": "Admin borra el reporte de prueba",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 203.7,
+      "bytes": 396,
+      "detalle": "filas_borradas=1"
+    },
+    {
+      "id": "DB-05d",
+      "descripcion": "Mensajes del reporte borrado (ON DELETE CASCADE)",
+      "esperado": "200",
+      "obtenido": 200,
+      "ok": "APROBADO",
+      "ms": 167.5,
+      "bytes": 2,
+      "detalle": "filas=0 (debe ser 0)"
+    },
+    {
+      "id": "WEB-01c",
+      "descripcion": "RPC latido() (función VOID)",
+      "esperado": "200,204",
+      "obtenido": 204,
+      "ok": "APROBADO",
+      "ms": 210.5,
+      "bytes": 0,
+      "detalle": ""
+    }
+  ]
+}

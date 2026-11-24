@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -8,15 +10,31 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.seppro.wearos"
+        // Mismo applicationId que el teléfono: requisito de Wear OS Data Layer (Entregable 2)
+        applicationId = "com.seppro.movil"
         minSdk = 30
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "3.0"
+    }
+
+    // Misma llave que el teléfono (../firma, fuera de Git)
+    val firma = rootProject.file("../firma/keystore.properties")
+    signingConfigs {
+        if (firma.exists()) {
+            val p = Properties().apply { firma.inputStream().use { load(it) } }
+            create("release") {
+                storeFile = rootProject.file("../firma/" + p.getProperty("storeFile"))
+                storePassword = p.getProperty("storePassword")
+                keyAlias = p.getProperty("keyAlias")
+                keyPassword = p.getProperty("keyPassword")
+            }
+        }
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

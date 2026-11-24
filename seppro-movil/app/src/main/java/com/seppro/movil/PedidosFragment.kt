@@ -9,7 +9,7 @@ class PedidosFragment : ListaPedidosFragment() {
     override val titulo = "Mis pedidos"
     override val textoVacio = "No tienes pedidos activos."
 
-    override fun incluir(estado: String) = estado !in Estados.CERRADOS
+    override val filtro = PedidosApi.Filtro.ACTIVOS
 
     override val onVerificar: ((Int) -> Unit) = { pedidoId ->
         (activity as? MainActivity)?.abrirVerificar(pedidoId)

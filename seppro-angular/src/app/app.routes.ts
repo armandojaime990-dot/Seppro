@@ -14,5 +14,8 @@ export const routes: Routes = [
   { path: 'wishlist', loadComponent: () => import('./pages/wishlist/wishlist.component').then(m => m.WishlistComponent) },
   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) },
   { path: 'admin/usuarios', loadComponent: () => import('./pages/admin-usuarios/admin-usuarios.component').then(m => m.AdminUsuariosComponent) },
+  { path: 'garantia/:pedido', loadComponent: () => import('./pages/garantia/garantia.component').then(m => m.GarantiaComponent) },
+  // App móvil (PWA para iPhone): misma funcionalidad que la app Kotlin del teléfono
+  { path: 'app', loadChildren: () => import('./movil/movil.routes').then(m => m.MOVIL_ROUTES) },
   { path: '**', redirectTo: '' }
 ];

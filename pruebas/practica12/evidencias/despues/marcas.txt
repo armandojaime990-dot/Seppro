@@ -1,0 +1,14 @@
+13s  app abierta (PID 10815)
+38s  1 login + consulta de pedidos
+67s  2 Actualizar #1
+86s  2 Actualizar #2
+107s  2 Actualizar #3
+131s  3 pestaña Verificar
+141s  3 pestaña Historial (consulta)
+166s  3 pestaña Soporte
+176s  3 pestaña Pedidos (consulta)
+223s  4 enviar mensaje #1
+247s  4 enviar mensaje #2
+264s  4 enviar mensaje #3
+305s  5 desplazamiento x10
+320s  fin

@@ -27,7 +27,8 @@ data class Reporte(
     val agenteId: String?,
     val agenteNombre: String?,
     val paraAdmin: Boolean,
-    val creado: String
+    val creado: String,
+    val actualizado: String = ""
 ) {
     val activo: Boolean get() = estado == "abierto" || estado == "en_proceso"
 
@@ -46,7 +47,8 @@ data class Reporte(
             agenteId = if (j.isNull("agente_id")) null else j.optString("agente_id"),
             agenteNombre = j.optJSONObject("agente")?.optString("nombre"),
             paraAdmin = j.optBoolean("para_admin", false),
-            creado = j.optString("created_at")
+            creado = j.optString("created_at"),
+            actualizado = j.optString("updated_at")
         )
     }
 }
@@ -121,8 +123,18 @@ object SoporteApi {
             ?: throw ApiException(404, "No se pudo leer el reporte creado")
     }
 
-    fun actualizarReporte(id: Int, cambios: JSONObject) {
-        Api.patch("/rest/v1/reportes?id=eq.$id", cambios.toString())
+    /** Otra persona modificó el reporte entre que se leyó y se guardó (bloqueo optimista). */
+    class ConflictoException : Exception("El reporte cambió mientras lo editabas")
+
+    /**
+     * Práctica 12 — optimización O4: bloqueo optimista.
+     * El PATCH solo se aplica si updated_at sigue siendo el que la app leyó. Si alguien más guardó
+     * antes, PostgREST responde 200 con 0 filas -> ConflictoException (antes se sobrescribía en silencio).
+     */
+    fun actualizarReporte(id: Int, cambios: JSONObject, updatedAtLeido: String) {
+        val filas = JSONArray(Api.patch(
+            "/rest/v1/reportes?id=eq.$id&updated_at=eq.${Api.enc(updatedAtLeido)}", cambios.toString()))
+        if (filas.length() == 0) throw ConflictoException()
     }
 
     fun reasignar(reporteId: Int, agenteId: String?) {
@@ -148,16 +160,54 @@ object SoporteApi {
         return (0 until arr.length()).map { Mensaje.desdeJson(arr.getJSONObject(it)) }
     }
 
-    fun enviarMensaje(reporteId: Int, texto: String, adjunto: String? = null): Mensaje {
+    /**
+     * Práctica 12 — optimización O3: envío IDEMPOTENTE con reintento controlado.
+     *
+     * - idCliente: UUID que genera la app UNA vez por mensaje; se repite en cada reintento.
+     *   La base tiene un índice UNIQUE en mensajes.id_cliente: si el servidor ya guardó el mensaje
+     *   (porque se perdió la respuesta, no la petición), el reintento recibe 409 y la app recupera
+     *   el mensaje existente en lugar de crear un duplicado.
+     * - Reintento solo ante fallas de RED (IOException), hasta 3 intentos con espera progresiva
+     *   (exponential backoff: 500 ms, 1 s) + variación aleatoria. Los errores del servidor
+     *   (400/403/500) no se reintentan: se muestran al usuario.
+     * Antes: un solo POST; si la respuesta se perdía, el usuario reenviaba y quedaban 2 mensajes.
+     */
+    fun enviarMensaje(reporteId: Int, texto: String, adjunto: String? = null,
+                      idCliente: String = UUID.randomUUID().toString()): Mensaje {
         val cuerpo = JSONObject().apply {
             put("reporte_id", reporteId)
             put("texto", texto)
             put("dispositivo", nombreDispositivo())
             put("adjunto_path", adjunto ?: JSONObject.NULL)
+            put("id_cliente", idCliente)
+        }.toString()
+
+        var ultimoError: java.io.IOException? = null
+        for (intento in 1..MAX_INTENTOS) {
+            try {
+                val arr = JSONArray(Api.post("/rest/v1/mensajes", cuerpo, mapOf("Prefer" to "return=representation")))
+                return Mensaje.desdeJson(arr.getJSONObject(0))
+            } catch (e: ApiException) {
+                if (e.codigo == 409) return mensajePorIdCliente(idCliente) ?: throw e // ya estaba guardado
+                throw e // error del servidor: no se reintenta
+            } catch (e: java.io.IOException) {
+                ultimoError = e
+                Log.w("SEPPRO_Chat", "Envío falló (intento $intento/$MAX_INTENTOS): ${e.javaClass.simpleName}")
+                if (intento < MAX_INTENTOS) Thread.sleep(esperaReintentoMs(intento))
+            }
         }
-        val arr = JSONArray(Api.post("/rest/v1/mensajes", cuerpo.toString(),
-            mapOf("Prefer" to "return=representation")))
-        return Mensaje.desdeJson(arr.getJSONObject(0))
+        throw ultimoError ?: java.io.IOException("Sin conexión")
+    }
+
+    const val MAX_INTENTOS = 3
+
+    /** Espera antes del reintento n: 500 ms, 1 000 ms, 2 000 ms... (tope 4 s) + 0–250 ms aleatorio. */
+    fun esperaReintentoMs(intento: Int, azar: Long = (Math.random() * 250).toLong()): Long =
+        (500L shl (intento - 1).coerceIn(0, 3)) + azar
+
+    private fun mensajePorIdCliente(idCliente: String): Mensaje? {
+        val arr = JSONArray(Api.get("/rest/v1/mensajes?select=*&id_cliente=eq.$idCliente"))
+        return if (arr.length() == 0) null else Mensaje.desdeJson(arr.getJSONObject(0))
     }
 
     // ===== Evidencias (Supabase Storage, bucket privado) =====
@@ -182,8 +232,8 @@ object SoporteApi {
 
     /** Nombre del teléfono o emulador (para identificar cada dispositivo en el chat). */
     fun nombreDispositivo(): String {
-        val fabricante = Build.MANUFACTURER.replaceFirstChar { it.uppercase() }
-        val modelo = Build.MODEL
+        val fabricante = (Build.MANUFACTURER ?: "Android").replaceFirstChar { it.uppercase() }
+        val modelo = Build.MODEL ?: "desconocido"
         val nombre = if (modelo.startsWith(fabricante, ignoreCase = true)) modelo else "$fabricante $modelo"
         return nombre.take(80)
     }

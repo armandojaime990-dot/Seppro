@@ -1,0 +1,219 @@
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\build.gradle.kts:13: Warning: Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details. [OldTargetApi]
+        targetSdk = 34
+        ~~~~~~~~~~~~~~
+
+   Explanation for issues of type "OldTargetApi":
+   When your application runs on a version of Android that is more recent than
+   your targetSdkVersion specifies that it has been tested with, various
+   compatibility modes kick in. This ensures that your application continues
+   to work, but it may look out of place. For example, if the targetSdkVersion
+   is less than 14, your app may get an option button in the UI.
+
+   To fix this issue, set the targetSdkVersion to the highest available value.
+   Then test your app to make sure everything works correctly. You may want to
+   consult the compatibility notes to see what changes apply to each version
+   you are adding support for:
+   https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+   as well as follow this guide:
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.
+   html
+
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\AndroidManifest.xml:44: Warning: Redundant label can be removed [RedundantLabel]
+            android:label="SEPPRO">
+            ~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\AndroidManifest.xml:55: Warning: Redundant label can be removed [RedundantLabel]
+            android:label="SEPPRO" />
+            ~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "RedundantLabel":
+   When an activity does not have a label attribute, it will use the one from
+   the application tag. Since the application has already specified the same
+   label, the label on this activity can be omitted.
+
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\build.gradle.kts:37: Warning: A newer version of androidx.core:core-ktx than 1.13.1 is available: 1.19.1 [GradleDependency]
+    implementation("androidx.core:core-ktx:1.13.1")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\build.gradle.kts:38: Warning: A newer version of androidx.appcompat:appcompat than 1.7.0 is available: 1.8.0 [GradleDependency]
+    implementation("androidx.appcompat:appcompat:1.7.0")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\build.gradle.kts:39: Warning: A newer version of androidx.fragment:fragment-ktx than 1.8.5 is available: 1.9.1 [GradleDependency]
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\build.gradle.kts:40: Warning: A newer version of com.google.android.material:material than 1.12.0 is available: 1.14.0 [GradleDependency]
+    implementation("com.google.android.material:material:1.12.0")
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\Estados.kt:130: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        text = "Pedido #$id  ·  $%,.2f".format(total)
+               ~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\Estados.kt:130: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        text = "Pedido #$id  ·  $%,.2f".format(total)
+                ~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\Estados.kt:130: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        text = "Pedido #$id  ·  $%,.2f".format(total)
+                                 ~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\Estados.kt:139: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        text = "${Estados.icono(estado)}  ${Estados.etiqueta(estado)}"
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\Estados.kt:153: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Verificar paquete"
+                    ~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\Estados.kt:168: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Reportar falla"
+                    ~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\ListaPedidosFragment.kt:59: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Actualizar"
+                    ~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\ListaPedidosFragment.kt:97: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        mensaje?.apply { text = "Cargando..."; visibility = View.VISIBLE }
+                                 ~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:40: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "SEPPRO"
+                    ~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:47: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Verificación de entregas"
+                    ~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:104: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Entrar"
+                    ~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:119: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "¿Olvidaste tu contraseña?"
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:149: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        statusText.text = "Iniciando sesión..."
+                           ~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:186: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                            statusText.text = "Tu cuenta está deshabilitada. Contacta al administrador."
+                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:199: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        statusText.text = "¡Conectado!"
+                                           ~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:220: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    statusText.text = "Error de conexión"
+                                       ~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:252: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            statusText.text = "Escribe tu correo para recuperar el acceso"
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:256: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        statusText.text = "Enviando..."
+                           ~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:271: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    statusText.text = "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña."
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\LoginActivity.kt:277: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    statusText.text = "Error de conexión"
+                                       ~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\NuevoReporteActivity.kt:197: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                    errorText.text = "No se pudo crear el reporte: ${e.message}"
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\NuevoReporteActivity.kt:197: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    errorText.text = "No se pudo crear el reporte: ${e.message}"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\NuevoReporteActivity.kt:203: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    errorText.text = "Sin conexión. Revisa tu Internet e intenta de nuevo."
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\ReporteActivity.kt:256: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            text = "${r.folio} · ${SoporteApi.etiquetaTipo(r.tipo)}"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\ReporteActivity.kt:427: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            errorEntrada.text = "El mensaje no puede estar vacío"
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\ReporteActivity.kt:551: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            text = "${if (propio) "Tú" else m.emisorNombre} · ${Roles.etiqueta(m.emisorRol)} · ${m.dispositivo}"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\ReporteActivity.kt:563: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                text = "Ver foto (enlace temporal)"
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:51: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            text = "Sesión: ${SupabaseClient.nombre.ifBlank { "usuario" }} · ${Roles.etiqueta(rol)}"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:51: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Sesión: ${SupabaseClient.nombre.ifBlank { "usuario" }} · ${Roles.etiqueta(rol)}"
+                    ~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:97: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        mensaje?.apply { text = "Cargando..."; visible(true) }
+                                 ~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:134: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                        text = "${if (a.enLinea) "🟢" else "⚪"} ${a.nombre} · " +
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:134: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                        text = "${if (a.enLinea) "🟢" else "⚪"} ${a.nombre} · " +
+                               ^
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:134: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                        text = "${if (a.enLinea) "🟢" else "⚪"} ${a.nombre} · " +
+                               ^
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:135: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                            (if (a.enLinea) "Conectado" else "Desconectado") + " · ${a.activos} activos"
+                                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:135: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                            (if (a.enLinea) "Conectado" else "Desconectado") + " · ${a.activos} activos"
+                                                                                               ~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\SoporteFragment.kt:184: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            text = "${r.folio} · ${SoporteApi.etiquetaTipo(r.tipo)}"
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:83: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Verificar paquete"
+                    ~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:145: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "Dispositivos cercanos (mayor señal primero)"
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:263: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    text = "Activar Bluetooth"
+                            ~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:268: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    text = "Activar ubicación"
+                            ~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:303: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                text = (if (seleccionado) "✔ " else "") + d.nombreVisible
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:309: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                text = "${d.direccion}   ·   RSSI ${d.rssi} dBm"
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:309: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                text = "${d.direccion}   ·   RSSI ${d.rssi} dBm"
+                                      ~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:309: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                text = "${d.direccion}   ·   RSSI ${d.rssi} dBm"
+                                                           ~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:332: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        textoSeleccionado?.text = "Seleccionado: ${d.nombreVisible}"
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:332: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        textoSeleccionado?.text = "Seleccionado: ${d.nombreVisible}"
+                                   ~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:346: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            textoSeleccionado?.text = "Seleccionado: ninguno"
+                                       ~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:352: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            textoSeleccionado?.text = "Seleccionado: ${json.optString("nombre")} (${json.optString("direccion")})"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:352: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            textoSeleccionado?.text = "Seleccionado: ${json.optString("nombre")} (${json.optString("direccion")})"
+                                       ~~~~~~~~~~~~~~
+D:\PROYECTOS\dedos\Proyecto SEPPRO\2025\seppro-movil\app\src\main\java\com\seppro\movil\VerificarFragment.kt:354: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            textoSeleccionado?.text = "Seleccionado: ninguno"
+                                       ~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   https://developer.android.com/guide/topics/resources/localization.html
+
+0 errors, 57 warnings

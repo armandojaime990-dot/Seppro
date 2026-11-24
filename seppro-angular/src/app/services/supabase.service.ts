@@ -29,7 +29,9 @@ export interface Pedido {
   total: number;
   estado: 'pendiente' | 'pagado' | 'enviado' | 'en_camino' | 'entregado'
     // Estados de verificación BLE (Entregable 1, ver supabase-bluetooth.sql)
-    | 'en_puerta' | 'entregado_verificado' | 'entregado_con_danos' | 'alerta_integridad';
+    | 'en_puerta' | 'entregado_verificado' | 'entregado_con_danos' | 'alerta_integridad'
+    // Entregable 3: el cliente rechazó el equipo por golpe fuerte
+    | 'rechazado';
   metodo_pago: string;
   nombre_envio: string;
   direccion_envio: string;
@@ -411,11 +413,18 @@ export class SupabaseService {
     return pedido.id;
   }
 
+  /** Mis pedidos: solo los del usuario (el admin también vería los de todos por RLS) y los 100 más recientes. */
   async getPedidos(): Promise<Pedido[]> {
+    const { data: sesion } = await this.supabase.auth.getSession(); // la sesión puede no haberse emitido aún
+    const uid = sesion.session?.user.id;
+    if (!uid) return [];
     const { data, error } = await this.supabase
       .from('pedidos')
       .select('*, pedido_items(*)')
-      .order('created_at', { ascending: false });
+      .eq('usuario_id', uid)
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: false })
+      .limit(100);
     if (error) { console.error('Error getPedidos:', error); return []; }
     return data || [];
   }

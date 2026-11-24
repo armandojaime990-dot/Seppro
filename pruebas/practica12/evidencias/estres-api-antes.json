@@ -1,0 +1,252 @@
+{
+  "etiqueta": "antes",
+  "fecha": "2026-11-12T23:03:19.208Z",
+  "cliente": "Windows_NT 10.0.26200 · Node v25.6.1 · 8 CPU",
+  "servidor": "https://sbhkqjueesxsjkfootuq.supabase.co",
+  "estres": [
+    {
+      "endpoint": "LECTURA GET pedidos",
+      "usuarios": 1,
+      "solicitudes": 100,
+      "rps": 5.78,
+      "prom": 173.1,
+      "p50": 157.6,
+      "p90": 222.5,
+      "p95": 247.1,
+      "max": 378,
+      "min": 150.4,
+      "errores_pct": 0,
+      "codigos": "{\"200\":100}",
+      "mbps": 0.246
+    },
+    {
+      "endpoint": "LECTURA GET pedidos",
+      "usuarios": 5,
+      "solicitudes": 100,
+      "rps": 28.11,
+      "prom": 173,
+      "p50": 159.3,
+      "p90": 207.6,
+      "p95": 226.6,
+      "max": 371.8,
+      "min": 148.2,
+      "errores_pct": 0,
+      "codigos": "{\"200\":100}",
+      "mbps": 1.198
+    },
+    {
+      "endpoint": "LECTURA GET pedidos",
+      "usuarios": 10,
+      "solicitudes": 100,
+      "rps": 59.12,
+      "prom": 162.9,
+      "p50": 154.8,
+      "p90": 169.6,
+      "p95": 178.9,
+      "max": 320.5,
+      "min": 136.8,
+      "errores_pct": 0,
+      "codigos": "{\"200\":100}",
+      "mbps": 2.519
+    },
+    {
+      "endpoint": "LECTURA GET pedidos",
+      "usuarios": 25,
+      "solicitudes": 100,
+      "rps": 104.54,
+      "prom": 210.6,
+      "p50": 167.6,
+      "p90": 450.1,
+      "p95": 457.4,
+      "max": 467.8,
+      "min": 147.5,
+      "errores_pct": 0,
+      "codigos": "{\"200\":100}",
+      "mbps": 4.455
+    },
+    {
+      "endpoint": "LECTURA GET pedidos",
+      "usuarios": 50,
+      "solicitudes": 100,
+      "rps": 116.67,
+      "prom": 332.6,
+      "p50": 278.8,
+      "p90": 525.9,
+      "p95": 691.7,
+      "max": 755.4,
+      "min": 167,
+      "errores_pct": 0,
+      "codigos": "{\"200\":100}",
+      "mbps": 4.972
+    },
+    {
+      "endpoint": "ESCRITURA POST mensajes",
+      "usuarios": 1,
+      "solicitudes": 100,
+      "rps": 5.37,
+      "prom": 186.1,
+      "p50": 169.7,
+      "p90": 236.2,
+      "p95": 266.3,
+      "max": 310,
+      "min": 150,
+      "errores_pct": 0,
+      "codigos": "{\"201\":100}",
+      "mbps": 0
+    },
+    {
+      "endpoint": "ESCRITURA POST mensajes",
+      "usuarios": 5,
+      "solicitudes": 100,
+      "rps": 26.33,
+      "prom": 186.4,
+      "p50": 160.7,
+      "p90": 232.9,
+      "p95": 257.8,
+      "max": 378.2,
+      "min": 147.9,
+      "errores_pct": 0,
+      "codigos": "{\"201\":100}",
+      "mbps": 0
+    },
+    {
+      "endpoint": "ESCRITURA POST mensajes",
+      "usuarios": 10,
+      "solicitudes": 100,
+      "rps": 45.65,
+      "prom": 210.9,
+      "p50": 171,
+      "p90": 282.9,
+      "p95": 400.3,
+      "max": 557.2,
+      "min": 139,
+      "errores_pct": 0,
+      "codigos": "{\"201\":100}",
+      "mbps": 0
+    },
+    {
+      "endpoint": "ESCRITURA POST mensajes",
+      "usuarios": 25,
+      "solicitudes": 100,
+      "rps": 89.14,
+      "prom": 257.7,
+      "p50": 207.1,
+      "p90": 390.9,
+      "p95": 460.5,
+      "max": 550.5,
+      "min": 170.2,
+      "errores_pct": 0,
+      "codigos": "{\"201\":100}",
+      "mbps": 0
+    },
+    {
+      "endpoint": "ESCRITURA POST mensajes",
+      "usuarios": 50,
+      "solicitudes": 100,
+      "rps": 38.09,
+      "prom": 656.3,
+      "p50": 332.1,
+      "p90": 1276.1,
+      "p95": 2143.4,
+      "max": 2283.5,
+      "min": 162.2,
+      "errores_pct": 0,
+      "codigos": "{\"201\":100}",
+      "mbps": 0
+    }
+  ],
+  "mensajesGuardados": "0-0/500",
+  "consultaCritica": {
+    "ruta": "/rest/v1/pedidos?select=*,pedido_items(*)&usuario_id=eq.<uid>&order=created_at.desc",
+    "filas": [
+      {
+        "solicitud": 1,
+        "codigo": 206,
+        "ms": 510.2,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 2,
+        "codigo": 206,
+        "ms": 470.5,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 3,
+        "codigo": 206,
+        "ms": 466.6,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 4,
+        "codigo": 206,
+        "ms": 458.4,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 5,
+        "codigo": 206,
+        "ms": 643.8,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 6,
+        "codigo": 206,
+        "ms": 426.2,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 7,
+        "codigo": 206,
+        "ms": 426.3,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 8,
+        "codigo": 206,
+        "ms": 379.2,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 9,
+        "codigo": 206,
+        "ms": 376.4,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      },
+      {
+        "solicitud": 10,
+        "codigo": 206,
+        "ms": 375.5,
+        "bytes": 512236,
+        "filas": 1000,
+        "total_en_bd": "0-999/3005"
+      }
+    ],
+    "resumen": {
+      "prom": 453.3,
+      "p50": 426.3,
+      "p90": 510.2,
+      "p95": 643.8,
+      "max": 643.8,
+      "min": 375.5
+    }
+  }
+}

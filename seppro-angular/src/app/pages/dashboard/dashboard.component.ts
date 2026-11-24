@@ -93,6 +93,7 @@ import { ChartConfiguration } from 'chart.js';
                       <option value="entregado_verificado">Entregado y verificado</option>
                       <option value="entregado_con_danos">Entregado con daños</option>
                       <option value="alerta_integridad">Alerta de integridad</option>
+                      <option value="rechazado">Equipo rechazado</option>
                     </select>
                   </td>
                 </tr>
@@ -160,6 +161,7 @@ import { ChartConfiguration } from 'chart.js';
     .badge-entregado-verificado { background: rgba(46,125,50,0.12); color: #2E7D32; }
     .badge-entregado-con-danos { background: rgba(255,152,0,0.15); color: #E65100; } /* advertencia */
     .badge-alerta-integridad { background: rgba(239,83,80,0.15); color: #D32F2F; } /* error */
+    .badge-rechazado { background: rgba(109,76,65,0.15); color: #6D4C41; }
 
     .status-select {
       padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
@@ -274,7 +276,8 @@ export class DashboardComponent implements OnInit {
         { key: 'en_puerta', label: 'En puerta', bg: 'rgba(0,150,136,0.6)', border: '#009688' },
         { key: 'entregado_verificado', label: 'Verificado', bg: 'rgba(46,125,50,0.6)', border: '#2E7D32' },
         { key: 'entregado_con_danos', label: 'Con daños', bg: 'rgba(230,81,0,0.6)', border: '#E65100' },
-        { key: 'alerta_integridad', label: 'Alerta', bg: 'rgba(211,47,47,0.6)', border: '#D32F2F' }
+        { key: 'alerta_integridad', label: 'Alerta', bg: 'rgba(211,47,47,0.6)', border: '#D32F2F' },
+        { key: 'rechazado', label: 'Rechazado', bg: 'rgba(109,76,65,0.6)', border: '#6D4C41' }
       ];
       const statusCounts: Record<string, number> = {};
       chartEstados.forEach(e => statusCounts[e.key] = 0);
@@ -300,7 +303,8 @@ export class DashboardComponent implements OnInit {
       en_puerta: 'En puerta (listo para verificar)',
       entregado_verificado: 'Entregado y verificado',
       entregado_con_danos: 'Entregado con daños',
-      alerta_integridad: 'Alerta de integridad'
+      alerta_integridad: 'Alerta de integridad',
+      rechazado: 'Equipo rechazado'
     };
     return labels[estado] || estado;
   }

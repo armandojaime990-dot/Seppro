@@ -1,0 +1,4 @@
+  Native Heap    12838    11616     1172     1702    14028    29120    22508     2325
+           Java Heap:     6992                          21564
+         Native Heap:    11616                          14028
+           TOTAL PSS:    75653            TOTAL RSS:   166460       TOTAL SWAP PSS:    14208

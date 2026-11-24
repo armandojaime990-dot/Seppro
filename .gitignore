@@ -22,3 +22,10 @@ seppro/vendor/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Llave de firma de los APK (nunca en Git) y volcados de la JVM
+firma/
+*.jks
+*.keystore
+keystore.properties
+hs_err_pid*.log

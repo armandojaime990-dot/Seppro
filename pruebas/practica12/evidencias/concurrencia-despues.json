@@ -1,0 +1,15 @@
+{
+  "modo": "despues",
+  "escritores": 20,
+  "respuestas_exitosas": 20,
+  "fallidas": 0,
+  "conflictos_detectados": 190,
+  "reintentos": 190,
+  "marcas_guardadas": 20,
+  "escrituras_perdidas": 0,
+  "perdidas_sin_aviso": 0,
+  "duplicadas": 0,
+  "duracion_ms": 20749,
+  "latencia_prom_ms": 9645,
+  "descripcion_final": "Concurrencia: W08 W06 W03 W14 W05 W10 W19 W16 W01 W12 W09 W00 W17 W04 W13 W15 W18 W02 W07 W11"
+}

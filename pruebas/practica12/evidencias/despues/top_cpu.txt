@@ -1,0 +1,1347 @@
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2419648K used,   112180K free,    11964K buffers
+ Swap:  1898848K total,   305216K used,  1593632K free,  1300052K cached
+400%cpu  77%user  23%nice 131%sys 123%idle   4%iow  31%irq  12%sirq   0%host
+%CPU [RES
+ 3.8 618M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2419620K used,   112208K free,    11176K buffers
+ Swap:  1898848K total,   305728K used,  1593120K free,  1280644K cached
+400%cpu  41%user  37%nice 177%sys 105%idle   3%iow  34%irq   3%sirq   0%host
+%CPU [RES
+ 7.0 619M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2426316K used,   105512K free,    11416K buffers
+ Swap:  1898848K total,   306240K used,  1592608K free,  1278916K cached
+400%cpu  22%user  45%nice 153%sys 124%idle   6%iow  44%irq   7%sirq   0%host
+%CPU [RES
+18.6 641M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2420528K used,   111300K free,    11620K buffers
+ Swap:  1898848K total,   306240K used,  1592608K free,  1274260K cached
+400%cpu  26%user  46%nice 154%sys 122%idle  10%iow  34%irq   8%sirq   0%host
+%CPU [RES
+22.0 646M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2413228K used,   118600K free,    12164K buffers
+ Swap:  1898848K total,   306240K used,  1592608K free,  1278812K cached
+400%cpu  14%user  51%nice 148%sys 103%idle  36%iow  38%irq  11%sirq   0%host
+%CPU [RES
+ 7.9 645M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2419444K used,   112384K free,    11440K buffers
+ Swap:  1898848K total,   308032K used,  1590816K free,  1287904K cached
+400%cpu  15%user  23%nice 137%sys 136%idle  41%iow  40%irq   8%sirq   0%host
+%CPU [RES
+ 2.9 645M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2408668K used,   123160K free,     6932K buffers
+ Swap:  1898848K total,   312640K used,  1586208K free,  1294956K cached
+400%cpu  29%user  23%nice 149%sys  85%idle  51%iow  54%irq   9%sirq   0%host
+%CPU [RES
+ 9.0 645M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2426380K used,   105448K free,     7504K buffers
+ Swap:  1898848K total,   312640K used,  1586208K free,  1320340K cached
+400%cpu  46%user  34%nice 153%sys  59%idle  57%iow  44%irq   7%sirq   0%host
+%CPU [RES
+ 3.0 646M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2413060K used,   118768K free,     7260K buffers
+ Swap:  1898848K total,   312640K used,  1586208K free,  1297664K cached
+400%cpu  28%user  58%nice 141%sys  79%idle  39%iow  49%irq   7%sirq   0%host
+%CPU [RES
+ 4.9 646M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2437980K used,    93848K free,     7668K buffers
+ Swap:  1898848K total,   312384K used,  1586464K free,  1312336K cached
+400%cpu  34%user  38%nice 121%sys 102%idle  60%iow  39%irq   6%sirq   0%host
+%CPU [RES
+23.0 647M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2426684K used,   105144K free,     6308K buffers
+ Swap:  1898848K total,   312128K used,  1586720K free,  1333200K cached
+400%cpu  25%user  57%nice 117%sys 107%idle  37%iow  47%irq  10%sirq   0%host
+%CPU [RES
+ 1.0 649M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2424120K used,   107708K free,     5048K buffers
+ Swap:  1898848K total,   314688K used,  1584160K free,  1321320K cached
+400%cpu  21%user  27%nice 150%sys 120%idle  34%iow  40%irq   8%sirq   0%host
+%CPU [RES
+37.0 649M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2424596K used,   107232K free,     4992K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1312112K cached
+400%cpu  35%user  20%nice 129%sys 108%idle  49%iow  53%irq   6%sirq   0%host
+%CPU [RES
+16.0 657M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2423080K used,   108748K free,     5276K buffers
+ Swap:  1898848K total,   315456K used,  1583392K free,  1307736K cached
+400%cpu  32%user  31%nice 141%sys  82%idle  68%iow  38%irq   8%sirq   0%host
+%CPU [RES
+42.0 652M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2420304K used,   111524K free,     5648K buffers
+ Swap:  1898848K total,   315456K used,  1583392K free,  1300220K cached
+400%cpu  19%user  14%nice 108%sys 147%idle  67%iow  37%irq   8%sirq   0%host
+%CPU [RES
+10.0 657M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2431872K used,    99956K free,     5724K buffers
+ Swap:  1898848K total,   315456K used,  1583392K free,  1303256K cached
+400%cpu  21%user   2%nice 116%sys 173%idle  48%iow  34%irq   7%sirq   0%host
+%CPU [RES
+41.5 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421016K used,   110812K free,     5728K buffers
+ Swap:  1898848K total,   315712K used,  1583136K free,  1294480K cached
+400%cpu  13%user  12%nice 108%sys 196%idle  29%iow  31%irq  12%sirq   0%host
+%CPU [RES
+43.6 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2425120K used,   106708K free,     5588K buffers
+ Swap:  1898848K total,   316480K used,  1582368K free,  1261064K cached
+400%cpu  40%user  28%nice  99%sys 167%idle  20%iow  35%irq  12%sirq   0%host
+%CPU [RES
+ 2.9 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2420016K used,   111812K free,     5520K buffers
+ Swap:  1898848K total,   317504K used,  1581344K free,  1227920K cached
+400%cpu  37%user  49%nice 132%sys 123%idle   9%iow  43%irq   7%sirq   0%host
+%CPU [RES
+ 6.0 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2426036K used,   105792K free,     5580K buffers
+ Swap:  1898848K total,   317504K used,  1581344K free,  1234684K cached
+400%cpu  17%user  33%nice 121%sys 179%idle  10%iow  35%irq   5%sirq   0%host
+%CPU [RES
+ 5.0 655M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2387132K used,   144696K free,     5596K buffers
+ Swap:  1898848K total,   317504K used,  1581344K free,  1236604K cached
+400%cpu   8%user  26%nice  72%sys 247%idle   6%iow  34%irq   7%sirq   0%host
+%CPU [RES
+ 3.0 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2393684K used,   138144K free,     5760K buffers
+ Swap:  1898848K total,   317504K used,  1581344K free,  1238160K cached
+400%cpu  14%user  28%nice  88%sys 220%idle  12%iow  29%irq   9%sirq   0%host
+%CPU [RES
+ 8.0 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2403312K used,   128516K free,     5820K buffers
+ Swap:  1898848K total,   317504K used,  1581344K free,  1241788K cached
+400%cpu  14%user   7%nice  75%sys 245%idle  13%iow  39%irq   7%sirq   0%host
+%CPU [RES
+ 4.0 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2408076K used,   123752K free,     5868K buffers
+ Swap:  1898848K total,   317248K used,  1581600K free,  1243008K cached
+400%cpu  11%user  12%nice 101%sys 232%idle   3%iow  29%irq  12%sirq   0%host
+%CPU [RES
+25.0 656M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2389400K used,   142428K free,     5908K buffers
+ Swap:  1898848K total,   317248K used,  1581600K free,  1243704K cached
+400%cpu   5%user  13%nice  90%sys 255%idle   2%iow  27%irq   8%sirq   0%host
+%CPU [RES
+ 1.0 657M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2399732K used,   132096K free,     5964K buffers
+ Swap:  1898848K total,   317248K used,  1581600K free,  1245276K cached
+400%cpu  21%user  13%nice  49%sys 277%idle   7%iow  23%irq  10%sirq   0%host
+%CPU [RES
+ 5.0 658M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2433752K used,    98076K free,     5972K buffers
+ Swap:  1898848K total,   317248K used,  1581600K free,  1252228K cached
+400%cpu  15%user  12%nice  43%sys 283%idle  19%iow  20%irq   8%sirq   0%host
+%CPU [RES
+ 0.0 657M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2435768K used,    96060K free,     6040K buffers
+ Swap:  1898848K total,   317248K used,  1581600K free,  1253236K cached
+400%cpu  10%user   8%nice  48%sys 294%idle   5%iow  25%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 657M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2386936K used,   144892K free,     6048K buffers
+ Swap:  1898848K total,   317248K used,  1581600K free,  1254236K cached
+400%cpu  10%user  14%nice  40%sys 303%idle   0%iow  23%irq  10%sirq   0%host
+%CPU [RES
+ 4.0 657M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2406300K used,   125528K free,     6168K buffers
+ Swap:  1898848K total,   315456K used,  1583392K free,  1276048K cached
+400%cpu   4%user  11%nice  24%sys 331%idle  11%iow  13%irq   6%sirq   0%host
+%CPU [RES
+12.8 657M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2414008K used,   117820K free,     6236K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1277848K cached
+400%cpu  25%user  37%nice  74%sys 210%idle   2%iow  42%irq  10%sirq   0%host
+%CPU [RES
+43.0 676M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2414772K used,   117056K free,     6252K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1279120K cached
+400%cpu  19%user  14%nice  41%sys 283%idle   1%iow  29%irq  13%sirq   0%host
+%CPU [RES
+31.0 688M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2422808K used,   109020K free,     6304K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1281200K cached
+400%cpu  31%user  18%nice 104%sys 189%idle   8%iow  38%irq  13%sirq   0%host
+%CPU [RES
+78.2 694M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2427568K used,   104260K free,     6340K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1281916K cached
+400%cpu   5%user   3%nice  95%sys 264%idle  13%iow  17%irq   4%sirq   0%host
+%CPU [RES
+22.5 715M
+
+
+
+Tasks: 1 total,   1 running,   0 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2431600K used,   100228K free,     6392K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1285504K cached
+400%cpu  10%user  11%nice 117%sys 204%idle   8%iow  40%irq  10%sirq   0%host
+%CPU [RES
+71.0 706M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2434624K used,    97204K free,     6444K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1286612K cached
+400%cpu  11%user  10%nice  61%sys 271%idle   4%iow  30%irq  13%sirq   0%host
+%CPU [RES
+10.0 718M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2436864K used,    94964K free,     6460K buffers
+ Swap:  1898848K total,   315200K used,  1583648K free,  1287944K cached
+400%cpu   0%user  15%nice  33%sys 315%idle   1%iow  24%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 718M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2417620K used,   114208K free,     6476K buffers
+ Swap:  1898848K total,   337472K used,  1561376K free,  1289520K cached
+400%cpu   2%user  13%nice  55%sys 287%idle   1%iow  26%irq  16%sirq   0%host
+%CPU [RES
+ 0.0 718M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2422872K used,   108956K free,     6544K buffers
+ Swap:  1898848K total,   339776K used,  1559072K free,  1291128K cached
+400%cpu   9%user  13%nice  42%sys 290%idle   6%iow  26%irq  14%sirq   0%host
+%CPU [RES
+ 5.0 718M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2425868K used,   105960K free,     6548K buffers
+ Swap:  1898848K total,   340800K used,  1558048K free,  1293632K cached
+400%cpu   2%user  16%nice  49%sys 281%idle   7%iow  29%irq  16%sirq   0%host
+%CPU [RES
+ 0.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2397368K used,   134460K free,     6616K buffers
+ Swap:  1898848K total,   357184K used,  1541664K free,  1281588K cached
+400%cpu  16%user  16%nice  78%sys 227%idle  10%iow  37%irq  16%sirq   0%host
+%CPU [RES
+ 4.8 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2401148K used,   130680K free,     6624K buffers
+ Swap:  1898848K total,   357184K used,  1541664K free,  1282904K cached
+400%cpu   1%user  13%nice  36%sys 308%idle   9%iow  23%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2365616K used,   166212K free,     6656K buffers
+ Swap:  1898848K total,   376896K used,  1521952K free,  1249084K cached
+400%cpu   0%user  12%nice  51%sys 292%idle   5%iow  26%irq  14%sirq   0%host
+%CPU [RES
+ 0.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2372420K used,   159408K free,     6688K buffers
+ Swap:  1898848K total,   376128K used,  1522720K free,  1252988K cached
+400%cpu   7%user  13%nice  44%sys 284%idle  10%iow  28%irq  14%sirq   0%host
+%CPU [RES
+ 4.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2373176K used,   158652K free,     6736K buffers
+ Swap:  1898848K total,   376128K used,  1522720K free,  1254748K cached
+400%cpu   3%user  14%nice  54%sys 277%idle   9%iow  31%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2376956K used,   154872K free,     6736K buffers
+ Swap:  1898848K total,   375872K used,  1522976K free,  1255816K cached
+400%cpu   4%user  11%nice  37%sys 314%idle   2%iow  24%irq   8%sirq   0%host
+%CPU [RES
+ 1.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2377460K used,   154368K free,     6792K buffers
+ Swap:  1898848K total,   375872K used,  1522976K free,  1256824K cached
+400%cpu   4%user  12%nice  22%sys 321%idle   7%iow  22%irq  12%sirq   0%host
+%CPU [RES
+ 4.0 724M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2378720K used,   153108K free,     6808K buffers
+ Swap:  1898848K total,   375872K used,  1522976K free,  1257872K cached
+400%cpu   2%user  10%nice  29%sys 319%idle   9%iow  21%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2381744K used,   150084K free,     6832K buffers
+ Swap:  1898848K total,   382272K used,  1516576K free,  1258420K cached
+400%cpu   8%user   7%nice  35%sys 309%idle   2%iow  31%irq   8%sirq   0%host
+%CPU [RES
+ 8.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2381628K used,   150200K free,     6856K buffers
+ Swap:  1898848K total,   382016K used,  1516832K free,  1259452K cached
+400%cpu   1%user  13%nice  31%sys 320%idle   5%iow  20%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 716M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2386240K used,   145588K free,     7024K buffers
+ Swap:  1898848K total,   382016K used,  1516832K free,  1260948K cached
+400%cpu  12%user  14%nice  61%sys 247%idle  11%iow  40%irq  15%sirq   0%host
+%CPU [RES
+ 0.0 716M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2387248K used,   144580K free,     7040K buffers
+ Swap:  1898848K total,   381760K used,  1517088K free,  1262304K cached
+400%cpu   7%user  13%nice  28%sys 307%idle   9%iow  23%irq  13%sirq   0%host
+%CPU [RES
+ 4.0 716M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2387248K used,   144580K free,     7092K buffers
+ Swap:  1898848K total,   381760K used,  1517088K free,  1263892K cached
+400%cpu   0%user   8%nice  37%sys 309%idle   9%iow  25%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 716M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2432860K used,    98968K free,     7104K buffers
+ Swap:  1898848K total,   372800K used,  1526048K free,  1265164K cached
+400%cpu  14%user  16%nice  54%sys 270%idle   7%iow  26%irq  13%sirq   0%host
+%CPU [RES
+ 0.0 716M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2420476K used,   111352K free,     7108K buffers
+ Swap:  1898848K total,   371520K used,  1527328K free,  1261140K cached
+400%cpu  16%user  12%nice  64%sys 258%idle   5%iow  32%irq  13%sirq   0%host
+%CPU [RES
+ 4.0 716M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421456K used,   110372K free,     7148K buffers
+ Swap:  1898848K total,   370752K used,  1528096K free,  1262632K cached
+400%cpu  13%user  22%nice  82%sys 231%idle   9%iow  33%irq  10%sirq   0%host
+%CPU [RES
+ 8.0 716M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2388580K used,   143248K free,     7204K buffers
+ Swap:  1898848K total,   370752K used,  1528096K free,  1263544K cached
+400%cpu  11%user  10%nice  34%sys 297%idle   8%iow  28%irq  12%sirq   0%host
+%CPU [RES
+ 7.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2380040K used,   151788K free,     7352K buffers
+ Swap:  1898848K total,   370496K used,  1528352K free,  1266904K cached
+400%cpu  12%user  14%nice 103%sys 204%idle  19%iow  39%irq   9%sirq   0%host
+%CPU [RES
+33.0 717M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2401628K used,   130200K free,     7436K buffers
+ Swap:  1898848K total,   314812K used,  1584036K free,  1325220K cached
+400%cpu   3%user  55%nice  46%sys 236%idle  40%iow  18%irq   2%sirq   0%host
+%CPU [RES
+ 0.0 723M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2408188K used,   123640K free,     6812K buffers
+ Swap:  1898848K total,   315324K used,  1583524K free,  1336648K cached
+400%cpu   6%user  61%nice  37%sys 280%idle   0%iow  15%irq   1%sirq   0%host
+%CPU [RES
+ 4.0 723M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2415516K used,   116312K free,     6764K buffers
+ Swap:  1898848K total,   315580K used,  1583268K free,  1350260K cached
+400%cpu   8%user  63%nice  51%sys 256%idle   1%iow  20%irq   1%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2440612K used,    91216K free,     6720K buffers
+ Swap:  1898848K total,   315836K used,  1583012K free,  1346136K cached
+400%cpu   5%user  66%nice  38%sys 279%idle   0%iow  12%irq   0%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2413948K used,   117880K free,     6572K buffers
+ Swap:  1898848K total,   318908K used,  1579940K free,  1262032K cached
+400%cpu   7%user  68%nice  55%sys 255%idle   0%iow  13%irq   2%sirq   0%host
+%CPU [RES
+ 5.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2429616K used,   102212K free,     6484K buffers
+ Swap:  1898848K total,   320444K used,  1578404K free,  1295880K cached
+400%cpu   2%user  71%nice  47%sys 270%idle   0%iow  10%irq   0%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2309072K used,   222756K free,     6440K buffers
+ Swap:  1898848K total,   320444K used,  1578404K free,  1275948K cached
+400%cpu   8%user   0%nice  24%sys 269%idle  91%iow   6%irq   2%sirq   0%host
+%CPU [RES
+ 5.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2238900K used,   292928K free,     6740K buffers
+ Swap:  1898848K total,   320444K used,  1578404K free,  1200708K cached
+400%cpu  24%user   6%nice  15%sys 170%idle 174%iow  10%irq   1%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2244128K used,   287700K free,     6944K buffers
+ Swap:  1898848K total,   320444K used,  1578404K free,  1201468K cached
+400%cpu  59%user  40%nice  23%sys 260%idle   4%iow  11%irq   3%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2248100K used,   283728K free,     7884K buffers
+ Swap:  1898848K total,   320444K used,  1578404K free,  1203760K cached
+400%cpu  14%user  96%nice  53%sys 151%idle  50%iow  30%irq   6%sirq   0%host
+%CPU [RES
+ 5.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2347880K used,   183948K free,     8768K buffers
+ Swap:  1898848K total,   320188K used,  1578660K free,  1235852K cached
+400%cpu  31%user  56%nice  81%sys 131%idle  47%iow  43%irq  11%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2407344K used,   124484K free,     9388K buffers
+ Swap:  1898848K total,   319932K used,  1578916K free,  1239532K cached
+400%cpu  14%user 118%nice  96%sys  89%idle  27%iow  43%irq  13%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2422132K used,   109696K free,     9380K buffers
+ Swap:  1898848K total,   319932K used,  1578916K free,  1223440K cached
+400%cpu  37%user  91%nice 144%sys  58%idle  15%iow  49%irq   6%sirq   0%host
+%CPU [RES
+ 6.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2425572K used,   106256K free,     7696K buffers
+ Swap:  1898848K total,   319932K used,  1578916K free,  1168796K cached
+400%cpu  25%user 144%nice 100%sys  86%idle   2%iow  37%irq   6%sirq   0%host
+%CPU [RES
+ 0.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2420484K used,   111344K free,     5468K buffers
+ Swap:  1898848K total,   328380K used,  1570468K free,  1107852K cached
+400%cpu   9%user 109%nice 140%sys 102%idle   2%iow  30%irq   8%sirq   0%host
+%CPU [RES
+ 1.0 721M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421340K used,   110488K free,     4900K buffers
+ Swap:  1898848K total,   331196K used,  1567652K free,  1068296K cached
+400%cpu  24%user  76%nice  76%sys 177%idle   4%iow  33%irq  10%sirq   0%host
+%CPU [RES
+ 4.0 703M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2422780K used,   109048K free,     4740K buffers
+ Swap:  1898848K total,   332732K used,  1566116K free,  1050020K cached
+400%cpu   9%user 185%nice  90%sys  59%idle   5%iow  39%irq  13%sirq   0%host
+%CPU [RES
+ 2.0 702M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2418216K used,   113612K free,     4892K buffers
+ Swap:  1898848K total,   332732K used,  1566116K free,  1061684K cached
+400%cpu   6%user 224%nice  76%sys  35%idle   8%iow  39%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 698M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2430028K used,   101800K free,     4972K buffers
+ Swap:  1898848K total,   332732K used,  1566116K free,  1074576K cached
+400%cpu  12%user 186%nice  46%sys  85%idle  30%iow  33%irq   8%sirq   0%host
+%CPU [RES
+ 6.0 698M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421304K used,   110524K free,     4980K buffers
+ Swap:  1898848K total,   333500K used,  1565348K free,  1074548K cached
+400%cpu   5%user 203%nice  68%sys  72%idle  17%iow  32%irq   3%sirq   0%host
+%CPU [RES
+ 8.6 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2433120K used,    98708K free,     5104K buffers
+ Swap:  1898848K total,   333500K used,  1565348K free,  1081256K cached
+400%cpu   9%user 178%nice  76%sys  85%idle   6%iow  38%irq   8%sirq   0%host
+%CPU [RES
+15.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2419156K used,   112672K free,     4272K buffers
+ Swap:  1898848K total,   336828K used,  1562020K free,  1066956K cached
+400%cpu  10%user 239%nice  71%sys  50%idle   3%iow  25%irq   2%sirq   0%host
+%CPU [RES
+ 5.0 700M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2370620K used,   161208K free,     4324K buffers
+ Swap:  1898848K total,   338620K used,  1560228K free,  1042220K cached
+400%cpu   7%user 146%nice  53%sys 133%idle  31%iow  28%irq   2%sirq   0%host
+%CPU [RES
+ 1.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2396564K used,   135264K free,     4744K buffers
+ Swap:  1898848K total,   337852K used,  1560996K free,  1070648K cached
+400%cpu   6%user 297%nice  38%sys  19%idle   6%iow  29%irq   5%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2426408K used,   105420K free,     4372K buffers
+ Swap:  1898848K total,   341948K used,  1556900K free,  1108972K cached
+400%cpu   9%user 234%nice  43%sys  69%idle  10%iow  28%irq   7%sirq   0%host
+%CPU [RES
+12.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2420108K used,   111720K free,     3608K buffers
+ Swap:  1898848K total,   344764K used,  1554084K free,  1097884K cached
+400%cpu   0%user 266%nice  36%sys  54%idle  20%iow  21%irq   3%sirq   0%host
+%CPU [RES
+ 0.0 698M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2419492K used,   112336K free,     4272K buffers
+ Swap:  1898848K total,   345020K used,  1553828K free,  1089048K cached
+400%cpu   5%user 258%nice  45%sys  46%idle  10%iow  31%irq   5%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2407652K used,   124176K free,     4624K buffers
+ Swap:  1898848K total,   345020K used,  1553828K free,  1095120K cached
+400%cpu   6%user 249%nice  45%sys  51%idle   6%iow  33%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2412488K used,   119340K free,     4816K buffers
+ Swap:  1898848K total,   345020K used,  1553828K free,  1101240K cached
+400%cpu   7%user 221%nice  65%sys  44%idle   8%iow  39%irq  16%sirq   0%host
+%CPU [RES
+ 5.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2300788K used,   231040K free,     5128K buffers
+ Swap:  1898848K total,   345020K used,  1553828K free,  1105836K cached
+400%cpu   3%user 127%nice  66%sys 149%idle  10%iow  33%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2351412K used,   180416K free,     5248K buffers
+ Swap:  1898848K total,   345020K used,  1553828K free,  1111896K cached
+400%cpu   3%user  94%nice  42%sys 216%idle   5%iow  28%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2390976K used,   140852K free,     5344K buffers
+ Swap:  1898848K total,   345020K used,  1553828K free,  1129104K cached
+400%cpu  10%user 112%nice  37%sys 195%idle   6%iow  27%irq  13%sirq   0%host
+%CPU [RES
+ 5.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2422124K used,   109704K free,     5312K buffers
+ Swap:  1898848K total,   347068K used,  1551780K free,  1118868K cached
+400%cpu   7%user  50%nice  77%sys 155%idle  56%iow  41%irq  14%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2073804K used,   458024K free,     5628K buffers
+ Swap:  1898848K total,   345412K used,  1553436K free,  1059468K cached
+400%cpu  17%user  40%nice  82%sys 174%idle  39%iow  35%irq  13%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2094428K used,   437400K free,     6456K buffers
+ Swap:  1898848K total,   341552K used,  1557296K free,  1087360K cached
+400%cpu  57%user  38%nice 155%sys  63%idle  30%iow  49%irq   8%sirq   0%host
+%CPU [RES
+ 6.7 698M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2144560K used,   387268K free,     7032K buffers
+ Swap:  1898848K total,   341552K used,  1557296K free,  1118232K cached
+400%cpu  41%user  41%nice 120%sys  75%idle  64%iow  48%irq  11%sirq   0%host
+%CPU [RES
+ 0.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2210080K used,   321748K free,     7168K buffers
+ Swap:  1898848K total,   341040K used,  1557808K free,  1144996K cached
+400%cpu  57%user  54%nice 131%sys  21%idle  70%iow  50%irq  17%sirq   0%host
+%CPU [RES
+ 0.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2290908K used,   240920K free,     7660K buffers
+ Swap:  1898848K total,   340784K used,  1558064K free,  1165700K cached
+400%cpu  55%user  46%nice 127%sys  49%idle  62%iow  52%irq   9%sirq   0%host
+%CPU [RES
+ 0.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2393412K used,   138416K free,     7948K buffers
+ Swap:  1898848K total,   340784K used,  1558064K free,  1183108K cached
+400%cpu  53%user  64%nice 137%sys  80%idle  18%iow  42%irq   6%sirq   0%host
+%CPU [RES
+ 5.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2424536K used,   107292K free,     8244K buffers
+ Swap:  1898848K total,   340528K used,  1558320K free,  1173384K cached
+400%cpu  25%user 104%nice 138%sys  61%idle  20%iow  44%irq   8%sirq   0%host
+%CPU [RES
+ 5.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2419432K used,   112396K free,     8536K buffers
+ Swap:  1898848K total,   340528K used,  1558320K free,  1165548K cached
+400%cpu  23%user 169%nice 106%sys  49%idle   5%iow  42%irq   7%sirq   0%host
+%CPU [RES
+ 0.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2415200K used,   116628K free,     8776K buffers
+ Swap:  1898848K total,   340528K used,  1558320K free,  1159224K cached
+400%cpu  15%user 141%nice  89%sys  98%idle  11%iow  39%irq   7%sirq   0%host
+%CPU [RES
+ 0.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2426184K used,   105644K free,     8900K buffers
+ Swap:  1898848K total,   340528K used,  1558320K free,  1163076K cached
+400%cpu  12%user 152%nice  74%sys 119%idle   9%iow  30%irq   4%sirq   0%host
+%CPU [RES
+ 6.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2433496K used,    98332K free,     9016K buffers
+ Swap:  1898848K total,   340528K used,  1558320K free,  1164692K cached
+400%cpu  34%user  94%nice 127%sys  84%idle   7%iow  45%irq   9%sirq   0%host
+%CPU [RES
+13.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2424884K used,   106944K free,     9096K buffers
+ Swap:  1898848K total,   340528K used,  1558320K free,  1153872K cached
+400%cpu  20%user 142%nice  88%sys  89%idle   8%iow  44%irq   9%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421096K used,   110732K free,     9204K buffers
+ Swap:  1898848K total,   340272K used,  1558576K free,  1128244K cached
+400%cpu  36%user 124%nice  97%sys  99%idle   2%iow  35%irq   7%sirq   0%host
+%CPU [RES
+10.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2403872K used,   127956K free,     9564K buffers
+ Swap:  1898848K total,   340272K used,  1558576K free,  1128048K cached
+400%cpu  32%user 170%nice  87%sys  63%idle   7%iow  32%irq   9%sirq   0%host
+%CPU [RES
+ 6.0 699M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421720K used,   110108K free,     9776K buffers
+ Swap:  1898848K total,   340272K used,  1558576K free,  1160960K cached
+400%cpu   9%user 206%nice  66%sys  55%idle  20%iow  36%irq   8%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2416600K used,   115228K free,     9900K buffers
+ Swap:  1898848K total,   340784K used,  1558064K free,  1171292K cached
+400%cpu   2%user 200%nice  95%sys  27%idle  10%iow  54%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 697M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2429568K used,   102260K free,     9268K buffers
+ Swap:  1898848K total,   341552K used,  1557296K free,  1193040K cached
+400%cpu   9%user 197%nice  69%sys  73%idle   9%iow  35%irq   8%sirq   0%host
+%CPU [RES
+ 5.0 696M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2420248K used,   111580K free,     6700K buffers
+ Swap:  1898848K total,   352816K used,  1546032K free,  1189264K cached
+400%cpu   8%user 136%nice  88%sys  50%idle  77%iow  34%irq   7%sirq   0%host
+%CPU [RES
+ 0.0 694M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2257836K used,   273992K free,     6852K buffers
+ Swap:  1898848K total,   350544K used,  1548304K free,  1216700K cached
+400%cpu  47%user  47%nice 147%sys  60%idle  45%iow  46%irq   8%sirq   0%host
+%CPU [RES
+ 0.0 677M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2321796K used,   210032K free,     7240K buffers
+ Swap:  1898848K total,   349520K used,  1549328K free,  1243240K cached
+400%cpu  81%user  63%nice 166%sys  18%idle  11%iow  57%irq   4%sirq   0%host
+%CPU [RES
+ 5.0 676M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2367884K used,   163944K free,     7548K buffers
+ Swap:  1898848K total,   349508K used,  1549340K free,  1275884K cached
+400%cpu  50%user  84%nice 112%sys  74%idle  24%iow  50%irq   7%sirq   0%host
+%CPU [RES
+ 0.0 675M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2422300K used,   109528K free,     7668K buffers
+ Swap:  1898848K total,   350276K used,  1548572K free,  1327296K cached
+400%cpu  23%user  86%nice 123%sys  50%idle  49%iow  58%irq  11%sirq   0%host
+%CPU [RES
+ 2.0 675M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2424024K used,   107804K free,     7488K buffers
+ Swap:  1898848K total,   356420K used,  1542428K free,  1332704K cached
+400%cpu  12%user  86%nice  93%sys 116%idle  47%iow  39%irq   7%sirq   0%host
+%CPU [RES
+ 4.0 674M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421148K used,   110680K free,     7576K buffers
+ Swap:  1898848K total,   364092K used,  1534756K free,  1330504K cached
+400%cpu   8%user 103%nice  68%sys 119%idle  44%iow  46%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 667M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2424900K used,   106928K free,     7632K buffers
+ Swap:  1898848K total,   364092K used,  1534756K free,  1334872K cached
+400%cpu   3%user  25%nice  40%sys 223%idle  64%iow  31%irq  14%sirq   0%host
+%CPU [RES
+ 0.0 661M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2434188K used,    97640K free,     7724K buffers
+ Swap:  1898848K total,   364092K used,  1534756K free,  1337672K cached
+400%cpu  12%user  11%nice  50%sys 278%idle   8%iow  28%irq  13%sirq   0%host
+%CPU [RES
+ 7.0 660M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2429720K used,   102108K free,     6732K buffers
+ Swap:  1898848K total,   364092K used,  1534756K free,  1313932K cached
+400%cpu  21%user  47%nice  93%sys 125%idle  46%iow  54%irq  14%sirq   0%host
+%CPU [RES
+ 0.0 659M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2421060K used,   110768K free,     6768K buffers
+ Swap:  1898848K total,   364092K used,  1534756K free,  1273360K cached
+400%cpu  34%user  26%nice 120%sys  99%idle  70%iow  41%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 659M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2327392K used,   204436K free,     6708K buffers
+ Swap:  1898848K total,   362584K used,  1536264K free,  1268584K cached
+400%cpu  29%user  42%nice 111%sys  89%idle  74%iow  49%irq   6%sirq   0%host
+%CPU [RES
+ 9.0 659M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2299848K used,   231980K free,     7128K buffers
+ Swap:  1898848K total,   362260K used,  1536588K free,  1277760K cached
+400%cpu  47%user  38%nice 138%sys 100%idle  23%iow  47%irq   7%sirq   0%host
+%CPU [RES
+ 0.0 660M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2348232K used,   183596K free,     7400K buffers
+ Swap:  1898848K total,   362260K used,  1536588K free,  1305912K cached
+400%cpu  33%user  65%nice 111%sys  85%idle  50%iow  45%irq  11%sirq   0%host
+%CPU [RES
+ 0.0 660M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2387544K used,   144284K free,     7732K buffers
+ Swap:  1898848K total,   361748K used,  1537100K free,  1340480K cached
+400%cpu  31%user  32%nice 151%sys  91%idle  31%iow  55%irq   9%sirq   0%host
+%CPU [RES
+66.0 660M
+
+
+
+Tasks: 1 total,   1 running,   0 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2419548K used,   112280K free,     7800K buffers
+ Swap:  1898848K total,   361724K used,  1537124K free,  1379048K cached
+400%cpu   4%user  66%nice 110%sys 150%idle  23%iow  40%irq   7%sirq   0%host
+%CPU [RES
+27.0 664M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2427612K used,   104216K free,     7980K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1381768K cached
+400%cpu  11%user  25%nice 107%sys 184%idle  18%iow  43%irq  12%sirq   0%host
+%CPU [RES
+18.0 665M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2438196K used,    93632K free,     8036K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1383952K cached
+400%cpu  14%user  68%nice  88%sys 173%idle   1%iow  44%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 665M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2362084K used,   169744K free,     7644K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1302608K cached
+400%cpu   9%user  41%nice  33%sys 273%idle  17%iow  21%irq   6%sirq   0%host
+%CPU [RES
+ 5.0 665M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2404924K used,   126904K free,     7740K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1304124K cached
+400%cpu  26%user  31%nice  87%sys 197%idle  12%iow  35%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 663M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2416764K used,   115064K free,     7812K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1305868K cached
+400%cpu  11%user  15%nice  90%sys 221%idle  12%iow  37%irq  14%sirq   0%host
+%CPU [RES
+ 1.0 663M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2400856K used,   130972K free,     7920K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1303840K cached
+400%cpu  23%user  50%nice  91%sys 167%idle  23%iow  37%irq   9%sirq   0%host
+%CPU [RES
+ 4.0 663M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2391456K used,   140372K free,     7960K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1304292K cached
+400%cpu  24%user  32%nice  99%sys 191%idle   0%iow  44%irq  10%sirq   0%host
+%CPU [RES
+22.0 662M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2394480K used,   137348K free,     8028K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1310056K cached
+400%cpu  16%user  21%nice 137%sys 146%idle  32%iow  40%irq   8%sirq   0%host
+%CPU [RES
+40.0 661M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2402292K used,   129536K free,     8128K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1312940K cached
+400%cpu  17%user  18%nice  96%sys 217%idle  13%iow  33%irq   6%sirq   0%host
+%CPU [RES
+31.0 665M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2402544K used,   129284K free,     8184K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1314076K cached
+400%cpu   2%user  21%nice  54%sys 266%idle  12%iow  30%irq  15%sirq   0%host
+%CPU [RES
+ 4.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2405928K used,   125900K free,     8348K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1316152K cached
+400%cpu   1%user  32%nice  36%sys 286%idle   7%iow  26%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2397584K used,   134244K free,     8404K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1317260K cached
+400%cpu  10%user  25%nice  45%sys 269%idle   4%iow  31%irq  16%sirq   0%host
+%CPU [RES
+ 5.8 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2398844K used,   132984K free,     8452K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1318592K cached
+400%cpu   3%user  16%nice  55%sys 268%idle  15%iow  32%irq  11%sirq   0%host
+%CPU [RES
+ 0.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2400356K used,   131472K free,     8484K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1319944K cached
+400%cpu   2%user  13%nice  44%sys 298%idle   2%iow  29%irq  12%sirq   0%host
+%CPU [RES
+ 0.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2400356K used,   131472K free,     8556K buffers
+ Swap:  1898848K total,   361468K used,  1537380K free,  1321352K cached
+400%cpu  11%user  13%nice  52%sys 276%idle   5%iow  30%irq  13%sirq   0%host
+%CPU [RES
+ 6.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2376352K used,   155476K free,     8596K buffers
+ Swap:  1898848K total,   383484K used,  1515364K free,  1319424K cached
+400%cpu   2%user  34%nice  54%sys 258%idle   6%iow  32%irq  14%sirq   0%host
+%CPU [RES
+ 0.0 669M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2382524K used,   149304K free,     8660K buffers
+ Swap:  1898848K total,   381692K used,  1517156K free,  1320360K cached
+400%cpu  16%user  10%nice  74%sys 232%idle  12%iow  43%irq  13%sirq   0%host
+%CPU [RES
+ 5.0 669M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2384276K used,   147552K free,     8696K buffers
+ Swap:  1898848K total,   381692K used,  1517156K free,  1327220K cached
+400%cpu   2%user  11%nice  33%sys 313%idle   7%iow  24%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2384528K used,   147300K free,     8752K buffers
+ Swap:  1898848K total,   381692K used,  1517156K free,  1327840K cached
+400%cpu   2%user  10%nice  25%sys 315%idle  18%iow  22%irq   8%sirq   0%host
+%CPU [RES
+ 0.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2386292K used,   145536K free,     8816K buffers
+ Swap:  1898848K total,   381692K used,  1517156K free,  1329060K cached
+400%cpu  11%user  23%nice  44%sys 283%idle   2%iow  28%irq   9%sirq   0%host
+%CPU [RES
+ 6.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2386796K used,   145032K free,     8848K buffers
+ Swap:  1898848K total,   380596K used,  1518252K free,  1330500K cached
+400%cpu   1%user  10%nice  37%sys 312%idle   3%iow  27%irq  10%sirq   0%host
+%CPU [RES
+ 0.0 669M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2388308K used,   143520K free,     8904K buffers
+ Swap:  1898848K total,   380596K used,  1518252K free,  1331380K cached
+400%cpu   1%user  10%nice  32%sys 320%idle   6%iow  22%irq   9%sirq   0%host
+%CPU [RES
+ 0.0 669M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2389820K used,   142008K free,     8936K buffers
+ Swap:  1898848K total,   380596K used,  1518252K free,  1332324K cached
+400%cpu  10%user   7%nice  41%sys 298%idle   2%iow  28%irq  14%sirq   0%host
+%CPU [RES
+ 6.0 669M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2391836K used,   139992K free,     8992K buffers
+ Swap:  1898848K total,   380596K used,  1518252K free,  1334952K cached
+400%cpu   2%user  23%nice  66%sys 252%idle   4%iow  38%irq  15%sirq   0%host
+%CPU [RES
+ 0.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2396372K used,   135456K free,     9040K buffers
+ Swap:  1898848K total,   380596K used,  1518252K free,  1336288K cached
+400%cpu  10%user  14%nice  42%sys 290%idle   4%iow  28%irq  12%sirq   0%host
+%CPU [RES
+ 5.0 668M
+
+
+
+Tasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+  Mem:  2531828K total,  2396372K used,   135456K free,     9072K buffers
+ Swap:  1898848K total,   380596K used,  1518252K free,  1337152K cached
+400%cpu   1%user   7%nice  18%sys 346%idle   3%iow  18%irq   7%sirq   0%host
+%CPU [RES
+ 0.0 669M

@@ -1,0 +1,83 @@
+Práctica 11 — Salida de pruebas/db/whitebox-db.sql (Supabase SQL Editor, 10/11/2026)
+(columnas de relleno eliminadas; las líneas del plan se conservan como las devolvió PostgreSQL)
+
+=== Índices (schema public) ===
+carrito:      carrito_pkey (id) UNIQUE · carrito_usuario_id_producto_id_key (usuario_id, producto_id) UNIQUE
+mensajes:     mensajes_pkey (id) UNIQUE · mensajes_reporte_idx (reporte_id, id)
+pedido_items: pedido_items_pkey (id) UNIQUE                      <- sin índice en pedido_id
+pedidos:      pedidos_pkey (id) UNIQUE                           <- sin índice en usuario_id
+perfiles:     perfiles_pkey (id) UNIQUE                          <- sin índice en email
+reportes:     reportes_pkey (id) UNIQUE · reportes_cliente_idx (cliente_id) · reportes_agente_idx (agente_id)
+
+=== Q1 pedidos+items de cliente1 (sin RLS) ===
+Sort  (cost=34.15..34.16 rows=1 width=867) (actual time=2.048..2.050 rows=10 loops=1)
+  Sort Key: p.created_at DESC
+  Sort Method: quicksort  Memory: 27kB
+  Buffers: shared hit=15 dirtied=1
+  InitPlan 2
+    ->  Seq Scan on perfiles  (cost=0.00..10.88 rows=1 width=16) (actual time=0.266..0.267 rows=1 loops=1)
+          Filter: ((email)::text = 'cliente1@seppro.com'::text)
+          Rows Removed by Filter: 11
+  ->  Seq Scan on pedidos p  (cost=0.00..23.27 rows=1 width=867) (actual time=1.283..1.379 rows=10 loops=1)
+        Filter: (usuario_id = (InitPlan 2).col1)
+        Rows Removed by Filter: 9
+        SubPlan 1
+          ->  Aggregate  (cost=12.13..12.14 rows=1 width=32) (actual time=0.102..0.102 rows=1 loops=10)
+                ->  Seq Scan on pedido_items i  (cost=0.00..12.12 rows=1 width=474) (actual time=0.008..0.010 rows=1 loops=10)
+                      Filter: (pedido_id = p.id)
+                      Rows Removed by Filter: 19
+Planning Time: 2.575 ms
+Execution Time: 2.133 ms
+
+=== Q2 pedidos+items como cliente1 (con RLS, rol authenticated) ===
+Sort  (cost=15748.46..15748.54 rows=31 width=867) (actual time=1.748..1.750 rows=10 loops=1)
+  Sort Key: p.created_at DESC
+  Buffers: shared hit=58
+  ->  Seq Scan on pedidos p  (cost=0.00..15747.69 rows=31 width=867) (actual time=1.360..1.720 rows=10 loops=1)
+        Filter: ((auth.uid() = usuario_id) OR is_admin())          [auth.uid() expandido por el planificador]
+        Rows Removed by Filter: 9
+        SubPlan 3
+          ->  Aggregate  (cost=506.83..506.84 rows=1 width=32) (actual time=0.028..0.028 rows=1 loops=10)
+                ->  Seq Scan on pedido_items i  (cost=0.00..506.83 rows=1 width=474) (actual time=0.021..0.022 rows=1 loops=10)
+                      Filter: ((pedido_id = p.id) AND (EXISTS(SubPlan 1) OR is_admin()))
+                      Rows Removed by Filter: 19
+                      SubPlan 1
+                        ->  Index Scan using pedidos_pkey on pedidos  (cost=0.14..2.66 rows=1 width=0) (actual time=0.012..0.012 rows=1 loops=10)
+                              Index Cond: (id = i.pedido_id)
+Planning Time: 0.763 ms
+Execution Time: 1.813 ms
+
+=== Q3 mensajes de REP002 como cliente1 (con RLS) ===
+Index Scan using mensajes_reporte_idx on mensajes  (cost=53.88..57.16 rows=1 width=157) (actual time=0.594..0.681 rows=5 loops=1)
+  Index Cond: (reporte_id = (InitPlan 1).col1)
+  Filter: puede_ver_reporte(reporte_id)
+  InitPlan 1
+    ->  Seq Scan on reportes  (cost=0.00..53.75 rows=1 width=4) (actual time=0.067..0.070 rows=1 loops=1)
+          Filter: ((folio = 'REP002') AND ((cliente_id = auth.uid()) OR (agente_id = auth.uid()) OR is_admin()))
+          Rows Removed by Filter: 5
+Planning Time: 2.552 ms
+Execution Time: 0.724 ms
+
+=== Q4 reportes como admin (con RLS) ===
+Sort  (cost=70.02..70.14 rows=48 width=1159) (actual time=1.273..1.276 rows=6 loops=1)
+  Sort Key: r.updated_at DESC
+  ->  Hash Left Join  (cost=11.72..68.68 rows=48 width=1159) (actual time=0.968..1.262 rows=6 loops=1)
+        Hash Cond: (r.agente_id = a.id)
+        ->  Nested Loop  (cost=0.14..56.98 rows=48 width=841) (actual time=0.930..1.218 rows=6 loops=1)
+              ->  Seq Scan on perfiles c  (cost=0.00..10.70 rows=70 width=334) (actual time=0.010..0.012 rows=12 loops=1)
+              ->  Index Scan using reportes_cliente_idx on reportes r  (cost=0.14..0.65 rows=1 width=523) (actual time=0.079..0.099 rows=0 loops=12)
+                    Index Cond: (cliente_id = c.id)
+                    Filter: ((cliente_id = auth.uid()) OR (agente_id = auth.uid()) OR is_admin())
+        ->  Hash  (cost=10.70..10.70 rows=70 width=334) (actual time=0.029..0.029 rows=12 loops=1)
+              ->  Seq Scan on perfiles a  (cost=0.00..10.70 rows=70 width=334) (actual time=0.017..0.019 rows=12 loops=1)
+Planning Time: 0.509 ms
+Execution Time: 1.323 ms
+
+=== DB-TX atomicidad ===
+Bloque DO ejecutado en el SQL Editor (10/11/2026): INSERT válido + INSERT que viola el CHECK de descripción
+en la misma transacción; al final se fuerza RAISE para mostrar el conteo y revertir todo.
+Salida:
+  ERROR:  P0001: RESULTADO -> reportes antes=6, después=6 (se revirtió TODO)
+  CONTEXT:  PL/pgSQL function inline_code_block line 13 at RAISE
+Interpretación: el INSERT válido no quedó guardado porque el segundo falló dentro del mismo bloque
+(PostgreSQL revierte el subbloque completo al capturar la excepción). No hay operaciones parciales.

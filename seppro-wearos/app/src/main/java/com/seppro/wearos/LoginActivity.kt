@@ -22,8 +22,16 @@ class LoginActivity : ComponentActivity() {
     private lateinit var statusText: TextView
     private lateinit var loginBtn: Button
 
+    // Entregable 2: permiso para mostrar los avisos de verificación que manda el teléfono
+    private val permisoNotificaciones = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (android.os.Build.VERSION.SDK_INT >= 33 && androidx.core.content.ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            permisoNotificaciones.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL

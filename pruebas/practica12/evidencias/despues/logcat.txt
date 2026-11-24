@@ -1,0 +1,214 @@
+--------- beginning of system
+11-12 23:11:49.146   735   773 W ActivityManager: Slow operation: 76ms so far, now at startProcess: returned from zygote!
+11-12 23:11:49.146   735   773 W ActivityManager: Slow operation: 77ms so far, now at startProcess: done updating battery stats
+11-12 23:11:49.148   735   773 W ActivityManager: Slow operation: 79ms so far, now at startProcess: building log message
+11-12 23:11:49.148   735   773 W ActivityManager: Slow operation: 79ms so far, now at startProcess: starting to update pids map
+11-12 23:11:49.149   735   773 W ActivityManager: Slow operation: 80ms so far, now at startProcess: done updating pids map
+11-12 23:11:50.717   735  2833 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.crossprofile.ProfileStateService in 10000ms for connection
+11-12 23:11:50.717   735  2833 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.frameworks.client.data.android.server.play.MainProcessEndpointService in 30000ms for connection
+11-12 23:11:50.719   735  3618 W ActivityManager: pid 10406 com.android.vending:background sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:11:50.740   735   773 W ActivityManager: Slow operation: 58ms so far, now at startProcess: done updating battery stats
+11-12 23:11:50.740   735   773 W ActivityManager: Slow operation: 58ms so far, now at startProcess: building log message
+11-12 23:11:50.740   735   773 W ActivityManager: Slow operation: 58ms so far, now at startProcess: starting to update pids map
+11-12 23:11:50.740   735   773 W ActivityManager: Slow operation: 58ms so far, now at startProcess: done updating pids map
+11-12 23:11:50.823   735   735 W ActivityManager: pid 735 system sent binder code 7 with flags 1 to frozen apps and got error -32
+11-12 23:11:50.878   735  3528 W ActivityManager: Scheduling restart of crashed service com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME in 29840ms for connection
+11-12 23:11:50.880   735   766 W ActivityManager: setHasOverlayUi called on unknown pid: 10425
+11-12 23:11:53.163   735   771 W ActivityManager: Rescheduling restart of crashed service com.android.vending/com.google.android.finsky.crossprofile.ProfileStateService in 0ms for mem-pressure-event
+11-12 23:11:53.164   735   771 W ActivityManager: Rescheduling restart of crashed service com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME in 0ms for mem-pressure-event
+11-12 23:11:53.239   735   773 W ActivityManager: Slow operation: 67ms so far, now at startProcess: asking zygote to start proc
+11-12 23:11:53.301   735   773 W ActivityManager: Slow operation: 106ms so far, now at startProcess: returned from zygote!
+11-12 23:11:53.319   735   773 W ActivityManager: Slow operation: 149ms so far, now at startProcess: done updating battery stats
+11-12 23:11:53.319   735   773 W ActivityManager: Slow operation: 149ms so far, now at startProcess: building log message
+11-12 23:11:53.319   735   773 W ActivityManager: Slow operation: 149ms so far, now at startProcess: starting to update pids map
+11-12 23:11:53.354   735   773 W ActivityManager: Slow operation: 184ms so far, now at startProcess: done updating pids map
+11-12 23:11:53.354   735   773 W ActivityManager: Slow operation: 117ms so far, now at startProcess: asking zygote to start proc
+11-12 23:11:53.370   735   773 W ActivityManager: Slow operation: 133ms so far, now at startProcess: returned from zygote!
+11-12 23:11:53.416   735   773 W ActivityManager: Slow operation: 179ms so far, now at startProcess: done updating battery stats
+11-12 23:11:53.416   735   773 W ActivityManager: Slow operation: 179ms so far, now at startProcess: building log message
+11-12 23:11:53.416   735   773 W ActivityManager: Slow operation: 179ms so far, now at startProcess: starting to update pids map
+11-12 23:11:53.417   735   773 W ActivityManager: Slow operation: 179ms so far, now at startProcess: done updating pids map
+11-12 23:11:53.807   735   977 W ActivityManager: Slow operation: 199ms so far, now at startProcess: done updating battery stats
+11-12 23:11:53.807   735   977 W ActivityManager: Slow operation: 199ms so far, now at startProcess: building log message
+11-12 23:11:53.807   735   977 W ActivityManager: Slow operation: 199ms so far, now at startProcess: starting to update pids map
+11-12 23:11:53.807   735   977 W ActivityManager: Slow operation: 199ms so far, now at startProcess: done updating pids map
+11-12 23:11:53.819   735   773 W ActivityManager: Slow operation: 162ms so far, now at startProcess: asking zygote to start proc
+11-12 23:11:53.904   735   773 W ActivityManager: Slow operation: 195ms so far, now at startProcess: returned from zygote!
+11-12 23:11:54.011   735   773 W ActivityManager: Slow operation: 354ms so far, now at startProcess: done updating battery stats
+11-12 23:11:54.012   735   773 W ActivityManager: Slow operation: 354ms so far, now at startProcess: building log message
+11-12 23:11:54.012   735   773 W ActivityManager: Slow operation: 354ms so far, now at startProcess: starting to update pids map
+11-12 23:11:54.012   735   773 W ActivityManager: Slow operation: 354ms so far, now at startProcess: done updating pids map
+11-12 23:11:57.327   735  1788 W ActivityManager: Slow operation: 64ms so far, now at attachApplicationLocked: immediately after bindApplication
+11-12 23:11:57.327   735  1788 W ActivityManager: Slow operation: 64ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+11-12 23:11:57.353   735  1788 W ActivityManager: Slow operation: 89ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+11-12 23:12:03.952   735   815 W ActivityManager: pid 3655 com.google.android.gms sent binder code 3 with flags 0 to frozen apps and got error -32
+11-12 23:12:04.002   735  1251 W ActivityManager: Scheduling restart of crashed service com.google.android.googlequicksearchbox/com.google.android.apps.gsa.shared.util.keepalive.StandaloneKeepAlive$KeepAliveService in 1000ms for start-requested
+11-12 23:12:04.009   735   771 W ActivityManager: Rescheduling restart of crashed service com.google.android.googlequicksearchbox/com.google.android.apps.gsa.shared.util.keepalive.StandaloneKeepAlive$KeepAliveService in 19994ms for mem-pressure-event
+11-12 23:12:04.042   735   815 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.scheduler.process.backgroundimpl.PhoneskyJobServiceBackground in 49960ms for connection
+11-12 23:12:04.047   735  1317 W ActivityManager: pid 10881 com.android.vending sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:12:04.927   735  1530 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.BIND_VERIFIER_PUBLIC_API xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:12:04.931   735  3571 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@797054e
+11-12 23:12:05.880   735  3527 W ActivityManager: pid 11372 com.android.vending:background sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:12:05.885   735   815 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.frameworks.client.data.android.server.play.MainProcessEndpointService in 48117ms for connection
+11-12 23:12:05.885   735   815 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.crossprofile.ProfileStateService in 78117ms for connection
+11-12 23:12:05.894   735   771 W ActivityManager: Rescheduling restart of crashed service com.google.android.googlequicksearchbox/com.google.android.apps.gsa.shared.util.keepalive.StandaloneKeepAlive$KeepAliveService in 28108ms for mem-pressure-event
+11-12 23:12:06.012   735   773 W ActivityManager: Slow operation: 91ms so far, now at startProcess: returned from zygote!
+11-12 23:12:06.014   735   773 W ActivityManager: Slow operation: 93ms so far, now at startProcess: done updating battery stats
+11-12 23:12:06.019   735   773 W ActivityManager: Slow operation: 98ms so far, now at startProcess: building log message
+11-12 23:12:06.020   735   773 W ActivityManager: Slow operation: 98ms so far, now at startProcess: starting to update pids map
+11-12 23:12:06.021   735   773 W ActivityManager: Slow operation: 100ms so far, now at startProcess: done updating pids map
+11-12 23:12:06.396   735   771 W ActivityManager: Rescheduling restart of crashed service com.google.android.googlequicksearchbox/com.google.android.apps.gsa.shared.util.keepalive.StandaloneKeepAlive$KeepAliveService in 17606ms for mem-pressure-event
+11-12 23:12:07.225   735   771 W ActivityManager: Rescheduling restart of crashed service com.google.android.googlequicksearchbox/com.google.android.apps.gsa.shared.util.keepalive.StandaloneKeepAlive$KeepAliveService in 0ms for mem-pressure-event
+11-12 23:12:17.734   735  3544 W ActivityManager: stopServiceToken startId 36 is last, but have 1 remaining args
+--------- beginning of main
+11-12 23:12:32.579 10815 10815 I SEPPRO_Perf: op=Mis pedidos red_ms=1029 proceso_ms=0 ui_hilo_principal_ms=75 total_hasta_dibujo_ms=1458 filas=20 bytes=3206 vistas=20
+11-12 23:12:56.107 10815 10815 I SEPPRO_Perf: op=Mis pedidos red_ms=253 proceso_ms=0 ui_hilo_principal_ms=46 total_hasta_dibujo_ms=474 filas=20 bytes=3206 vistas=20
+11-12 23:12:56.707   735   735 W ActivityManager: pid 735 system sent binder code 12 with flags 1 to frozen apps and got error -32
+11-12 23:12:56.708   735   735 W ActivityManager: Exception when unbinding service com.google.android.apps.photos/.dbprocessor.impl.DatabaseProcessorJobService
+11-12 23:12:56.708   735   735 W ActivityManager: android.os.DeadObjectException
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.os.BinderProxy.transactNative(Native Method)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.os.BinderProxy.transact(BinderProxy.java:592)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.app.IApplicationThread$Stub$Proxy.scheduleUnbindService(IApplicationThread.java:1751)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.app.IApplicationThread$Delegator.scheduleUnbindService(IApplicationThread.java:271)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.server.am.ActiveServices.removeConnectionLocked(ActiveServices.java:6673)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.server.am.ActiveServices.unbindServiceLocked(ActiveServices.java:4581)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.server.am.ActivityManagerService.unbindService(ActivityManagerService.java:14004)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.app.ContextImpl.unbindService(ContextImpl.java:2274)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.server.job.JobServiceContext.closeAndCleanupJobLocked(JobServiceContext.java:1724)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.server.job.JobServiceContext.onServiceDisconnected(JobServiceContext.java:1079)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.app.LoadedApk$ServiceDispatcher.doDeath(LoadedApk.java:2255)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.app.LoadedApk$ServiceDispatcher$RunConnection.run(LoadedApk.java:2270)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.os.Handler.handleCallback(Handler.java:995)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.os.Handler.dispatchMessage(Handler.java:103)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.os.Looper.loopOnce(Looper.java:248)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at android.os.Looper.loop(Looper.java:338)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.server.SystemServer.run(SystemServer.java:1036)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.server.SystemServer.main(SystemServer.java:689)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+11-12 23:12:56.708   735   735 W ActivityManager: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:910)
+11-12 23:13:05.906   735   815 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.BIND_VERIFIER_PUBLIC_API xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:05.907   735   815 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@1adabc0
+11-12 23:13:06.379   735   815 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:06.380   735   815 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@d37ba97
+11-12 23:13:07.231   735  1610 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:07.238   735  1610 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@76afd38
+11-12 23:13:08.533   735  1610 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:08.535   735  3527 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@7669e86
+11-12 23:13:11.298   735   815 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:11.299   735   815 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@8149c8
+11-12 23:13:14.899   735   977 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:14.899   735   977 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@29f827a
+11-12 23:13:16.870 10815 10815 I SEPPRO_Perf: op=Mis pedidos red_ms=572 proceso_ms=0 ui_hilo_principal_ms=64 total_hasta_dibujo_ms=674 filas=20 bytes=3206 vistas=20
+11-12 23:13:22.647   735  2706 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:22.650   735  2706 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@59853b2
+11-12 23:13:22.783   735  2706 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.BIND_VERIFIER_PUBLIC_API xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:22.783   735  2706 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@c537e80
+11-12 23:13:30.620   735   773 W ActivityManager: Slow operation: 55ms so far, now at startProcess: returned from zygote!
+11-12 23:13:30.653   735   773 W ActivityManager: Slow operation: 88ms so far, now at startProcess: done updating battery stats
+11-12 23:13:30.653   735   773 W ActivityManager: Slow operation: 88ms so far, now at startProcess: building log message
+11-12 23:13:30.653   735   773 W ActivityManager: Slow operation: 88ms so far, now at startProcess: starting to update pids map
+11-12 23:13:30.654   735   773 W ActivityManager: Slow operation: 88ms so far, now at startProcess: done updating pids map
+11-12 23:13:31.107   735   773 W ActivityManager: Slow operation: 54ms so far, now at startProcess: returned from zygote!
+11-12 23:13:31.141   735   773 W ActivityManager: Slow operation: 100ms so far, now at startProcess: done updating battery stats
+11-12 23:13:31.141   735   773 W ActivityManager: Slow operation: 100ms so far, now at startProcess: building log message
+11-12 23:13:31.141   735   773 W ActivityManager: Slow operation: 101ms so far, now at startProcess: starting to update pids map
+11-12 23:13:31.157   735   773 W ActivityManager: Slow operation: 117ms so far, now at startProcess: done updating pids map
+11-12 23:13:31.272   735   773 W ActivityManager: Slow operation: 141ms so far, now at startProcess: returned from zygote!
+11-12 23:13:31.272   735   773 W ActivityManager: Slow operation: 141ms so far, now at startProcess: done updating battery stats
+11-12 23:13:31.272   735   773 W ActivityManager: Slow operation: 141ms so far, now at startProcess: building log message
+11-12 23:13:31.272   735   773 W ActivityManager: Slow operation: 141ms so far, now at startProcess: starting to update pids map
+11-12 23:13:31.288   735   773 W ActivityManager: Slow operation: 157ms so far, now at startProcess: done updating pids map
+11-12 23:13:32.794   735  1606 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:32.804   735  1606 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@9bce968
+11-12 23:13:34.888   735  2697 W ActivityManager: Slow operation: 51ms so far, now at attachApplicationLocked: immediately after bindApplication
+11-12 23:13:34.888   735  2697 W ActivityManager: Slow operation: 51ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+11-12 23:13:34.889   735  2697 W ActivityManager: Slow operation: 51ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+11-12 23:13:42.004 10815 10815 I SEPPRO_Perf: op=Mis pedidos red_ms=2109 proceso_ms=1 ui_hilo_principal_ms=61 total_hasta_dibujo_ms=2197 filas=20 bytes=3206 vistas=20
+11-12 23:13:47.466   735  2259 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:47.467   735  1317 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@6e5fdcf
+11-12 23:13:47.965   735  2041 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.scheduler.process.backgroundimpl.PhoneskyJobServiceBackground in 30000ms for connection
+11-12 23:13:48.553   735   773 W ActivityManager: Slow operation: 55ms so far, now at startProcess: returned from zygote!
+11-12 23:13:48.554   735   773 W ActivityManager: Slow operation: 89ms so far, now at startProcess: done updating battery stats
+11-12 23:13:48.554   735   773 W ActivityManager: Slow operation: 89ms so far, now at startProcess: building log message
+11-12 23:13:48.554   735   773 W ActivityManager: Slow operation: 89ms so far, now at startProcess: starting to update pids map
+11-12 23:13:48.554   735   773 W ActivityManager: Slow operation: 89ms so far, now at startProcess: done updating pids map
+11-12 23:13:53.261   735  3544 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.BIND_VERIFIER_PUBLIC_API xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:13:53.267   735  3544 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@863de90
+11-12 23:13:56.729   735  3544 W ActivityManager: pid 3655 com.google.android.gms sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:13:58.780   735  2241 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.crossprofile.ProfileStateService in 20000ms for connection
+11-12 23:13:58.780   735  2241 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.frameworks.client.data.android.server.play.MainProcessEndpointService in 50000ms for connection
+11-12 23:13:58.785   735  3527 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.scheduler.process.backgroundimpl.PhoneskyJobServiceBackground in 20000ms for connection
+11-12 23:14:02.741   735  3527 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.BIND_VERIFIER_PUBLIC_API xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:14:02.743   735  3527 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@fc9bc9d
+11-12 23:14:10.762 10815 10815 I SEPPRO_Perf: op=Historial red_ms=815 proceso_ms=0 ui_hilo_principal_ms=102 total_hasta_dibujo_ms=1113 filas=20 bytes=3357 vistas=20
+11-12 23:14:46.352 10815 10815 I SEPPRO_Perf: op=Mis pedidos red_ms=890 proceso_ms=0 ui_hilo_principal_ms=91 total_hasta_dibujo_ms=1009 filas=20 bytes=3206 vistas=20
+11-12 23:15:03.368   735  2241 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:03.369   735  2241 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@4c12334
+11-12 23:15:03.816   735  1496 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.BIND_VERIFIER_PUBLIC_API xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:03.820   735  1496 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@e4f1a25
+11-12 23:15:04.293   735  1496 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:04.294   735  1788 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@d7211ab
+11-12 23:15:05.661   735  1788 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:05.663   735  1788 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@c5be4b4
+11-12 23:15:08.730   735   977 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:08.737   735   977 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@983c749
+11-12 23:15:13.577   735  1317 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:13.578   735  1317 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@eba85c
+11-12 23:15:19.236   735  1940 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:19.237   735  1940 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@f035d58
+11-12 23:15:30.253   735   977 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:30.254   735   977 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@c7f3d4f
+11-12 23:15:31.113   735   977 W ActivityManager: Slow operation: 51ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+11-12 23:15:31.462   735   773 W ActivityManager: Slow operation: 73ms so far, now at startProcess: returned from zygote!
+11-12 23:15:31.463   735   773 W ActivityManager: Slow operation: 74ms so far, now at startProcess: done updating battery stats
+11-12 23:15:31.467   735   773 W ActivityManager: Slow operation: 78ms so far, now at startProcess: building log message
+11-12 23:15:31.468   735   773 W ActivityManager: Slow operation: 78ms so far, now at startProcess: starting to update pids map
+11-12 23:15:31.468   735   773 W ActivityManager: Slow operation: 78ms so far, now at startProcess: done updating pids map
+11-12 23:15:31.468   735   773 W ActivityManager: Slow operation: 65ms so far, now at startProcess: asking zygote to start proc
+11-12 23:15:31.526   735   773 W ActivityManager: Slow operation: 124ms so far, now at startProcess: returned from zygote!
+11-12 23:15:31.553   735   773 W ActivityManager: Slow operation: 151ms so far, now at startProcess: done updating battery stats
+11-12 23:15:31.553   735   773 W ActivityManager: Slow operation: 151ms so far, now at startProcess: building log message
+11-12 23:15:31.554   735   773 W ActivityManager: Slow operation: 151ms so far, now at startProcess: starting to update pids map
+11-12 23:15:31.554   735   773 W ActivityManager: Slow operation: 152ms so far, now at startProcess: done updating pids map
+11-12 23:15:39.634   735   773 W ActivityManager: Slow operation: 92ms so far, now at startProcess: returned from zygote!
+11-12 23:15:39.635   735   773 W ActivityManager: Slow operation: 92ms so far, now at startProcess: done updating battery stats
+11-12 23:15:39.635   735   773 W ActivityManager: Slow operation: 92ms so far, now at startProcess: building log message
+11-12 23:15:39.635   735   773 W ActivityManager: Slow operation: 92ms so far, now at startProcess: starting to update pids map
+11-12 23:15:39.635   735   773 W ActivityManager: Slow operation: 92ms so far, now at startProcess: done updating pids map
+11-12 23:15:45.179   735   815 W ActivityManager: stopServiceToken startId 12 is last, but have 1 remaining args
+11-12 23:15:46.988   735   815 W ActivityManager: Unable to start service Intent { act=com.google.android.verifier.backport.VERIFY_PACKAGE xflg=0x4 pkg=com.google.android.verifier } U=0: not found
+11-12 23:15:46.988   735   815 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@d60cb85
+11-12 23:15:50.368   735  1496 W ActivityManager: pid 735 system sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:15:51.786   735  1940 W ActivityManager: pid 3655 com.google.android.gms sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:15:53.009   735   773 W ActivityManager: Slow operation: 69ms so far, now at startProcess: returned from zygote!
+11-12 23:15:53.009   735   773 W ActivityManager: Slow operation: 69ms so far, now at startProcess: done updating battery stats
+11-12 23:15:53.010   735   773 W ActivityManager: Slow operation: 69ms so far, now at startProcess: building log message
+11-12 23:15:53.010   735   773 W ActivityManager: Slow operation: 69ms so far, now at startProcess: starting to update pids map
+11-12 23:15:53.010   735   773 W ActivityManager: Slow operation: 69ms so far, now at startProcess: done updating pids map
+11-12 23:15:54.768   735  1750 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.scheduler.process.backgroundimpl.PhoneskyJobServiceBackground in 10000ms for connection
+11-12 23:15:55.414   735   773 W ActivityManager: Slow operation: 62ms so far, now at startProcess: done updating battery stats
+11-12 23:15:55.415   735   773 W ActivityManager: Slow operation: 62ms so far, now at startProcess: building log message
+11-12 23:15:55.415   735   773 W ActivityManager: Slow operation: 63ms so far, now at startProcess: starting to update pids map
+11-12 23:15:55.415   735   773 W ActivityManager: Slow operation: 63ms so far, now at startProcess: done updating pids map
+11-12 23:15:55.434   735   773 W ActivityManager: Slow operation: 59ms so far, now at startProcess: returned from zygote!
+11-12 23:15:55.461   735   773 W ActivityManager: Slow operation: 86ms so far, now at startProcess: done updating battery stats
+11-12 23:15:55.461   735   773 W ActivityManager: Slow operation: 86ms so far, now at startProcess: building log message
+11-12 23:15:55.462   735   773 W ActivityManager: Slow operation: 86ms so far, now at startProcess: starting to update pids map
+11-12 23:15:55.462   735   773 W ActivityManager: Slow operation: 87ms so far, now at startProcess: done updating pids map
+11-12 23:15:58.534   735   773 W ActivityManager: Slow operation: 121ms so far, now at startProcess: returned from zygote!
+11-12 23:15:58.536   735   773 W ActivityManager: Slow operation: 122ms so far, now at startProcess: done updating battery stats
+11-12 23:15:58.536   735   773 W ActivityManager: Slow operation: 122ms so far, now at startProcess: building log message
+11-12 23:15:58.536   735   773 W ActivityManager: Slow operation: 123ms so far, now at startProcess: starting to update pids map
+11-12 23:15:58.536   735   773 W ActivityManager: Slow operation: 123ms so far, now at startProcess: done updating pids map
+11-12 23:16:01.993   735   814 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.android.finsky.crossprofile.ProfileStateService in 1000ms for connection
+11-12 23:16:01.993   735   814 W ActivityManager: Scheduling restart of crashed service com.android.vending/com.google.frameworks.client.data.android.server.play.MainProcessEndpointService in 11000ms for connection
+11-12 23:16:02.005   735  1530 W ActivityManager: pid 14132 com.android.vending:background sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:16:02.014   735   771 W ActivityManager: Rescheduling restart of crashed service com.android.vending/com.google.android.finsky.crossprofile.ProfileStateService in 29980ms for mem-pressure-event
+11-12 23:16:04.663   735  1606 W ActivityManager: pid 3655 com.google.android.gms sent binder code 2 with flags 1 to frozen apps and got error -32
+11-12 23:16:05.240   735   977 W ActivityManager: Slow operation: 56ms so far, now at finishAttachApplicationInner: after dispatching broadcasts
+11-12 23:16:24.510   735   773 W ActivityManager: Slow operation: 60ms so far, now at startProcess: building log message
+11-12 23:16:24.510   735   773 W ActivityManager: Slow operation: 60ms so far, now at startProcess: starting to update pids map
+11-12 23:16:24.510   735   773 W ActivityManager: Slow operation: 61ms so far, now at startProcess: done updating pids map
+11-12 23:16:25.030   735  3527 W ActivityManager: Slow operation: 53ms so far, now at finishAttachApplicationInner: after updateOomAdjLocked
+11-12 23:16:30.029 10815 10815 I SEPPRO_Perf: op=Mis pedidos red_ms=240 proceso_ms=0 ui_hilo_principal_ms=75 total_hasta_dibujo_ms=413 filas=20 bytes=3206 vistas=20

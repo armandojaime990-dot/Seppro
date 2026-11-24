@@ -68,7 +68,9 @@ class MainActivity : ComponentActivity() {
         thread {
             try {
                 // Hacer el GET a la tabla de pedidos trayendo la relación pedido_items
-                val url = URL("${SupabaseClient.URL}/rest/v1/pedidos?select=*,pedido_items(*)")
+                // Práctica 12: solo los campos necesarios, ordenados y paginados (máx. 20 en el reloj)
+                val url = URL("${SupabaseClient.URL}/rest/v1/pedidos?select=id,estado,total,created_at,pedido_items(nombre_producto)" +
+                    "&order=created_at.desc,id.desc&limit=20")
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "GET"
                 conn.setRequestProperty("apikey", SupabaseClient.ANON_KEY)
@@ -205,6 +207,13 @@ class MainActivity : ComponentActivity() {
                 color = 0xFFEF5350.toInt() // Rojo
                 targetProgress = 90
                 etaText = "Alerta de integridad"
+            }
+            // Entregable 3: el cliente rechazó el equipo por golpe fuerte
+            "rechazado" -> {
+                icon = "⛔"
+                color = 0xFF6D4C41.toInt() // Café
+                targetProgress = 100
+                etaText = "Equipo rechazado (devolución)"
             }
         }
 

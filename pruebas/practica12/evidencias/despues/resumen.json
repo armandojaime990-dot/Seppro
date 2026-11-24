@@ -1,0 +1,122 @@
+{
+  "etiqueta": "despues",
+  "cpu_pct_de_400": {
+    "n": 150,
+    "min": 0,
+    "prom": 7.6,
+    "p90": 22.5,
+    "max": 78.2
+  },
+  "cpu_mientras_trabaja": {
+    "n": 90,
+    "min": 1,
+    "prom": 12.6,
+    "p90": 33,
+    "max": 78.2
+  },
+  "ram_pss_mb": {
+    "inicial": 54.1,
+    "max": 73.8,
+    "final": 72.8,
+    "muestras": 101
+  },
+  "operaciones": [
+    {
+      "op": "Mis pedidos",
+      "red": 1029,
+      "ui": 75,
+      "total": 1458,
+      "filas": 20,
+      "bytes": 3206,
+      "vistas": 20
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 253,
+      "ui": 46,
+      "total": 474,
+      "filas": 20,
+      "bytes": 3206,
+      "vistas": 20
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 572,
+      "ui": 64,
+      "total": 674,
+      "filas": 20,
+      "bytes": 3206,
+      "vistas": 20
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 2109,
+      "ui": 61,
+      "total": 2197,
+      "filas": 20,
+      "bytes": 3206,
+      "vistas": 20
+    },
+    {
+      "op": "Historial",
+      "red": 815,
+      "ui": 102,
+      "total": 1113,
+      "filas": 20,
+      "bytes": 3357,
+      "vistas": 20
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 890,
+      "ui": 91,
+      "total": 1009,
+      "filas": 20,
+      "bytes": 3206,
+      "vistas": 20
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 240,
+      "ui": 75,
+      "total": 413,
+      "filas": 20,
+      "bytes": 3206,
+      "vistas": 20
+    }
+  ],
+  "tiempo_total_ms": {
+    "n": 7,
+    "min": 413,
+    "prom": 1048.3,
+    "p90": 2197,
+    "max": 2197
+  },
+  "tiempo_hilo_principal_ms": {
+    "n": 7,
+    "min": 46,
+    "prom": 73.4,
+    "p90": 102,
+    "max": 102
+  },
+  "tiempo_red_ms": {
+    "n": 7,
+    "min": 240,
+    "prom": 844,
+    "p90": 2109,
+    "max": 2109
+  },
+  "congelamientos": {
+    "eventos": 3,
+    "cuadros_saltados": 160,
+    "max": 85
+  },
+  "gfx": {
+    "cuadros": "125",
+    "lentos": "95.20%",
+    "p50": "129ms",
+    "p90": "200ms",
+    "p95": "200ms"
+  },
+  "errores": 0
+}

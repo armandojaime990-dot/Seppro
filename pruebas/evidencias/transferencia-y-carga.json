@@ -1,0 +1,196 @@
+{
+  "fecha": "2026-11-11T02:49:03.240Z",
+  "cliente": "Checo_Perez · Windows_NT 10.0.26200 · Node v25.6.1",
+  "servidor": "https://sbhkqjueesxsjkfootuq.supabase.co",
+  "diezSolicitudes": {
+    "filas": [
+      {
+        "solicitud": 1,
+        "codigo": 200,
+        "ms": 471.8,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 2,
+        "codigo": 200,
+        "ms": 301.6,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 3,
+        "codigo": 200,
+        "ms": 163,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 4,
+        "codigo": 200,
+        "ms": 150.8,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 5,
+        "codigo": 200,
+        "ms": 163.1,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 6,
+        "codigo": 200,
+        "ms": 170.9,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 7,
+        "codigo": 200,
+        "ms": 180.1,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 8,
+        "codigo": 200,
+        "ms": 201.8,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 9,
+        "codigo": 200,
+        "ms": 173,
+        "bytes": 4845
+      },
+      {
+        "solicitud": 10,
+        "codigo": 200,
+        "ms": 154.1,
+        "bytes": 4845
+      }
+    ],
+    "resumen": {
+      "min": 150.8,
+      "prom": 213,
+      "max": 471.8,
+      "de": 95.8,
+      "p95": 471.8
+    }
+  },
+  "transferencia": [
+    {
+      "medicion": 1,
+      "subida_codigo": 200,
+      "subida_s": 1.867,
+      "subida_Mbps": 4.494,
+      "bajada_codigo": 200,
+      "bajada_s": 0.706,
+      "bajada_Mbps": 11.883,
+      "integro": true
+    },
+    {
+      "medicion": 2,
+      "subida_codigo": 200,
+      "subida_s": 1.539,
+      "subida_Mbps": 5.449,
+      "bajada_codigo": 200,
+      "bajada_s": 0.717,
+      "bajada_Mbps": 11.693,
+      "integro": true
+    },
+    {
+      "medicion": 3,
+      "subida_codigo": 200,
+      "subida_s": 1.082,
+      "subida_Mbps": 7.753,
+      "bajada_codigo": 200,
+      "bajada_s": 0.441,
+      "bajada_Mbps": 19.023,
+      "integro": true
+    }
+  ],
+  "urlFirmadaAlterada": 400,
+  "carga": [
+    {
+      "endpoint": "GET pedidos (lectura)",
+      "usuarios": 1,
+      "solicitudes": 20,
+      "exitosas": 20,
+      "fallidas": 0,
+      "codigos": "{\"200\":20}",
+      "prom_ms": 166.1,
+      "p95_ms": 197.4,
+      "max_ms": 219.2,
+      "duracion_s": 3.32,
+      "req_por_s": 6.02,
+      "transfer_Mbps": 0.233
+    },
+    {
+      "endpoint": "POST mensajes (escritura)",
+      "usuarios": 1,
+      "solicitudes": 20,
+      "exitosas": 20,
+      "fallidas": 0,
+      "codigos": "{\"201\":20}",
+      "prom_ms": 166.4,
+      "p95_ms": 183,
+      "max_ms": 228.8,
+      "duracion_s": 3.33,
+      "req_por_s": 6.01,
+      "transfer_Mbps": 0
+    },
+    {
+      "endpoint": "GET pedidos (lectura)",
+      "usuarios": 5,
+      "solicitudes": 20,
+      "exitosas": 20,
+      "fallidas": 0,
+      "codigos": "{\"200\":20}",
+      "prom_ms": 229.4,
+      "p95_ms": 428.5,
+      "max_ms": 440.6,
+      "duracion_s": 1.01,
+      "req_por_s": 19.74,
+      "transfer_Mbps": 0.765
+    },
+    {
+      "endpoint": "POST mensajes (escritura)",
+      "usuarios": 5,
+      "solicitudes": 20,
+      "exitosas": 20,
+      "fallidas": 0,
+      "codigos": "{\"201\":20}",
+      "prom_ms": 191.1,
+      "p95_ms": 295.7,
+      "max_ms": 309.1,
+      "duracion_s": 0.82,
+      "req_por_s": 24.28,
+      "transfer_Mbps": 0
+    },
+    {
+      "endpoint": "GET pedidos (lectura)",
+      "usuarios": 10,
+      "solicitudes": 20,
+      "exitosas": 20,
+      "fallidas": 0,
+      "codigos": "{\"200\":20}",
+      "prom_ms": 231.7,
+      "p95_ms": 441,
+      "max_ms": 497,
+      "duracion_s": 0.52,
+      "req_por_s": 38.7,
+      "transfer_Mbps": 1.5
+    },
+    {
+      "endpoint": "POST mensajes (escritura)",
+      "usuarios": 10,
+      "solicitudes": 20,
+      "exitosas": 20,
+      "fallidas": 0,
+      "codigos": "{\"201\":20}",
+      "prom_ms": 222.8,
+      "p95_ms": 446.7,
+      "max_ms": 471.8,
+      "duracion_s": 0.67,
+      "req_por_s": 29.87,
+      "transfer_Mbps": 0
+    }
+  ],
+  "mensajesGuardados": 60
+}

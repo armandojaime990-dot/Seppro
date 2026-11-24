@@ -31,13 +31,25 @@ object Api {
 
     private val JSON = "application/json".toMediaType()
 
-    fun get(ruta: String): String = request("GET", ruta, null)
+    /** URL del servidor. Las pruebas unitarias la cambian por un servidor simulado (MockWebServer). */
+    internal var baseUrl: String = SupabaseClient.URL
+
+    fun get(ruta: String): String = request("GET", ruta, null).cuerpo
+
+    /** Respuesta con el total de filas (Prefer: count=exact -> Content-Range "0-19/3005"). */
+    class ConTotal(val cuerpo: String, val total: Int?)
+
+    fun getConTotal(ruta: String): ConTotal {
+        val r = request("GET", ruta, null, mapOf("Prefer" to "count=exact"))
+        val total = r.contentRange?.substringAfter('/', "")?.toIntOrNull()
+        return ConTotal(r.cuerpo, total)
+    }
 
     fun post(ruta: String, cuerpo: String, extra: Map<String, String> = emptyMap()): String =
-        request("POST", ruta, cuerpo.toRequestBody(JSON), extra)
+        request("POST", ruta, cuerpo.toRequestBody(JSON), extra).cuerpo
 
     fun patch(ruta: String, cuerpo: String): String =
-        request("PATCH", ruta, cuerpo.toRequestBody(JSON), mapOf("Prefer" to "return=representation"))
+        request("PATCH", ruta, cuerpo.toRequestBody(JSON), mapOf("Prefer" to "return=representation")).cuerpo
 
     /** Llama a una función SQL: POST /rest/v1/rpc/<nombre> */
     fun rpc(nombre: String, params: JSONObject = JSONObject()): String =
@@ -45,14 +57,16 @@ object Api {
 
     /** Sube un archivo binario a Supabase Storage. */
     fun subir(ruta: String, bytes: ByteArray, contentType: String): String =
-        request("POST", ruta, bytes.toRequestBody(contentType.toMediaType()), mapOf("x-upsert" to "false"))
+        request("POST", ruta, bytes.toRequestBody(contentType.toMediaType()), mapOf("x-upsert" to "false")).cuerpo
 
     fun enc(valor: String): String = URLEncoder.encode(valor, "UTF-8")
 
-    private fun request(metodo: String, ruta: String, cuerpo: RequestBody?, extra: Map<String, String> = emptyMap()): String {
+    private class Respuesta(val cuerpo: String, val contentRange: String?)
+
+    private fun request(metodo: String, ruta: String, cuerpo: RequestBody?, extra: Map<String, String> = emptyMap()): Respuesta {
         val token = SupabaseClient.accessToken ?: throw SesionExpiradaException()
         val builder = Request.Builder()
-            .url(SupabaseClient.URL + ruta)
+            .url(baseUrl + ruta)
             .method(metodo, cuerpo)
             .header("apikey", SupabaseClient.ANON_KEY)
             .header("Authorization", "Bearer $token")
@@ -63,7 +77,7 @@ object Api {
             val texto = resp.body?.string().orEmpty()
             if (resp.code == 401) throw SesionExpiradaException()
             if (!resp.isSuccessful) throw ApiException(resp.code, mensajeDeError(texto, resp.code))
-            return texto
+            return Respuesta(texto, resp.header("Content-Range"))
         }
     }
 

@@ -1,0 +1,16 @@
+{
+  "id_cliente": "bf9ff83e-9766-4091-b9fe-dfa2a1ba7fc3",
+  "envio1": {
+    "codigo": 201,
+    "cuerpo": "[{\"id\":2090}]"
+  },
+  "envio2": {
+    "codigo": 409,
+    "cuerpo": "{\"code\":\"23505\",\"details\":null,\"hint\":null,\"message\":\"duplicate key value violates unique constraint \\\"mensajes_id_clien"
+  },
+  "envio3": {
+    "codigo": 409,
+    "cuerpo": "{\"code\":\"23505\",\"details\":null,\"hint\":null,\"message\":\"duplicate key value violates unique constraint \\\"mensajes_id_clien"
+  },
+  "registros_guardados": 1
+}

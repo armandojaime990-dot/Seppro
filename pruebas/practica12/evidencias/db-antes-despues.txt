@@ -1,0 +1,85 @@
+Práctica 12 — Fase 4: resultado de db-antes-despues.sql (Supabase SQL Editor, 2026-11-11)
+EXPLAIN (ANALYZE, BUFFERS) ejecutado como rol authenticated con RLS (sub = cliente2@seppro.com)
+
+== Volumen ==
+pedidos=3019 · pedido_items=3020 · pedidos de cliente2=3005 · mensajes=18
+
+== Consultas más repetidas (pg_stat_statements) ==
+INSERT mensajes (dispositivo, reporte_id, texto)          llamadas=562 · prom=0.68 ms  · total=380 ms
+SELECT pedidos.* + pedido_items (app original, 1 cliente)  llamadas=534 · prom=18.79 ms · total=10035 ms
+SELECT pedidos.* + pedido_items (variante)                 llamadas=89  · prom=1.03 ms  · total=92 ms
+SELECT mensajes WHERE reporte_id = $1                      llamadas=30  · prom=0.75 ms  · total=22 ms
+INSERT mensajes con adjunto                                llamadas=11  · prom=3.65 ms  · total=40 ms
+SELECT pedidos.* + pedido_items (cliente2, 3005 filas)     llamadas=10  · prom=572.40 ms · total=5724 ms
+
+== ANTES (sin índices) ==
+1 individual por id
+  Index Scan using pedidos_pkey on pedidos p (actual time=11.595..11.596 rows=1)
+    -> Seq Scan on pedido_items i (rows=1)  Rows Removed by Filter: 3019
+  Buffers: shared hit=98
+  Planning 0.459 ms · Execution 11.631 ms
+
+2 conjunto pequeño (20)
+  Limit -> Sort (top-N heapsort 26kB) -> Seq Scan on pedidos p (rows=3005, Rows Removed 14)
+    subconsulta: Seq Scan on pedido_items i ×20 (Rows Removed by Filter: 3019 c/u)
+  Buffers: shared hit=700
+  Planning 0.316 ms · Execution 8.392 ms
+
+3 conjunto grande (todos, consulta original de la app)
+  Sort (quicksort 902kB) -> Seq Scan on pedidos p (rows=3005)
+    subconsulta: Seq Scan on pedido_items i ×3005 (Rows Removed by Filter: 3019 c/u ≈ 9 millones de filas descartadas)
+  Buffers: shared hit=96217
+  Planning 0.327 ms · Execution 523.039 ms
+
+4 con filtros (activos, página 1, consulta nueva)
+  Limit -> Sort (top-N heapsort 27kB) -> Seq Scan on pedidos p (rows=2046, Rows Removed 973)
+    subconsulta: Seq Scan on pedido_items i ×20
+  Buffers: shared hit=697
+  Planning 0.450 ms · Execution 7.138 ms
+
+4b conteo "Mostrando 20 de N"
+  Aggregate -> Seq Scan on pedidos p (rows=2046)
+  Buffers: shared hit=57
+  Planning 0.089 ms · Execution 3.220 ms
+
+== OPTIMIZACIÓN ==
+creados: pedidos_usuario_fecha_idx (usuario_id, created_at DESC, id DESC), pedido_items_pedido_idx (pedido_id),
+         mensajes.id_cliente UUID + mensajes_id_cliente_uq (UNIQUE); ANALYZE
+
+== DESPUÉS (con índices) ==
+1 individual por id
+  Index Scan using pedidos_pkey (actual time=0.048..0.049 rows=1)
+    -> Index Scan using pedido_items_pedido_idx (rows=1)
+  Buffers: shared hit=58 read=1
+  Planning 0.422 ms · Execution 0.085 ms
+
+2 conjunto pequeño (20)
+  Limit -> Index Scan using pedidos_usuario_fecha_idx (rows=20)   (sin Sort, sin Seq Scan)
+    -> Index Scan using pedido_items_pedido_idx ×20
+  Buffers: shared hit=133 read=8
+  Planning 0.333 ms · Execution 0.308 ms
+
+3 conjunto grande (todos, consulta original de la app)
+  Index Scan using pedidos_usuario_fecha_idx (rows=3005)   (sin Sort)
+    -> Index Scan using pedido_items_pedido_idx ×3005
+  Buffers: shared hit=20924 read=20
+  Planning 0.319 ms · Execution 30.856 ms
+
+4 con filtros (activos, página 1, consulta nueva)
+  Limit -> Index Scan using pedidos_usuario_fecha_idx (rows=20, Rows Removed by Filter: 9)
+    -> Index Scan using pedido_items_pedido_idx ×20
+  Buffers: shared hit=150
+  Planning 0.356 ms · Execution 0.242 ms
+
+4b conteo "Mostrando 20 de N"
+  Aggregate -> Seq Scan on pedidos p (rows=2046)   (sin cambio: lee toda la tabla de un cliente)
+  Buffers: shared hit=57
+  Planning 0.092 ms · Execution 3.221 ms
+
+== Bloqueos ==
+sesiones esperando lock=0 · conexiones activas=1
+
+== Índices (tamaño) ==
+mensajes:      mensajes_pkey 32 kB · mensajes_reporte_idx 32 kB · mensajes_id_cliente_uq 16 kB
+pedido_items:  pedido_items_pkey 88 kB · pedido_items_pedido_idx 88 kB
+pedidos:       pedidos_pkey 88 kB · pedidos_usuario_fecha_idx 168 kB

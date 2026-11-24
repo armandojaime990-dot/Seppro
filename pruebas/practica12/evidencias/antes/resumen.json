@@ -1,0 +1,122 @@
+{
+  "etiqueta": "antes",
+  "cpu_pct_de_400": {
+    "n": 150,
+    "min": 0,
+    "prom": 19.4,
+    "p90": 68,
+    "max": 130
+  },
+  "cpu_mientras_trabaja": {
+    "n": 99,
+    "min": 1,
+    "prom": 29.5,
+    "p90": 77,
+    "max": 130
+  },
+  "ram_pss_mb": {
+    "inicial": 60.9,
+    "max": 146.4,
+    "final": 124,
+    "muestras": 108
+  },
+  "operaciones": [
+    {
+      "op": "Mis pedidos",
+      "red": 980,
+      "ui": 609,
+      "total": 2054,
+      "filas": 670,
+      "bytes": 512236,
+      "vistas": 670
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 912,
+      "ui": 1419,
+      "total": 2927,
+      "filas": 670,
+      "bytes": 512236,
+      "vistas": 670
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 997,
+      "ui": 896,
+      "total": 2268,
+      "filas": 670,
+      "bytes": 512236,
+      "vistas": 670
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 903,
+      "ui": 558,
+      "total": 1871,
+      "filas": 670,
+      "bytes": 512236,
+      "vistas": 670
+    },
+    {
+      "op": "Historial",
+      "red": 1101,
+      "ui": 505,
+      "total": 1712,
+      "filas": 330,
+      "bytes": 512236,
+      "vistas": 330
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 990,
+      "ui": 948,
+      "total": 2368,
+      "filas": 670,
+      "bytes": 512236,
+      "vistas": 670
+    },
+    {
+      "op": "Mis pedidos",
+      "red": 978,
+      "ui": 822,
+      "total": 2295,
+      "filas": 670,
+      "bytes": 512236,
+      "vistas": 670
+    }
+  ],
+  "tiempo_total_ms": {
+    "n": 7,
+    "min": 1712,
+    "prom": 2213.6,
+    "p90": 2927,
+    "max": 2927
+  },
+  "tiempo_hilo_principal_ms": {
+    "n": 7,
+    "min": 505,
+    "prom": 822.4,
+    "p90": 1419,
+    "max": 1419
+  },
+  "tiempo_red_ms": {
+    "n": 7,
+    "min": 903,
+    "prom": 980.1,
+    "p90": 1101,
+    "max": 1101
+  },
+  "congelamientos": {
+    "eventos": 13,
+    "cuadros_saltados": 575,
+    "max": 84
+  },
+  "gfx": {
+    "cuadros": "109",
+    "lentos": "97.25%",
+    "p50": "125ms",
+    "p90": "150ms",
+    "p95": "200ms"
+  },
+  "errores": 0
+}

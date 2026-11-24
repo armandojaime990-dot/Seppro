@@ -1,0 +1,4 @@
+--------- beginning of main
+11-12 23:11:52.891 10815 10815 I Choreographer: Skipped 85 frames!  The application may be doing too much work on its main thread.
+11-12 23:12:32.152 10815 10815 I Choreographer: Skipped 45 frames!  The application may be doing too much work on its main thread.
+11-12 23:14:01.470 10815 10815 I Choreographer: Skipped 30 frames!  The application may be doing too much work on its main thread.

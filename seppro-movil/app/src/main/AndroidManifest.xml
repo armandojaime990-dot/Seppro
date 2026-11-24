@@ -30,7 +30,10 @@
         android:required="false" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/reglas_respaldo"
+        android:fullBackupContent="false"
+        android:networkSecurityConfig="@xml/seguridad_red"
         android:icon="@android:drawable/sym_def_app_icon"
         android:label="SEPPRO"
         android:supportsRtl="true"
@@ -48,7 +51,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Pantalla principal: Toolbar + BottomNavigationView con 3 pestañas -->
+        <!-- Pantalla principal: Toolbar + BottomNavigationView con 4 pestañas -->
         <activity
             android:name=".MainActivity"
             android:exported="false"

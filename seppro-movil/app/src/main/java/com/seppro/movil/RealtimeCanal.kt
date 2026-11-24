@@ -134,7 +134,7 @@ class RealtimeCanal(private val reporteId: Int, private val listener: Listener) 
         if (!activo) return
         listener.onConexion(false)
         intentos++
-        val espera = (2_000L shl (intentos - 1).coerceAtMost(4)).coerceAtMost(30_000L)
+        val espera = esperaReintento(intentos)
         handler.postDelayed({ if (activo && socket == null) abrir() }, espera)
     }
 
@@ -151,5 +151,11 @@ class RealtimeCanal(private val reporteId: Int, private val listener: Listener) 
 
     companion object {
         private const val TAG = "SEPPRO_Realtime"
+
+        /** Espera antes del reintento n (1, 2, 3...): 2 s, 4 s, 8 s, 16 s y luego 30 s como máximo. */
+        fun esperaReintento(intento: Int): Long {
+            if (intento < 1) return 2_000L
+            return (2_000L shl (intento - 1).coerceAtMost(4)).coerceAtMost(30_000L)
+        }
     }
 }

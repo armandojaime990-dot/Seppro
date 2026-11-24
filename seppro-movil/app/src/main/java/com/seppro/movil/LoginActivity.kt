@@ -248,7 +248,7 @@ class LoginActivity : AppCompatActivity() {
     private fun recuperarAcceso() {
         val email = emailInput.text.toString().trim()
         if (email.isEmpty() || email.length > ValidacionLogin.MAX_EMAIL ||
-            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            !ValidacionLogin.correoValido(email)) {
             statusText.text = "Escribe tu correo para recuperar el acceso"
             statusText.setTextColor(COLOR_ERROR)
             return

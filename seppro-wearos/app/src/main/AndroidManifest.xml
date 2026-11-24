@@ -5,17 +5,23 @@
     <!-- Internet permission for WebView -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Entregable 2: avisos de verificación que manda el teléfono -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Wear OS feature -->
     <uses-feature android:name="android.hardware.type.watch" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/reglas_respaldo"
+        android:fullBackupContent="false"
+        android:networkSecurityConfig="@xml/seguridad_red"
         android:icon="@android:drawable/sym_def_app_icon"
         android:label="SEPPRO"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         tools:targetApi="34">
 
         <!-- Native Login Activity -->
@@ -34,6 +40,24 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="SEPPRO" />
+
+        <!-- Entregable 2: resultado de la verificación enviado por el teléfono (Data Layer) -->
+        <service
+            android:name=".VerificacionListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data
+                    android:host="*"
+                    android:pathPrefix="/seppro/verificacion"
+                    android:scheme="wear" />
+            </intent-filter>
+        </service>
+
+        <!-- La app del reloj funciona sola (sin teléfono): inicia sesión directo en Supabase -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
 
     </application>
 </manifest>

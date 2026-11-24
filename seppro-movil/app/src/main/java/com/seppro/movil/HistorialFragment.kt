@@ -9,5 +9,5 @@ class HistorialFragment : ListaPedidosFragment() {
     override val titulo = "Historial"
     override val textoVacio = "Aún no tienes pedidos entregados."
 
-    override fun incluir(estado: String) = estado in Estados.CERRADOS
+    override val filtro = PedidosApi.Filtro.HISTORIAL
 }

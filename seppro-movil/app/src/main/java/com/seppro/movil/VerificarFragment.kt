@@ -17,13 +17,24 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import android.content.pm.PackageManager
+import androidx.appcompat.app.AlertDialog
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 /**
- * Pestaña "Verificar": escaneo BLE de dispositivos cercanos para encontrar
- * el sensor (Smart Tag) del paquete. En este entregable solo se escanea y
- * se selecciona el dispositivo; todavía no se lee su contenido.
+ * Pestaña "Verificar":
+ *  - Entregable 1: escaneo BLE de dispositivos cercanos y selección del Smart Tag.
+ *  - Entregable 2: conexión GATT, lectura de la telemetría (paquete + estatus) y registro
+ *    en Supabase con verificar_entrega. El estado vive en VerificacionViewModel (StateFlow).
+ *  - Entregable 3: "Alerta de integridad" con opción de aceptar con daños o rechazar el equipo;
+ *    sin golpes se activa la garantía y se envía el certificado al correo.
  */
 class VerificarFragment : Fragment(), BleScanner.Listener {
 
@@ -39,6 +50,18 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
     private var ultimaLista: List<DispositivoBle> = emptyList()
     private var direccionSeleccionada: String? = null
     private var permisoBloqueado = false
+    private var pedidoId = 0
+    private var nombreSeleccionado: String? = null
+
+    // Verificación (Entregables 2 y 3)
+    private val vm: VerificacionViewModel by viewModels {
+        viewModelFactory { initializer { VerificacionViewModel(VerificacionApi, RelojDataLayer(requireContext())) } }
+    }
+    private var tarjetaVerificacion: TextView? = null
+    private var botonLeer: Button? = null
+    private var accionesVerificacion: LinearLayout? = null
+    /** Acción pendiente mientras se piden permisos: leer el sensor después de concederlos. */
+    private var leerAlConcederPermiso = false
 
     // Permisos en tiempo de ejecución (registerForActivityResult)
     private val permisoLauncher = registerForActivityResult(
@@ -46,7 +69,8 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
     ) {
         if (scanner.tienePermisos()) {
             permisoBloqueado = false
-            iniciarEscaneo()
+            if (leerAlConcederPermiso) leerSensor() else iniciarEscaneo()
+            leerAlConcederPermiso = false
         } else {
             // Si el sistema ya no muestra el diálogo, hay que ir a Ajustes
             permisoBloqueado = BleScanner.permisosNecesarios().any { permiso ->
@@ -72,7 +96,7 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val ctx = requireContext()
-        val pedidoId = arguments?.getInt(ARG_PEDIDO_ID, 0) ?: 0
+        pedidoId = arguments?.getInt(ARG_PEDIDO_ID, 0) ?: 0
 
         val contenido = LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
@@ -151,6 +175,8 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
         listaDispositivos = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL }
         contenido.addView(listaDispositivos)
 
+        construirSeccionVerificacion(ctx, contenido)
+
         return ScrollView(ctx).apply {
             setBackgroundColor(0xFFFFFFFF.toInt())
             addView(contenido)
@@ -160,6 +186,12 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onEstado(BleScanner.Estado.INACTIVO)
+        // El estado de la verificación llega del ViewModel (sobrevive a la rotación)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                vm.estado.collect { pintarVerificacion(it) }
+            }
+        }
     }
 
     override fun onResume() {
@@ -187,6 +219,9 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
         botonAccion = null
         textoSeleccionado = null
         listaDispositivos = null
+        tarjetaVerificacion = null
+        botonLeer = null
+        accionesVerificacion = null
     }
 
     // ===== Flujo de escaneo =====
@@ -329,6 +364,7 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
 
     private fun seleccionar(d: DispositivoBle) {
         direccionSeleccionada = d.direccion
+        nombreSeleccionado = d.nombreVisible
         textoSeleccionado?.text = "Seleccionado: ${d.nombreVisible}"
 
         // ultimo_dispositivo = nombre y dirección (JSON)
@@ -349,10 +385,148 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
         try {
             val json = JSONObject(guardado)
             direccionSeleccionada = json.optString("direccion")
+            nombreSeleccionado = json.optString("nombre")
             textoSeleccionado?.text = "Seleccionado: ${json.optString("nombre")} (${json.optString("direccion")})"
         } catch (e: Exception) {
             textoSeleccionado?.text = "Seleccionado: ninguno"
         }
+    }
+
+    // ===== Verificación con el Smart Tag (Entregables 2 y 3) =====
+
+    private fun construirSeccionVerificacion(ctx: android.content.Context, contenido: LinearLayout) {
+        contenido.addView(TextView(ctx).apply {
+            text = "Lectura del Smart Tag (GATT)"
+            textSize = 17f
+            setTextColor(COLOR_PRIMARY)
+            setTypeface(null, Typeface.BOLD)
+            setPadding(0, ctx.dp(24), 0, ctx.dp(8))
+        })
+        tarjetaVerificacion = TextView(ctx).apply {
+            textSize = 14f
+            background = fondoRedondeado(ctx, COLOR_GRIS_CLARO, 8)
+            setPadding(ctx.dp(12), ctx.dp(10), ctx.dp(12), ctx.dp(10))
+        }
+        contenido.addView(tarjetaVerificacion, anchoCompleto())
+
+        botonLeer = ctx.botonPrincipal("Leer Smart Tag seleccionado") { leerSensor() }
+        contenido.addView(botonLeer, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, ctx.dp(52)).apply { topMargin = ctx.dp(10) })
+
+        accionesVerificacion = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL }
+        contenido.addView(accionesVerificacion, anchoCompleto())
+
+        // Modo demostración: permite probar el flujo completo sin el Smart Tag físico
+        contenido.addView(TextView(ctx).apply {
+            text = "Modo demostración (sin hardware): simula la lectura del sensor del pedido elegido."
+            textSize = 12f
+            setTextColor(COLOR_TEXTO_SUAVE)
+            setPadding(0, ctx.dp(16), 0, ctx.dp(6))
+        })
+        val fila = LinearLayout(ctx).apply { orientation = LinearLayout.HORIZONTAL }
+        fila.addView(ctx.botonSecundario("Simular sin golpes") { simular(TelemetriaTag.ESTATUS_SIN_INCIDENTES) },
+            LinearLayout.LayoutParams(0, ctx.dp(44), 1f).apply { rightMargin = ctx.dp(8) })
+        fila.addView(ctx.botonSecundario("Simular golpe fuerte") { simular(TelemetriaTag.ESTATUS_GOLPE) },
+            LinearLayout.LayoutParams(0, ctx.dp(44), 1f))
+        contenido.addView(fila, anchoCompleto())
+    }
+
+    private fun leerSensor() {
+        val direccion = direccionSeleccionada
+        if (direccion.isNullOrBlank()) {
+            onEstado(BleScanner.Estado.ERROR, "Primero escanea y toca el Smart Tag de la caja")
+            return
+        }
+        if (!scanner.tienePermisos()) {
+            leerAlConcederPermiso = true
+            permisoLauncher.launch(BleScanner.permisosNecesarios())
+            return
+        }
+        scanner.detener() // no escanear mientras se conecta por GATT
+        vm.verificar(pedidoId, GattLector(requireContext()), direccion, nombreSeleccionado)
+    }
+
+    private fun simular(estatus: Int) {
+        vm.verificar(pedidoId, SimuladorTag(pedidoId, estatus), "simulador", "Smart Tag (simulado)")
+    }
+
+    private fun boton(ctx: android.content.Context, vista: View, alto: Int, margen: Int) =
+        accionesVerificacion?.addView(vista, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, ctx.dp(alto)).apply { topMargin = ctx.dp(margen) })
+
+    private fun pintarVerificacion(estado: EstadoVerificacion) {
+        val ctx = context ?: return
+        val tarjeta = tarjetaVerificacion ?: return
+        accionesVerificacion?.removeAllViews()
+        botonLeer?.isEnabled = !vm.ocupado
+
+        val (texto, color) = when (estado) {
+            EstadoVerificacion.Inactivo -> textoInactivo() to COLOR_TEXTO_SUAVE
+            is EstadoVerificacion.Conectando ->
+                "🔗 Conectando con ${estado.dispositivo} y leyendo la telemetría..." to COLOR_ACCENT
+            is EstadoVerificacion.Registrando -> {
+                val t = estado.telemetria
+                "📡 Paquete ${t.paqueteId} · estatus ${t.estatus} (${if (t.golpe) "golpe fuerte" else "sin incidentes"}). " +
+                    "Registrando en el servidor..." to COLOR_ACCENT
+            }
+            is EstadoVerificacion.Verificado -> textoVerificado(estado) to 0xFF2E7D32.toInt()
+            is EstadoVerificacion.Alerta -> {
+                boton(ctx, ctx.botonPrincipal("Aceptar equipo con daños", 0xFFE65100.toInt()) {
+                    vm.aceptarConDanos(estado.pedidoId) }, 48, 10)
+                boton(ctx, ctx.botonPrincipal("Rechazar equipo", COLOR_ERROR) { confirmarRechazo(estado.pedidoId) }, 48, 8)
+                "🚨 ALERTA DE INTEGRIDAD\nEl Smart Tag registró un golpe fuerte durante el traslado. " +
+                    "Revisa el equipo frente al repartidor: puedes aceptarlo con daños o rechazarlo." to COLOR_ERROR
+            }
+            is EstadoVerificacion.Resolviendo ->
+                (if (estado.accion == "rechazar") "Registrando el rechazo del equipo..." else "Registrando la aceptación...") to COLOR_ACCENT
+            is EstadoVerificacion.Resuelto -> {
+                val r = estado.resultado
+                val reporteId = r.reporteId
+                if (reporteId != null) {
+                    boton(ctx, ctx.botonSecundario("Ver reporte ${r.reporteFolio.orEmpty()}") {
+                        startActivity(ReporteActivity.intent(ctx, reporteId)) }, 44, 10)
+                }
+                (if (r.estado == "rechazado") "⛔ Equipo rechazado. Se abrió el reporte ${r.reporteFolio.orEmpty()} con prioridad alta para la devolución."
+                 else "⚠️ Equipo aceptado con daños. Si encuentras fallas, abre un reporte en Soporte.") to Estados.color(r.estado)
+            }
+            is EstadoVerificacion.Error -> {
+                if (estado.sesionExpirada) { activity?.irAlLogin(); return }
+                boton(ctx, ctx.botonSecundario("Intentar de nuevo") { vm.reiniciar() }, 44, 10)
+                "Error: ${estado.mensaje}" to COLOR_ERROR
+            }
+        }
+        tarjeta.text = texto
+        tarjeta.setTextColor(color)
+    }
+
+    private fun textoInactivo() =
+        if (pedidoId > 0) "Selecciona el Smart Tag de la caja del pedido #$pedidoId y tócalo para leerlo."
+        else "Elige un pedido \"En puerta\" en la pestaña Pedidos para verificarlo."
+
+    private fun textoVerificado(estado: EstadoVerificacion.Verificado): String {
+        val r = estado.resultado
+        val correo = when (estado.correoEnviado) {
+            null -> "Enviando certificado a tu correo..."
+            true -> "📧 Certificado enviado a tu correo."
+            false -> "📧 El correo se enviará cuando el servicio esté disponible; el certificado ya está en Mis pedidos."
+        }
+        return "✅ Entrega verificada: el viaje fue sin incidentes.\n" +
+            "🛡️ Garantía ${r.garantiaFolio ?: "activada"}${r.garantiaVence?.let { " · vence $it" } ?: ""}\n$correo"
+    }
+
+    private fun confirmarRechazo(pedido: Int) {
+        val ctx = context ?: return
+        val motivo = ctx.campo("Ej. la carcasa llegó abollada", 500, multilinea = true)
+        AlertDialog.Builder(ctx)
+            .setTitle("Rechazar equipo del pedido #$pedido")
+            .setMessage("Se registrará la devolución y se abrirá un reporte de falla con prioridad alta.")
+            .setView(LinearLayout(ctx).apply {
+                setPadding(ctx.dp(20), ctx.dp(8), ctx.dp(20), 0)
+                addView(motivo, anchoCompleto())
+            })
+            .setPositiveButton("Rechazar") { _, _ -> vm.rechazarEquipo(pedido, motivo.text.toString()) }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
     companion object {

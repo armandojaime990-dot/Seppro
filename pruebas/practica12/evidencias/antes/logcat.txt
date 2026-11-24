@@ -1,0 +1,10 @@
+--------- beginning of system
+11-12 01:30:25.894   723  2050 W ActivityManager: registerReceiverWithFeature: no app for null
+--------- beginning of main
+11-12 01:30:53.468  6995  6995 I SEPPRO_Perf: op=Mis pedidos red_ms=980 proceso_ms=5 ui_hilo_principal_ms=609 total_hasta_dibujo_ms=2054 filas=670 bytes=512236 vistas=670
+11-12 01:31:23.725  6995  6995 I SEPPRO_Perf: op=Mis pedidos red_ms=912 proceso_ms=7 ui_hilo_principal_ms=1419 total_hasta_dibujo_ms=2927 filas=670 bytes=512236 vistas=670
+11-12 01:31:43.324  6995  6995 I SEPPRO_Perf: op=Mis pedidos red_ms=997 proceso_ms=4 ui_hilo_principal_ms=896 total_hasta_dibujo_ms=2268 filas=670 bytes=512236 vistas=670
+11-12 01:32:03.471  6995  6995 I SEPPRO_Perf: op=Mis pedidos red_ms=903 proceso_ms=8 ui_hilo_principal_ms=558 total_hasta_dibujo_ms=1871 filas=670 bytes=512236 vistas=670
+11-12 01:32:31.033  6995  6995 I SEPPRO_Perf: op=Historial red_ms=1101 proceso_ms=8 ui_hilo_principal_ms=505 total_hasta_dibujo_ms=1712 filas=330 bytes=512236 vistas=330
+11-12 01:33:05.104  6995  6995 I SEPPRO_Perf: op=Mis pedidos red_ms=990 proceso_ms=6 ui_hilo_principal_ms=948 total_hasta_dibujo_ms=2368 filas=670 bytes=512236 vistas=670
+11-12 01:34:33.317  6995  6995 I SEPPRO_Perf: op=Mis pedidos red_ms=978 proceso_ms=4 ui_hilo_principal_ms=822 total_hasta_dibujo_ms=2295 filas=670 bytes=512236 vistas=670

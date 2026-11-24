@@ -41,6 +41,8 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
     private var reporte: Reporte? = null
     private val mensajes = mutableListOf<Mensaje>()
     private var limpiadoHasta = 0L
+    /** Último envío que falló: (texto, idCliente) para reintentarlo sin duplicar. */
+    private var envioPendiente: Pair<String, String>? = null
     private lateinit var canal: RealtimeCanal
 
     private lateinit var cabecera: LinearLayout
@@ -405,11 +407,19 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
     }
 
     private fun guardarCambios(cambios: JSONObject, aviso: String) {
+        val leido = reporte?.actualizado ?: return
         thread {
             try {
-                SoporteApi.actualizarReporte(reporteId, cambios)
+                SoporteApi.actualizarReporte(reporteId, cambios, leido)
                 runOnUiThread {
                     Toast.makeText(this, aviso, Toast.LENGTH_SHORT).show()
+                    recargarReporte()
+                }
+            } catch (e: SoporteApi.ConflictoException) {
+                // Práctica 12 (O4): otra persona guardó primero; no se pisa su cambio
+                runOnUiThread {
+                    Toast.makeText(this, "Otra persona modificó el reporte. Se cargó la versión más reciente; " +
+                        "revisa y vuelve a intentarlo.", Toast.LENGTH_LONG).show()
                     recargarReporte()
                 }
             } catch (e: Exception) {
@@ -430,10 +440,14 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         }
         errorEntrada.visible(false)
         botonEnviar.isEnabled = false
+        // Práctica 12 (O3): el mismo texto que falló se reenvía con el MISMO id -> no se duplica
+        val idCliente = envioPendiente?.takeIf { it.first == texto }?.second ?: java.util.UUID.randomUUID().toString()
+        envioPendiente = texto to idCliente
         thread {
             try {
-                val m = SoporteApi.enviarMensaje(reporteId, texto)
+                val m = SoporteApi.enviarMensaje(reporteId, texto, idCliente = idCliente)
                 runOnUiThread {
+                    envioPendiente = null
                     entrada.text.clear()
                     botonEnviar.isEnabled = true
                     agregarMensaje(m)

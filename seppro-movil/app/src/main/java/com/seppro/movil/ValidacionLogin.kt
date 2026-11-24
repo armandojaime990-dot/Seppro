@@ -1,7 +1,5 @@
 package com.seppro.movil
 
-import android.util.Patterns
-
 /**
  * Práctica 5 (código seguro) aplicada al inicio de sesión de SEPPRO.
  *
@@ -23,12 +21,22 @@ object ValidacionLogin {
     /** No dice si falló el correo o la contraseña. */
     const val MENSAJE_GENERICO = "Correo o contraseña incorrectos"
 
+    /**
+     * Mismo patrón que android.util.Patterns.EMAIL_ADDRESS, escrito aquí para que
+     * la validación sea Kotlin puro y se pueda probar con JUnit (Práctica 11).
+     */
+    private val PATRON_EMAIL = Regex(
+        "[a-zA-Z0-9+._%\\-]{1,256}@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+"
+    )
+
+    fun correoValido(email: String): Boolean = PATRON_EMAIL.matches(email)
+
     /** Devuelve el mensaje de error para mostrar, o null si los datos son válidos. */
     fun validar(email: String, password: String): String? = when {
         email.isEmpty() || password.isEmpty() -> "Llena todos los campos"
         password.isBlank() -> "Llena todos los campos" // contraseña de solo espacios
         email.length > MAX_EMAIL || password.length > MAX_PASSWORD -> MENSAJE_GENERICO
-        email.any { it.isWhitespace() } || !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
+        email.any { it.isWhitespace() } || !correoValido(email) ->
             "Escribe un correo válido"
         password.length < MIN_PASSWORD -> MENSAJE_GENERICO
         else -> null

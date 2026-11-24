@@ -15,7 +15,7 @@ import org.json.JSONObject
  */
 object Estados {
     /** Pedidos cerrados: van al Historial; el resto se muestra en Pedidos. */
-    val CERRADOS = setOf("entregado", "entregado_verificado", "entregado_con_danos")
+    val CERRADOS = setOf("entregado", "entregado_verificado", "entregado_con_danos", "rechazado")
 
     /** Estados en los que el sensor detectó un problema: se puede abrir un reporte de falla. */
     val CON_DANO = setOf("entregado_con_danos", "alerta_integridad")
@@ -31,6 +31,7 @@ object Estados {
         "entregado_verificado" -> "Entregado y verificado"
         "entregado_con_danos" -> "Entregado con daños"
         "alerta_integridad" -> "Alerta de integridad"
+        "rechazado" -> "Equipo rechazado"
         else -> estado
     }
 
@@ -44,6 +45,7 @@ object Estados {
         "entregado_verificado" -> "✅"
         "entregado_con_danos" -> "⚠️"
         "alerta_integridad" -> "🚨"
+        "rechazado" -> "⛔"
         else -> "🕒"
     }
 
@@ -57,6 +59,7 @@ object Estados {
         "entregado_verificado" -> 0xFF2E7D32.toInt()
         "entregado_con_danos" -> 0xFFEF5350.toInt() // Rojo
         "alerta_integridad" -> 0xFFEF5350.toInt() // Rojo
+        "rechazado" -> 0xFF6D4C41.toInt() // Café: devolución en proceso
         else -> 0xFFFFA000.toInt() // Naranja (pendiente)
     }
 }
