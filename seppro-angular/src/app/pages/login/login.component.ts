@@ -46,9 +46,8 @@ import { SupabaseService } from '../../services/supabase.service';
         <div class="security-info">
           <h3>🛡️ Seguridad</h3>
           <ul>
-            <li>✅ Credenciales encriptadas (nunca texto plano)</li>
-            <li>✅ Autenticación con PIN de 4 dígitos</li>
-            <li>✅ Sesiones administradas por Supabase</li>
+            <li>✅ Tu contraseña viaja y se guarda cifrada</li>
+            <li>✅ Conexión segura (HTTPS)</li>
             <li>✅ Cierre de sesión seguro</li>
           </ul>
         </div>

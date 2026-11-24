@@ -89,7 +89,7 @@ export class MovilSoporteComponent implements OnInit {
       if (e instanceof SesionExpiradaError) { await this.router.navigateByUrl('/app/login'); return; }
       this.secciones = [];
       this.mensaje = e instanceof ErrorDelServidor
-        ? (e.codigo === 404 ? 'El módulo de soporte no está instalado en la base de datos (supabase-soporte.sql).'
+        ? (e.codigo === 404 ? 'Soporte no está disponible por el momento. Intenta más tarde.'
           : 'Error del servidor. Toca Actualizar.')
         : 'Sin conexión a Internet. Toca Actualizar.';
     }

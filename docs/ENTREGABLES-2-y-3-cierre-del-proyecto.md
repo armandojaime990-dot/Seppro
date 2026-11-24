@@ -39,7 +39,7 @@
 - La lectura debe tener formato válido.
 - El paquete leído debe corresponder al pedido elegido. Así se evita verificar la caja equivocada.
 
-Para presentar sin hardware hay un **modo demostración** con los botones "Simular sin golpes" y "Simular golpe fuerte". Usa exactamente el mismo flujo y la misma API.
+Si el Smart Tag no se puede leer, el enlace **"¿No encuentras el Smart Tag?"** muestra la **confirmación manual** con los botones "Llegó en buen estado" (estatus 0) y "Llegó golpeado" (estatus 1). Usa exactamente el mismo flujo y la misma API, y en el iPhone aparece directamente porque Safari no tiene Bluetooth web. Sirve también para presentar sin hardware.
 
 ## 2. Backend (Supabase): `supabase-entregable3.sql`
 
@@ -97,7 +97,7 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 - **Base de datos:** la misma de Supabase.
 - **Limitación de iOS:** Safari en iPhone **no permite Bluetooth en páginas web**. Por eso la PWA:
   - usa Web Bluetooth (GATT) donde existe (Chrome en Android y en PC);
-  - en iPhone muestra el aviso y deja el modo demostración. Otra opción es abrir `/app` en el navegador **Bluefy**, que sí tiene Web Bluetooth.
+  - en iPhone muestra directamente la confirmación manual ("Llegó en buen estado" / "Llegó golpeado").
 
 ## 7. Seguridad (revisada para que las pruebas de seguridad no fallen)
 
@@ -123,12 +123,18 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 - Cambiar la contraseña `123456` de las cuentas de prueba antes de una presentación pública.
 - Activar *Leaked password protection* en Auth.
 
+## 7b. Pulido para el usuario final
+
+- Se quitaron de las apps los textos dirigidos al desarrollador: aviso de instalación en iPhone, "modo demostración", nombres de archivos `.sql` en mensajes de error, términos técnicos (GATT, BLE, telemetría) y "enlace temporal".
+- El chat de soporte ya no muestra el modelo del dispositivo de cada persona ni el contador de mensajes por dispositivo (el dato se sigue guardando en `mensajes.dispositivo` para auditoría, pero no se muestra).
+- La web ya no muestra datos inventados ("Producto Demo") si un producto no carga, ni el identificador del sensor en Mis pedidos; el recuadro de seguridad del login ya no menciona tecnologías ni un PIN que no existe.
+
 ## 8. Prueba en dispositivos físicos (checklist para la presentación)
 
 1. Ejecutar `supabase-entregable3.sql` en Supabase.
 2. Instalar `SEPPRO-telefono-v3.0.apk` en el teléfono Android y `SEPPRO-reloj-v3.0.apk` en el reloj. Los dos usan la misma firma.
 3. En la web (Dashboard del admin), poner un pedido del cliente en **En puerta**.
-4. En el teléfono: Pedidos → Verificar paquete → Escanear → tocar el Smart Tag → Leer. Sin Smart Tag, usar "Simular...".
+4. En el teléfono: Pedidos → Verificar paquete → Escanear → tocar el Smart Tag → Leer. Sin Smart Tag, tocar "¿No encuentras el Smart Tag?" y usar la confirmación manual.
 5. Comprobar:
    - la notificación en el reloj;
    - el estado nuevo en la web (Mis pedidos), sin recargar;

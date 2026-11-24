@@ -205,7 +205,7 @@ class VerificacionViewModel(
     companion object {
         /** PostgREST responde 404 (PGRST202) si la RPC no existe: falta ejecutar el script SQL. */
         const val FUNCION_NO_INSTALADA =
-            "La verificación no está instalada en el servidor. Ejecuta supabase-entregable3.sql en Supabase."
+            "La verificación no está disponible por el momento. Intenta más tarde."
     }
 
     fun reiniciar() {

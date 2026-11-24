@@ -123,6 +123,7 @@ export const sesionGuard: CanActivateFn = async () => {
       padding: 14px 4px; font-size: 15px; color: var(--m-texto); cursor: pointer; font-family: inherit;
     }
     .m-fila { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .enlace { background: none; border: 0; padding: 16px 0 4px; color: var(--m-primary); font-size: 14px; text-decoration: underline; cursor: pointer; }
     .m-fila > .m-btn { flex: 1; }
     @media (min-width: 640px) {
       .m-app { max-width: 480px; margin: 0 auto; box-shadow: 0 0 24px rgba(0,0,0,.12); }

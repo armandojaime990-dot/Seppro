@@ -6,7 +6,7 @@ import {
 import { ErrorDelServidor, ErrorDeRed } from './nucleo/reintento';
 
 export const FUNCION_NO_INSTALADA =
-  'La verificación no está instalada en el servidor. Ejecuta supabase-entregable3.sql en Supabase.';
+  'La verificación no está disponible por el momento. Intenta más tarde.';
 
 /** Respuesta de verificar_entrega. */
 export interface ResultadoVerificacion {
@@ -167,7 +167,7 @@ export class LectorWebBluetooth implements LectorTelemetria {
 
   async leer(): Promise<Telemetria> {
     const gatt = this.dispositivo.gatt;
-    if (!gatt) throw new Error('El dispositivo no admite GATT');
+    if (!gatt) throw new Error('No se pudo conectar con el Smart Tag');
     let reloj: ReturnType<typeof setTimeout> | undefined;
     const limite = new Promise<never>((_, falla) => {
       reloj = setTimeout(() => {

@@ -106,7 +106,7 @@ class SoporteFragment : Fragment() {
                 Log.w(TAG, "Error del servidor (${e.codigo})")
                 activity?.runOnUiThread {
                     mostrarMensaje(if (e.codigo == 404)
-                        "El módulo de soporte no está instalado en la base de datos (supabase-soporte.sql)."
+                        "Soporte no está disponible por el momento. Intenta más tarde."
                     else "Error del servidor. Toca Actualizar.")
                 }
             } catch (e: Exception) {

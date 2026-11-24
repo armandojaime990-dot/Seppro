@@ -51,16 +51,15 @@ const MAX_MENSAJE = 1000;
       <p style="font-size:12px;margin:8px 0 0" [style.color]="conectado ? '#2E7D32' : '#E65100'">
         {{ conectado ? '● En vivo' : '○ Conectando al chat en tiempo real...' }}
       </p>
-      <p class="m-suave" style="font-size:12px;margin:2px 0 4px">{{ contadores }}</p>
     </div>
 
     <div class="m-contenido" #scroll style="padding:4px 12px 12px">
       @for (m of visibles; track m.id) {
         <div class="fila" [class.propio]="m.emisor_id === uid">
           <div class="burbuja" [class.propio]="m.emisor_id === uid" (click)="m.adjunto_path && abrirAdjunto(m.adjunto_path)">
-            <small class="quien">{{ m.emisor_id === uid ? 'Tú' : (m.emisor_nombre ?? 'Usuario') }} · {{ rol(m.emisor_rol ?? 'usuario') }} · {{ m.dispositivo ?? 'Desconocido' }}</small>
+            <small class="quien">{{ m.emisor_id === uid ? 'Tú' : (m.emisor_nombre ?? 'Usuario') }} · {{ rol(m.emisor_rol ?? 'usuario') }}</small>
             <span>{{ m.texto }}</span>
-            @if (m.adjunto_path) { <u class="foto">Ver foto (enlace temporal)</u> }
+            @if (m.adjunto_path) { <u class="foto">Ver foto</u> }
             <small class="hora">{{ hora(m.created_at) }}</small>
           </div>
         </div>
@@ -188,15 +187,6 @@ export class MovilReporteComponent implements OnInit, OnDestroy {
 
   get visibles(): Mensaje[] { return this.mensajes.filter((m) => m.id > this.limpiadoHasta); }
 
-  get contadores(): string {
-    const conteo = new Map<string, number>();
-    for (const m of this.visibles) {
-      const clave = `${m.dispositivo ?? 'Desconocido'} (${m.emisor_nombre ?? 'Usuario'})`;
-      conteo.set(clave, (conteo.get(clave) ?? 0) + 1);
-    }
-    return conteo.size === 0 ? 'Mensajes por dispositivo: 0'
-      : 'Mensajes por dispositivo: ' + [...conteo].map(([k, v]) => `📱 ${k}: ${v}`).join('  ·  ');
-  }
 
   get acciones(): { texto: string; accion: () => void }[] {
     const r = this.reporte;

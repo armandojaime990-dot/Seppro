@@ -24,7 +24,6 @@ import { ErrorDeRed } from './nucleo/reintento';
         <button class="m-btn" type="submit" [disabled]="cargando" style="min-height:52px">Entrar</button>
         <button class="olvido" type="button" (click)="recuperar()">¿Olvidaste tu contraseña?</button>
       </form>
-      <p class="m-suave instalar">En iPhone: Compartir → <b>Agregar a pantalla de inicio</b> para instalar la app.</p>
     </div>
   `,
   styles: [`
@@ -33,7 +32,6 @@ import { ErrorDeRed } from './nucleo/reintento';
     .sub { color: var(--m-suave); text-align: center; margin: 4px 0 32px; font-size: 14px; }
     .estado { text-align: center; min-height: 20px; font-size: 14px; margin: 16px 0 0; }
     .olvido { display: block; margin: 16px auto 8px; background: none; border: 0; color: var(--m-accent); font-size: 14px; cursor: pointer; }
-    .instalar { text-align: center; margin-top: 24px; }
   `],
 })
 export class MovilLoginComponent {

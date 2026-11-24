@@ -46,7 +46,8 @@ await foto('03-historial');
 await pag.goto(`${BASE}/app/verificar?pedido=${process.env.SEPPRO_PEDIDO ?? 3005}`, { waitUntil: 'networkidle2' });
 await foto('04-verificar');
 if (process.env.SEPPRO_SIMULAR) {
-  await tocarTexto(process.env.SEPPRO_SIMULAR === '1' ? 'Simular golpe' : 'Simular sin golpes');
+  await pag.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.includes('No encuentras'))?.click());
+  await tocarTexto(process.env.SEPPRO_SIMULAR === '1' ? 'Llegó golpeado' : 'Llegó en buen estado');
   await new Promise((ok) => setTimeout(ok, 5000));
   await foto(`05-verificar-simulado-${process.env.SEPPRO_SIMULAR}`);
 }

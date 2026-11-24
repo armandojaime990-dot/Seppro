@@ -93,7 +93,7 @@ class GattLector(context: Context) : LectorTelemetria {
             }
 
             gatt = dispositivo.connectGatt(appContext, false, callback, BluetoothDevice.TRANSPORT_LE)
-            if (gatt == null) terminar(Result.failure(GattException("No se pudo iniciar la conexión GATT")))
+            if (gatt == null) terminar(Result.failure(GattException("No se pudo conectar con el Smart Tag")))
             cont.invokeOnCancellation { try { gatt?.disconnect(); gatt?.close() } catch (e: Exception) { } }
         }
     }

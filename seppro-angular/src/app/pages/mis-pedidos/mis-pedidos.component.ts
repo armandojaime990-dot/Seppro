@@ -83,7 +83,6 @@ import { SupabaseService, Pedido } from '../../services/supabase.service';
                 <strong>Verificación Smart Tag:</strong>
                 {{ pedido.golpe_detectado ? '🚨 golpe fuerte registrado' : '✅ viaje sin incidentes' }}
                 · {{ pedido.fecha_verificacion | date:'dd/MM/yyyy HH:mm' }}
-                <span *ngIf="pedido.sensor_id"> · sensor {{ pedido.sensor_id }}</span>
               </div>
               <div class="pedido-garantia" *ngIf="garantias[pedido.id] as g">
                 🛡️ <strong>Garantía {{ g.folio }}</strong> activa hasta {{ g.vence | date:'dd/MM/yyyy' }}

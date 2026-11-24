@@ -30,15 +30,14 @@ import {
     <div class="m-estado" [style.color]="btDisponible ? 'var(--m-suave)' : '#E65100'">
       {{ btDisponible === null ? 'Revisando Bluetooth...' : btDisponible
           ? 'Bluetooth disponible. Toca Buscar para elegir el Smart Tag de la caja.'
-          : 'Este navegador no permite Bluetooth en páginas web (Safari en iPhone no lo soporta). ' +
-            'Usa la app Android, el navegador Bluefy en iPhone, o el modo demostración de abajo.' }}
+          : 'Este dispositivo no puede leer el Smart Tag. Confirma abajo cómo recibiste tu equipo.' }}
     </div>
     <button class="m-btn" type="button" [disabled]="!btDisponible || store.ocupado" (click)="buscar()" style="min-height:52px">
       Buscar Smart Tag
     </button>
     <p style="margin:16px 0 8px;font-size:14px">Seleccionado: {{ seleccionado ?? 'ninguno' }}</p>
 
-    <h3 class="m-titulo" style="font-size:17px;margin-top:24px">Lectura del Smart Tag (GATT)</h3>
+    <h3 class="m-titulo" style="font-size:17px;margin-top:24px">Lectura del Smart Tag</h3>
     <div class="m-estado" style="margin-top:8px" [style.color]="color">{{ texto }}</div>
     <button class="m-btn" type="button" [disabled]="!dispositivo || store.ocupado" (click)="leer()" style="min-height:52px">
       Leer Smart Tag seleccionado
@@ -59,13 +58,17 @@ import {
       }
     }
 
-    <p class="m-suave" style="margin:20px 0 6px;font-size:12px">
-      Modo demostración (sin hardware): simula la lectura del sensor del pedido elegido.
-    </p>
-    <div class="m-fila">
-      <button class="m-btn m-sec" type="button" style="margin-top:0" [disabled]="store.ocupado" (click)="simular(0)">Simular sin golpes</button>
-      <button class="m-btn m-sec" type="button" style="margin-top:0" [disabled]="store.ocupado" (click)="simular(1)">Simular golpe fuerte</button>
-    </div>
+    @if (manual || btDisponible === false) {
+      <p class="m-suave" style="margin:20px 0 6px;font-size:13px">
+        ¿No puedes leer el Smart Tag? Indica cómo recibiste tu equipo:
+      </p>
+      <div class="m-fila">
+        <button class="m-btn m-sec" type="button" style="margin-top:0" [disabled]="pedidoId <= 0 || store.ocupado" (click)="simular(0)">Llegó en buen estado</button>
+        <button class="m-btn m-sec" type="button" style="margin-top:0" [disabled]="pedidoId <= 0 || store.ocupado" (click)="simular(1)">Llegó golpeado</button>
+      </div>
+    } @else {
+      <button class="enlace" type="button" (click)="manual = true">¿No encuentras el Smart Tag?</button>
+    }
 
     @if (rechazando) {
       <div class="m-velo" (click)="rechazando = false">
@@ -96,6 +99,7 @@ export class MovilVerificarComponent implements OnInit {
   dispositivo: DispositivoBt | null = null;
   seleccionado: string | null = this.almacen.ultimoDispositivo?.nombre ?? null;
   rechazando = false;
+  manual = false;
   motivo = '';
 
   get estado(): EstadoVerificacion { return this.store.estado(); }
@@ -130,7 +134,7 @@ export class MovilVerificarComponent implements OnInit {
 
   simular(estatus: number): void {
     void this.store.verificar(this.pedidoId,
-      new SimuladorTag(this.pedidoId, estatus === 1 ? ESTATUS_GOLPE : ESTATUS_SIN_INCIDENTES), 'Smart Tag (simulado)');
+      new SimuladorTag(this.pedidoId, estatus === 1 ? ESTATUS_GOLPE : ESTATUS_SIN_INCIDENTES), 'Confirmación manual');
   }
 
   aceptar(): void {
@@ -155,17 +159,16 @@ export class MovilVerificarComponent implements OnInit {
     const e = this.estado;
     switch (e.tipo) {
       case 'inactivo':
-        return this.pedidoId > 0 ? `Elige el Smart Tag de la caja del pedido #${this.pedidoId} y léelo.`
+        return this.pedidoId > 0 ? `Busca el Smart Tag de la caja del pedido #${this.pedidoId} y léelo.`
           : 'Elige un pedido "En puerta" en la pestaña Pedidos para verificarlo.';
-      case 'conectando': return `🔗 Conectando con ${e.dispositivo} y leyendo la telemetría...`;
+      case 'conectando': return `🔗 Conectando con ${e.dispositivo}...`;
       case 'registrando':
-        return `📡 Paquete ${e.telemetria.paqueteId} · estatus ${e.telemetria.estatus} ` +
-          `(${e.telemetria.estatus === 1 ? 'golpe fuerte' : 'sin incidentes'}). Registrando en el servidor...`;
+        return `📡 Paquete ${e.telemetria.paqueteId}: ${e.telemetria.estatus === 1 ? 'golpe fuerte' : 'sin incidentes'}. Registrando...`;
       case 'verificado': {
         const r = e.resultado;
         const correo = e.correoEnviado === null ? 'Enviando certificado a tu correo...'
           : e.correoEnviado ? '📧 Certificado enviado a tu correo.'
-          : '📧 El correo se enviará cuando el servicio esté disponible; el certificado ya está en Mis pedidos.';
+          : '📧 Tu certificado está disponible en Mis pedidos.';
         return `✅ Entrega verificada: el viaje fue sin incidentes.\n🛡️ Garantía ${r.garantiaFolio ?? 'activada'}` +
           `${r.garantiaVence ? ' · vence ' + r.garantiaVence : ''}\n${correo}`;
       }

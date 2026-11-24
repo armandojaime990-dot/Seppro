@@ -14,6 +14,13 @@ import { SupabaseService } from '../../services/supabase.service';
       </div>
     </section>
 
+    <section class="section" *ngIf="noEncontrado && !producto">
+      <div class="container" style="text-align:center;padding:48px 0">
+        <h2>Producto no disponible</h2>
+        <p>No pudimos cargar este producto. Revisa tu conexión o vuelve al catálogo.</p>
+      </div>
+    </section>
+
     <section class="section" *ngIf="producto">
       <div class="container">
         <div class="detail-grid">
@@ -90,6 +97,7 @@ import { SupabaseService } from '../../services/supabase.service';
 })
 export class ProductoDetailComponent implements OnInit {
   producto: any = null;
+  noEncontrado = false;
   addingCart = false;
   inWishlist = false;
   toastMsg = '';
@@ -102,7 +110,7 @@ export class ProductoDetailComponent implements OnInit {
       this.producto = await this.supabase.getProducto(id);
       this.inWishlist = await this.supabase.isInDeseos(id);
     } catch (e) {
-      this.producto = { id, nombre: 'Producto Demo', descripcion: 'Descripción del producto de demostración para SEPPRO.', precio: 10000, categorias: { nombre: 'General' } };
+      this.noEncontrado = true;
     }
   }
 

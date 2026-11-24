@@ -48,7 +48,6 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
     private lateinit var cabecera: LinearLayout
     private lateinit var acciones: LinearLayout
     private lateinit var estadoConexion: TextView
-    private lateinit var contadores: TextView
     private lateinit var listaMensajes: LinearLayout
     private lateinit var scrollMensajes: ScrollView
     private lateinit var entrada: EditText
@@ -107,11 +106,6 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
             textSize = 12f
             setPadding(0, dp(8), 0, 0)
         }
-        contadores = TextView(this).apply {
-            textSize = 12f
-            setTextColor(COLOR_TEXTO_SUAVE)
-            setPadding(0, dp(2), 0, dp(4))
-        }
 
         val superior = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -119,7 +113,6 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
             addView(cabecera, anchoCompleto())
             addView(acciones, anchoCompleto())
             addView(estadoConexion)
-            addView(contadores)
         }
 
         listaMensajes = LinearLayout(this).apply {
@@ -543,11 +536,6 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         }
         visibles.forEach { listaMensajes.addView(burbuja(it)) }
 
-        // Contador de mensajes por dispositivo (y quién lo usa)
-        val conteo = visibles.groupingBy { "${it.dispositivo} (${it.emisorNombre})" }.eachCount()
-        contadores.text = if (conteo.isEmpty()) "Mensajes por dispositivo: 0"
-        else "Mensajes por dispositivo: " + conteo.entries.joinToString("  ·  ") { "📱 ${it.key}: ${it.value}" }
-
         if (desplazarAlFinal) scrollMensajes.post { scrollMensajes.fullScroll(ScrollView.FOCUS_DOWN) }
     }
 
@@ -562,7 +550,7 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         val colorSuave = if (propio) 0xFFDBEAFE.toInt() else COLOR_TEXTO_SUAVE
 
         caja.addView(TextView(this).apply {
-            text = "${if (propio) "Tú" else m.emisorNombre} · ${Roles.etiqueta(m.emisorRol)} · ${m.dispositivo}"
+            text = "${if (propio) "Tú" else m.emisorNombre} · ${Roles.etiqueta(m.emisorRol)}"
             textSize = 11f
             setTextColor(colorSuave)
             setTypeface(null, Typeface.BOLD)
@@ -574,7 +562,7 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         })
         if (m.adjunto != null) {
             caja.addView(TextView(this).apply {
-                text = "Ver foto (enlace temporal)"
+                text = "Ver foto"
                 textSize = 13f
                 setTextColor(if (propio) 0xFFFFFFFF.toInt() else COLOR_ACCENT)
                 paintFlags = paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG

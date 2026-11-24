@@ -276,10 +276,10 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
             BleScanner.Estado.INACTIVO -> "Inactivo. Toca Escanear para buscar el sensor." to COLOR_TEXTO_SUAVE
             BleScanner.Estado.ESCANEANDO -> "🔎 Escaneando dispositivos cercanos (10 s)..." to COLOR_ACCENT
             BleScanner.Estado.COMPLETADO -> "Escaneo terminado: ${ultimaLista.size} dispositivo(s). Toca uno para seleccionarlo." to 0xFF2E7D32.toInt()
-            BleScanner.Estado.SIN_RESULTADOS -> "Sin resultados: no se encontraron dispositivos BLE cercanos." to 0xFFE65100.toInt()
+            BleScanner.Estado.SIN_RESULTADOS -> "Sin resultados: no se encontraron dispositivos Bluetooth cercanos." to 0xFFE65100.toInt()
             BleScanner.Estado.PERMISO_DENEGADO -> "Permiso denegado: se necesitan Bluetooth y Ubicación para escanear." to COLOR_ERROR
             BleScanner.Estado.BLUETOOTH_APAGADO -> "Bluetooth apagado. Enciéndelo para escanear." to COLOR_ERROR
-            BleScanner.Estado.UBICACION_APAGADA -> "Ubicación apagada. Android la necesita para escanear BLE." to COLOR_ERROR
+            BleScanner.Estado.UBICACION_APAGADA -> "Ubicación apagada. Actívala para buscar el Smart Tag." to COLOR_ERROR
             BleScanner.Estado.ERROR -> "Error: ${mensaje ?: "algo salió mal"}" to COLOR_ERROR
         }
         estadoView.text = texto
@@ -407,7 +407,7 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
 
     private fun construirSeccionVerificacion(ctx: android.content.Context, contenido: LinearLayout) {
         contenido.addView(TextView(ctx).apply {
-            text = "Lectura del Smart Tag (GATT)"
+            text = "Lectura del Smart Tag"
             textSize = 17f
             setTextColor(COLOR_PRIMARY)
             setTypeface(null, Typeface.BOLD)
@@ -427,19 +427,30 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
         accionesVerificacion = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL }
         contenido.addView(accionesVerificacion, anchoCompleto())
 
-        // Modo demostración: permite probar el flujo completo sin el Smart Tag físico
-        contenido.addView(TextView(ctx).apply {
-            text = "Modo demostración (sin hardware): simula la lectura del sensor del pedido elegido."
-            textSize = 12f
+        // Confirmación manual (sin Smart Tag): oculta hasta que el cliente la pide
+        val manual = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL; visibility = View.GONE }
+        manual.addView(TextView(ctx).apply {
+            text = "¿No puedes leer el Smart Tag? Indica cómo recibiste tu equipo:"
+            textSize = 13f
             setTextColor(COLOR_TEXTO_SUAVE)
             setPadding(0, ctx.dp(16), 0, ctx.dp(6))
         })
         val fila = LinearLayout(ctx).apply { orientation = LinearLayout.HORIZONTAL }
-        fila.addView(ctx.botonSecundario("Simular sin golpes") { simular(TelemetriaTag.ESTATUS_SIN_INCIDENTES) },
+        fila.addView(ctx.botonSecundario("Llegó en buen estado") { simular(TelemetriaTag.ESTATUS_SIN_INCIDENTES) },
             LinearLayout.LayoutParams(0, ctx.dp(44), 1f).apply { rightMargin = ctx.dp(8) })
-        fila.addView(ctx.botonSecundario("Simular golpe fuerte") { simular(TelemetriaTag.ESTATUS_GOLPE) },
+        fila.addView(ctx.botonSecundario("Llegó golpeado") { simular(TelemetriaTag.ESTATUS_GOLPE) },
             LinearLayout.LayoutParams(0, ctx.dp(44), 1f))
-        contenido.addView(fila, anchoCompleto())
+        manual.addView(fila, anchoCompleto())
+        val enlace = TextView(ctx).apply {
+            text = "¿No encuentras el Smart Tag?"
+            textSize = 14f
+            setTextColor(COLOR_PRIMARY)
+            paintFlags = paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
+            setPadding(0, ctx.dp(16), 0, ctx.dp(8))
+        }
+        enlace.setOnClickListener { enlace.visibility = View.GONE; manual.visibility = View.VISIBLE }
+        contenido.addView(enlace)
+        contenido.addView(manual, anchoCompleto())
     }
 
     private fun leerSensor() {
@@ -458,7 +469,7 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
     }
 
     private fun simular(estatus: Int) {
-        vm.verificar(pedidoId, SimuladorTag(pedidoId, estatus), "simulador", "Smart Tag (simulado)")
+        vm.verificar(pedidoId, SimuladorTag(pedidoId, estatus), "manual", "Confirmación manual")
     }
 
     private fun boton(ctx: android.content.Context, vista: View, alto: Int, margen: Int) =
@@ -474,11 +485,10 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
         val (texto, color) = when (estado) {
             EstadoVerificacion.Inactivo -> textoInactivo() to COLOR_TEXTO_SUAVE
             is EstadoVerificacion.Conectando ->
-                "🔗 Conectando con ${estado.dispositivo} y leyendo la telemetría..." to COLOR_ACCENT
+                "🔗 Conectando con ${estado.dispositivo}..." to COLOR_ACCENT
             is EstadoVerificacion.Registrando -> {
                 val t = estado.telemetria
-                "📡 Paquete ${t.paqueteId} · estatus ${t.estatus} (${if (t.golpe) "golpe fuerte" else "sin incidentes"}). " +
-                    "Registrando en el servidor..." to COLOR_ACCENT
+                "📡 Paquete ${t.paqueteId}: ${if (t.golpe) "golpe fuerte" else "sin incidentes"}. Registrando..." to COLOR_ACCENT
             }
             is EstadoVerificacion.Verificado -> textoVerificado(estado) to 0xFF2E7D32.toInt()
             is EstadoVerificacion.Alerta -> {
@@ -519,7 +529,7 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
         val correo = when (estado.correoEnviado) {
             null -> "Enviando certificado a tu correo..."
             true -> "📧 Certificado enviado a tu correo."
-            false -> "📧 El correo se enviará cuando el servicio esté disponible; el certificado ya está en Mis pedidos."
+            false -> "📧 Tu certificado está disponible en Mis pedidos."
         }
         return "✅ Entrega verificada: el viaje fue sin incidentes.\n" +
             "🛡️ Garantía ${r.garantiaFolio ?: "activada"}${r.garantiaVence?.let { " · vence $it" } ?: ""}\n$correo"
