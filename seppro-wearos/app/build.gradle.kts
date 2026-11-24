@@ -45,6 +45,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    lint {
+        abortOnError = true // el CI falla si lint encuentra errores
+    }
+
     kotlinOptions {
         jvmTarget = "17"
     }
@@ -54,6 +58,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.wear:wear:1.3.0")
     implementation("androidx.activity:activity-ktx:1.8.2")
+    // Prácticas 13 y 14 (lint InvalidFragmentVersionForActivityResult): registerForActivityResult necesita fragment >= 1.3
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.webkit:webkit:1.9.0")
     implementation("com.google.android.gms:play-services-wearable:18.1.0")
 

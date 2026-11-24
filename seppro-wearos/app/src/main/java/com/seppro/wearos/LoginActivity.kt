@@ -26,6 +26,10 @@ class LoginActivity : ComponentActivity() {
     private val permisoNotificaciones = registerForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { }
 
+    // Lint WearPasswordInput: Wear OS recomienda iniciar sesión desde el teléfono. El reloj de SEPPRO
+    // es independiente (standalone) y no siempre tiene teléfono vinculado, así que conserva su propio
+    // login. Mitigación: la contraseña nunca se guarda ni se registra y el token vive solo en memoria.
+    @android.annotation.SuppressLint("WearPasswordInput")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (android.os.Build.VERSION.SDK_INT >= 33 && androidx.core.content.ContextCompat.checkSelfPermission(

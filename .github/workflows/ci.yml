@@ -1,0 +1,120 @@
+# Prácticas 13 y 14 — Integración continua de SEPPRO.
+# Se ejecuta en cada push y pull request a main (y a mano desde la pestaña Actions).
+# Tres trabajos en paralelo:
+#   1. Teléfono (Kotlin): pruebas unitarias + integración (JUnit/MockWebServer), cobertura JaCoCo, lint y APK.
+#   2. Reloj (Wear OS): lint y APK.
+#   3. Web y PWA (Angular): pruebas (Jasmine/Karma en Chrome sin ventana), cobertura, build y auditoría de seguridad.
+name: CI SEPPRO
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  movil:
+    name: Teléfono (Kotlin) · pruebas, cobertura y lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: seppro-movil
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Permiso de ejecución de Gradle
+        run: chmod +x gradlew
+      - name: Pruebas unitarias e integración
+        run: ./gradlew testDebugUnitTest --no-daemon
+      - name: Cobertura (JaCoCo)
+        run: ./gradlew createDebugUnitTestCoverageReport --no-daemon
+      - name: Lint de Android
+        run: ./gradlew lintDebug --no-daemon
+      - name: Compilar APK
+        run: ./gradlew assembleDebug --no-daemon
+      - name: Resumen de pruebas
+        if: always()
+        run: |
+          echo "### Teléfono (Kotlin)" >> "$GITHUB_STEP_SUMMARY"
+          for f in app/build/test-results/testDebugUnitTest/*.xml; do
+            grep -o 'testsuite name="[^"]*" tests="[0-9]*" skipped="[0-9]*" failures="[0-9]*" errors="[0-9]*"' "$f" >> "$GITHUB_STEP_SUMMARY" || true
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reportes-movil
+          path: |
+            seppro-movil/app/build/test-results/
+            seppro-movil/app/build/reports/
+          retention-days: 14
+
+  reloj:
+    name: Reloj (Wear OS) · lint y compilación
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: seppro-wearos
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - run: chmod +x gradlew
+      - name: Lint y APK
+        run: ./gradlew lintDebug assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reportes-reloj
+          path: seppro-wearos/app/build/reports/
+          retention-days: 14
+
+  web:
+    name: Web y PWA (Angular) · pruebas, build y seguridad
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: seppro-angular
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: seppro-angular/package-lock.json
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Auditoría de seguridad (falla con vulnerabilidades altas o críticas)
+        run: npm audit --audit-level=high
+      - name: Pruebas unitarias e integración (Chrome sin ventana)
+        run: npm run test:ci
+      - name: Build de producción
+        run: npm run build
+      - name: Resumen de cobertura
+        if: always()
+        run: |
+          echo "### Web y PWA (Angular)" >> "$GITHUB_STEP_SUMMARY"
+          cat coverage/seppro-angular/coverage-summary.json >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cobertura-web
+          path: seppro-angular/coverage/
+          retention-days: 14
