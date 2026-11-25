@@ -232,7 +232,9 @@ export class DashboardComponent implements OnInit {
     return new Promise(resolve => {
       let sub: any;
       sub = this.supabase.currentProfile$.subscribe(profile => {
-        if (profile !== undefined) {
+        // El perfil empieza en null mientras se carga: se espera al perfil real
+        // (antes, al abrir o recargar /dashboard directamente, el admin era enviado al inicio)
+        if (profile) {
           if (sub) sub.unsubscribe();
           resolve(profile);
         }

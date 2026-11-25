@@ -79,9 +79,12 @@ class LoginActivity : ComponentActivity() {
             textSize = 12f
             setHintTextColor(0xFF94A3B8.toInt())
             setTextColor(0xFF0F172A.toInt())
-            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-            filters = arrayOf(android.text.InputFilter.LengthFilter(ValidacionLogin.MAX_PASSWORD))
             setSingleLine()
+            // inputType DESPUÉS de setSingleLine(): setSingleLine() reemplaza el método de
+            // transformación y la contraseña quedaba visible en texto plano
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+            transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
+            filters = arrayOf(android.text.InputFilter.LengthFilter(ValidacionLogin.MAX_PASSWORD))
             setPadding(16, 12, 16, 12)
             setBackgroundColor(0xFFF1F5F9.toInt()) // Light gray
             layoutParams = LinearLayout.LayoutParams(
