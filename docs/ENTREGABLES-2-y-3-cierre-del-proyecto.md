@@ -142,7 +142,7 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 6. Repetir con "golpe fuerte" y rechazar: debe aparecer un reporte nuevo en Soporte, con el agente asignado.
 7. En el iPhone: abrir `/app`, agregarla a la pantalla de inicio y revisar Pedidos, Soporte y el chat.
 
-**Programa sugerido para hacer de Smart Tag** (si se usa un ESP32 o la app *nRF Connect* como servidor GATT):
+**Smart Tag:** el programa del ESP32 está en `smart-tag-esp32/` (ver `GUIA-SMART-TAG-BLUETOOTH.md`). Como respaldo, la app *nRF Connect* puede hacer de servidor GATT:
 - Servicio y característica con los UUID de la sección 1.
 - Valor `SEPPRO-<número de pedido>;0` o `;1`.
 - Nombre anunciado `SEPPRO-Tag`.
@@ -159,7 +159,7 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 | **Contraseña visible en Android** | `setSingleLine()` después de `inputType` quitaba el enmascarado. Ahora se aplica `PasswordTransformationMethod` |
 | **Dashboard** | Al abrir o recargar `/dashboard` directamente se evaluaba el perfil antes de cargarlo y el admin era enviado al inicio |
 | **Usuarios y datos** | `supabase-reinicio-usuarios.sql` borra todos los usuarios y crea 6 cuentas nuevas con datos simulados y una contraseña nueva (ya no `123456`) |
-| **Smart Tag sin ESP32** | `docs/GUIA-SMART-TAG-BLUETOOTH.md`: un segundo Android con nRF Connect hace de Smart Tag real (servidor GATT) |
+| **Smart Tag físico (ESP32 + MPU6050)** | `smart-tag-esp32/SEPPRO_SmartTag/SEPPRO_SmartTag.ino`: servidor GATT `SEPPRO-Tag`, detección de golpes con acelerómetro (umbral de 2.5 g, 200 Hz), registro en flash, LED y comandos por el Monitor Serie. Guía: `docs/GUIA-SMART-TAG-BLUETOOTH.md`. Respaldo: nRF Connect |
 | **Diagrama de arquitectura** | `docs/diagramas/arquitectura.png` |
 
 **Pruebas después de estos cambios:** 80 en Kotlin y 34 en Angular, **114 en total**, todas aprobadas. El modo sin conexión se comprobó en Chrome sin ninguna resolución de red.

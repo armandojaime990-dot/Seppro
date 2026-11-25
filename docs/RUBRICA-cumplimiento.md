@@ -21,7 +21,7 @@ Este documento indica, para cada criterio, dónde está la evidencia en el proye
 | Angular 18 → 21 | `npm audit` reportaba vulnerabilidades altas (XSS) en Angular 18. Después de la actualización, 0 vulnerabilidades |
 | Se quitó del chat el modelo del dispositivo y el contador por dispositivo | Venía de la Práctica 6 y no aportaba nada al usuario final |
 | Se retiró la app del reloj (Wear OS) | La evaluación califica la app móvil. El aviso del resultado pasó a ser la vibración del teléfono |
-| Smart Tag simulado con nRF Connect en lugar de un ESP32 | Demuestra la comunicación BLE/GATT real sin comprar hardware. El protocolo es el mismo |
+| Smart Tag físico con **ESP32 + MPU6050** | Demuestra el sistema completo con hardware real: el acelerómetro detecta el golpe, lo guarda en flash y lo entrega por GATT. nRF Connect queda solo como respaldo |
 | Modo sin conexión | Criterio C3: la app se usa en la puerta del domicilio, donde la señal puede fallar |
 
 ## B. Diseño y arquitectura
@@ -44,8 +44,8 @@ Este documento indica, para cada criterio, dónde está la evidencia en el proye
 
 | Criterio | Evidencia |
 |---|---|
-| **D1. Comunicación con el dispositivo** | Web Bluetooth y `BluetoothGatt` en Android: `requestDevice` filtrado por servicio o por el prefijo `SEPPRO` → `gatt.connect()` → `getPrimaryService` → `readValue()`, con un tiempo límite de 15 s. Guía de la demo con nRF Connect: `docs/GUIA-SMART-TAG-BLUETOOTH.md` |
-| **D2. Uso de capacidades o sensores** | El sensor de golpes del Smart Tag (acelerómetro: estatus 0/1). En el teléfono: radio Bluetooth LE, vibrador (aviso del resultado), cámara/galería (foto de evidencia en soporte) y almacenamiento local |
+| **D1. Comunicación con el dispositivo** | **Smart Tag con ESP32** (`smart-tag-esp32/SEPPRO_SmartTag.ino`): es un servidor GATT que anuncia `SEPPRO-Tag`. En la app, Web Bluetooth y `BluetoothGatt` en Android: `requestDevice` filtrado por servicio o por el prefijo `SEPPRO` → `gatt.connect()` → `getPrimaryService` → `readValue()`, con un tiempo límite de 15 s. La guía de la demo está en `docs/GUIA-SMART-TAG-BLUETOOTH.md` |
+| **D2. Uso de capacidades o sensores** | **Acelerómetro MPU6050** del Smart Tag: mide la magnitud √(x²+y²+z²) a 200 Hz; si supera 2.5 g registra el golpe (estatus 1), lo guarda en flash y enciende el LED. En el teléfono: radio Bluetooth LE, vibrador (aviso del resultado), cámara/galería (foto de evidencia en soporte) y almacenamiento local |
 | **D3. Intercambio y procesamiento de información** | `telemetria.ts` / `Telemetria.kt`: decodifica el formato texto (`SEPPRO-42;0`, con separadores `;` `,` `\|`) o binario (5 bytes: uint32 LE + estatus). Valida el rango y comprueba que el paquete sea del pedido. Luego llama a la RPC `verificar_entrega`, que cambia el estado, crea la garantía y difunde el cambio por Realtime |
 | **D4. Permisos y compatibilidad** | Android: `BLUETOOTH_SCAN`/`CONNECT` (12+) y `ACCESS_FINE_LOCATION` (≤11), pedidos en tiempo de ejecución, más `VIBRATE`. Web: selector de permiso del navegador, `getAvailability()` y aviso de "Bluetooth apagado". Si el navegador no lo soporta (Safari), confirmación manual. La vibración se omite donde no existe |
 
@@ -62,9 +62,10 @@ Este documento indica, para cada criterio, dónde está la evidencia en el proye
 1. **Instalación:** en el iPhone, abrir `/app` → Agregar a pantalla de inicio. Se abre a pantalla completa (C2, C4).
 2. **Login** con `cliente2@seppro.com`. Mostrar que la contraseña se ve oculta (E1).
 3. **Pedidos:** abrir uno "En puerta" → Verificar paquete.
-4. **Smart Tag real:** con Chrome en Android o en la laptop, Buscar → `SEPPRO-Tag` (el teléfono con nRF Connect) → Leer (D1-D3).
-   - Valor `;0`: verificado, garantía y vibración.
-   - Cambiar a `;1` y usar otro pedido: alerta → Rechazar → se crea un reporte.
+4. **Smart Tag real (ESP32):** con Chrome en Android o en la laptop, Buscar → `SEPPRO-Tag` → Leer (D1-D3).
+   - Pedido 12, caja sin golpes: verificado, garantía y vibración corta.
+   - Pedido 13: **golpear la caja contra la mesa**. Se enciende el LED → leer → alerta → Rechazar → se crea un reporte.
+   - Desconectar y reconectar el ESP32: el golpe sigue guardado.
 5. **Tienda web abierta al lado:** Mis pedidos cambia sola (Realtime) → Ver certificado de garantía.
 6. **Soporte:** el chat entre el cliente y el agente en tiempo real.
 7. **Sin conexión:** activar el modo avión y abrir la app. Aparecen los pedidos guardados con el aviso (C3).
@@ -75,5 +76,6 @@ Este documento indica, para cada criterio, dónde está la evidencia en el proye
 - **¿Qué guarda el service worker?** La app completa (HTML, JS, CSS, manifest e íconos). Los datos vienen de Supabase; sin red se usa la última copia guardada en `localStorage`, sin tokens propios.
 - **¿Por qué no funciona el Bluetooth en iPhone?** Apple no implementa Web Bluetooth en Safari ni en ningún navegador de iOS. Para eso está la app Android o Chrome en PC/Android, y en iPhone la confirmación manual.
 - **¿Qué pasa si alguien manda un estado falso a la API?** RLS solo deja tocar los pedidos propios. `verificar_entrega` comprueba que el pedido sea del usuario y esté "En puerta", y que el paquete coincida. Los triggers ignoran el estado y los precios que manda el cliente.
+- **¿Cómo detecta el golpe el ESP32?** Lee el MPU6050 por I2C a 200 Hz y calcula la magnitud de la aceleración. En reposo vale 1 g; arriba de 2.5 g lo cuenta como golpe fuerte. Lo guarda en flash para que no se pierda si se acaba la batería.
 - **¿Qué es GATT?** Es el perfil de Bluetooth LE que organiza los datos en servicios y características con UUID. La app lee la característica `5e1a0002-…` del servicio `5e1a0001-…`.
 - **¿Cómo te recuperas de una caída de red?** El chat reintenta con espera progresiva usando el mismo `id_cliente`, para no duplicar. La lista sin conexión usa la copia guardada, y la lectura del Smart Tag tiene un tiempo límite de 15 s.

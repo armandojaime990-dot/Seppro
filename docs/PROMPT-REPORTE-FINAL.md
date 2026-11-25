@@ -35,7 +35,7 @@ Necesito el **reporte técnico final**, entregado como **Word y PDF**. Se evalú
    - la migración a PWA por iOS;
    - Angular 18 → 21;
    - el retiro del reloj Wear OS;
-   - nRF Connect en lugar de ESP32;
+   - Smart Tag físico con ESP32 + acelerómetro MPU6050 (nRF Connect solo como respaldo);
    - el modo sin conexión.
 5. **Arquitectura (B1).** Inserta `docs/diagramas/arquitectura.png` y explica el flujo de 3 pasos.
 6. **Diseño de interfaz y experiencia de usuario (B2).** Diseño Americano, navegación, estados con color e ícono, mensajes y accesibilidad, con capturas.
@@ -49,7 +49,11 @@ Necesito el **reporte técnico final**, entregado como **Word y PDF**. Se evalú
    - Procesamiento de la lectura (`telemetria.ts`) y la RPC `verificar_entrega`.
    - Capacidades usadas: Bluetooth, vibración, cámara y almacenamiento.
    - Permisos y compatibilidad, incluida la limitación de iOS.
-   - Demostración con nRF Connect (resume `GUIA-SMART-TAG-BLUETOOTH.md`).
+   - **Hardware del Smart Tag:** ESP32 + MPU6050, con su tabla de conexiones (VCC→3V3, GND→GND, SDA→GPIO21, SCL→GPIO22).
+   - Detección del golpe: magnitud √(x²+y²+z²) a 200 Hz, umbral de 2.5 g, guardado en flash y LED.
+   - Servidor GATT y comandos del Monitor Serie.
+   - Incluye fragmentos comentados del programa `smart-tag-esp32/SEPPRO_SmartTag/SEPPRO_SmartTag.ino`: `leerMagnitudG`, `registrarGolpe` y `publicarValor`.
+   - Demostración y casos de error (resume `GUIA-SMART-TAG-BLUETOOTH.md`).
 9. **Seguridad y calidad (E1 a E3).** Tabla de seguridad, resumen de pruebas (**114 automáticas: 80 Kotlin + 34 Angular**, más caja negra y caja blanca), CI con GitHub Actions y rendimiento/recuperación (Práctica 12 + modo sin conexión).
 10. **Respuestas a Criterios de Selección y Arquitectura.** Conserva mi sección y actualízala:
     - la app móvil principal ahora es una **PWA en Angular 21**, y la app Kotlin queda como versión nativa para Android;
@@ -70,10 +74,12 @@ Usa la app en `/app`, en Chrome con vista de teléfono (F12 → Ctrl+Shift+M) o 
 | 1 | Login de la app con la contraseña oculta | E1 |
 | 2 | Pedidos, con uno "En puerta" y su botón "Verificar paquete" | C1 |
 | 3 | Verificar: Bluetooth disponible y botón "Buscar Smart Tag" | D1 |
-| 4 | Selector de Bluetooth de Chrome mostrando `SEPPRO-Tag` (nRF Connect) | D1 y D4 |
-| 5 | nRF Connect con el servidor GATT configurado (UUID y valor) | D1 y D3 |
-| 6 | Resultado "Entrega verificada" con la garantía | D3 |
-| 7 | "ALERTA DE INTEGRIDAD" con Aceptar/Rechazar, luego el diálogo de rechazo y el reporte creado | C1 |
+| 4 | Foto del Smart Tag armado: ESP32 + MPU6050 conectados y pegados a la caja | D1 y D2 |
+| 5 | Monitor Serie del Arduino IDE con "SEPPRO Smart Tag listo", `ESTADO` y el `*** GOLPE FUERTE: x g ***` | D2 y D3 |
+| 5b | Selector de Bluetooth de Chrome mostrando `SEPPRO-Tag` | D1 y D4 |
+| 5c | Foto del LED encendido después del golpe | D2 |
+| 6 | Resultado "Entrega verificada" con la garantía (pedido 12, caja sin golpes) | D3 |
+| 7 | "ALERTA DE INTEGRIDAD" (pedido 13, después de golpear la caja) con Aceptar/Rechazar, luego el diálogo de rechazo y el reporte creado | C1 y D3 |
 | 8 | "¿No encuentras el Smart Tag?" con la confirmación manual (vista en iPhone) | D4 |
 | 9 | Soporte y chat en tiempo real (cliente y agente) | C1 |
 | 10 | Modo sin conexión: modo avión y la lista con el aviso "Sin conexión" | C3 |
