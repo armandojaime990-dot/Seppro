@@ -144,22 +144,22 @@ import { SupabaseService } from '../../services/supabase.service';
       </div>
     </section>
 
-    <!-- WEARABLE WIDGET -->
+    <!-- APP MÓVIL (PWA instalable) -->
     <section class="section wearable-widget">
       <div class="container">
         <div class="wearable-card glass-card">
           <div class="wearable-content">
-            <h2 class="gradient-text">⌚ Lleva SEPPRO en tu muñeca</h2>
-            <p>Descarga nuestra aplicación nativa para <strong>Smartwatch (WearOS)</strong>. Monitorea el estado de tus compras en tiempo real, verifica tus fechas de entrega estimadas y disfruta de un diseño premium directo en tu reloj.</p>
-            <a href="https://play.google.com/store/apps/details?id=com.seppro.wearos" target="_blank" rel="noopener noreferrer" class="btn-primary">
-              <span class="icon">⬇️</span> Descargar para WearOS
+            <h2 class="gradient-text">📱 Lleva SEPPRO en tu teléfono</h2>
+            <p>Con la <strong>app móvil SEPPRO</strong> sigues tus pedidos en tiempo real, verificas tu paquete con el Smart Tag al recibirlo, activas tu garantía y hablas con soporte. Funciona en iPhone y Android: ábrela y agrégala a tu pantalla de inicio.</p>
+            <a href="/app" class="btn-primary">
+              <span class="icon">📲</span> Abrir la app móvil
             </a>
           </div>
           <div class="wearable-visual">
             <div class="smartwatch-mockup">
               <div class="screen">
                 <span class="logo">💧 SEPPRO</span>
-                <span class="status">📦 Enviado</span>
+                <span class="status">✅ Entrega verificada</span>
               </div>
             </div>
           </div>
@@ -502,14 +502,10 @@ import { SupabaseService } from '../../services/supabase.service';
     .wearable-content h2 { font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
     .wearable-content p { color: #64748B; font-size: 1.05rem; line-height: 1.6; margin-bottom: 24px; }
     .smartwatch-mockup {
-      width: 180px; height: 180px; margin: 0 auto;
-      border-radius: 50%; border: 12px solid #0F172A;
+      width: 170px; height: 320px; margin: 0 auto;
+      border-radius: 32px; border: 10px solid #0F172A;
       background: #FFFFFF; display: flex; align-items: center; justify-content: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative;
-    }
-    .smartwatch-mockup::before {
-      content: ''; position: absolute; top: -30px; bottom: -30px; left: 40px; right: 40px;
-      background: #1E293B; z-index: -1; border-radius: 20px;
     }
     .smartwatch-mockup .screen { text-align: center; }
     .smartwatch-mockup .logo { display: block; color: #0072c6; font-weight: 800; margin-bottom: 12px; }

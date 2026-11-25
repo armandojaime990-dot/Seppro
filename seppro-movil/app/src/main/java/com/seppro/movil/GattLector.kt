@@ -10,10 +10,8 @@ import android.bluetooth.BluetoothProfile
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
-import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -105,31 +103,28 @@ class GattLector(context: Context) : LectorTelemetria {
 }
 
 /**
- * Entregable 2: notificación del resultado al reloj con Wear OS Data Layer (MessageClient).
- * El reloj (seppro-wearos) recibe el mensaje en /seppro/verificacion y muestra una notificación.
- * Si no hay reloj vinculado no pasa nada (el reloj también ve el estado nuevo en Supabase).
+ * Aviso del resultado con el vibrador del teléfono (no requiere permiso en tiempo de ejecución):
+ * una vibración corta si la entrega quedó verificada y un patrón largo si hubo golpe fuerte,
+ * para que el cliente lo note aunque esté atendiendo al repartidor.
  */
-class RelojDataLayer(context: Context) : NotificadorReloj {
+class AvisoVibracion(context: Context) : AvisoResultado {
     private val appContext = context.applicationContext
 
     override fun notificar(pedidoId: Int, estado: String, detalle: String) {
-        val datos = JSONObject().put("pedido_id", pedidoId).put("estado", estado).put("detalle", detalle)
-            .toString().toByteArray(Charsets.UTF_8)
-        try {
-            Wearable.getNodeClient(appContext).connectedNodes.addOnSuccessListener { nodos ->
-                nodos.forEach { nodo ->
-                    Wearable.getMessageClient(appContext).sendMessage(nodo.id, RUTA, datos)
-                        .addOnFailureListener { Log.w(TAG, "No se envió al reloj: ${it.javaClass.simpleName}") }
-                }
-                Log.i(TAG, "Resultado enviado a ${nodos.size} reloj(es)")
-            }.addOnFailureListener { Log.w(TAG, "Wear OS no disponible: ${it.javaClass.simpleName}") }
-        } catch (e: Exception) {
-            Log.w(TAG, "Wear OS no disponible: ${e.javaClass.simpleName}") // teléfono sin Google Play Services
+        val patron = when (estado) {
+            "alerta_integridad", "rechazado" -> longArrayOf(0, 400, 150, 400, 150, 400)
+            else -> longArrayOf(0, 120)
         }
-    }
-
-    companion object {
-        const val RUTA = "/seppro/verificacion"
-        private const val TAG = "SEPPRO_Reloj"
+        try {
+            val vibrador = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                (appContext.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as android.os.VibratorManager).defaultVibrator
+            } else {
+                @Suppress("DEPRECATION")
+                appContext.getSystemService(Context.VIBRATOR_SERVICE) as android.os.Vibrator
+            }
+            if (vibrador.hasVibrator()) vibrador.vibrate(android.os.VibrationEffect.createWaveform(patron, -1))
+        } catch (e: Exception) {
+            Log.w("SEPPRO_Aviso", "Sin vibración: ${e.javaClass.simpleName}")
+        }
     }
 }

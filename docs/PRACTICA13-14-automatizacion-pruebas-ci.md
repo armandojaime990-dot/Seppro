@@ -1,5 +1,7 @@
 # Prácticas 13 y 14 — Automatización de pruebas y validación continua (SEPPRO)
 
+> **Nota posterior al cierre:** la app del reloj (Wear OS) se retiró del alcance porque la evaluación final califica la app móvil. Las corridas #1 a #3 de esta práctica incluyen el trabajo del reloj. El CI actual tiene dos trabajos (teléfono y web/PWA) y **114 pruebas** (80 Kotlin + 34 Angular). Ver la sección 9 de `ENTREGABLES-2-y-3-cierre-del-proyecto.md`.
+
 **Alumno:** Armando Jaime Ramírez · **Matrícula:** 2022348004 · **Grupo:** IDGS14 · **Materia:** Aplicaciones Móviles
 **Proyecto:** SEPPRO. Tiene cuatro partes:
 - app Android Kotlin (`seppro-movil`);

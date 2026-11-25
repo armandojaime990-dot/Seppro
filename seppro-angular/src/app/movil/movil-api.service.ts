@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from '../services/supabase.service';
+import { AlmacenLocal } from './nucleo/almacen-local';
 import { CERRADOS, Rol } from './nucleo/estados';
 import { MENSAJE_GENERICO } from './nucleo/validacion-login';
 import { conReintento, ErrorDelServidor, ErrorDeRed } from './nucleo/reintento';
@@ -48,7 +49,8 @@ export function interpretar<T>(r: { data: T | null; error: { message?: string; c
   const msg = r.error.message ?? '';
   const status = r.status ?? 0;
   if (status === 401 || /jwt.*expired/i.test(msg)) throw new SesionExpiradaError();
-  if (status === 0 || /failed to fetch|network|load failed|fetch failed/i.test(msg)) throw new ErrorDeRed();
+  // 504: el service worker responde "Gateway Timeout" cuando no hay red (modo sin conexión)
+  if (status === 0 || status === 504 || /failed to fetch|network|load failed|fetch failed/i.test(msg)) throw new ErrorDeRed();
   throw new ErrorDelServidor(status || 400, msg || `Error del servidor (${status})`);
 }
 
@@ -59,6 +61,7 @@ export function interpretar<T>(r: { data: T | null; error: { message?: string; c
 @Injectable({ providedIn: 'root' })
 export class MovilApi implements RepositorioVerificacion {
   perfil: Perfil | null = null;
+  readonly almacen = new AlmacenLocal();
 
   constructor(private readonly sb: SupabaseService) {}
 
@@ -89,15 +92,28 @@ export class MovilApi implements RepositorioVerificacion {
       uid = data.session.user.id;
       email = data.session.user.email ?? '';
     }
-    const filas = interpretar(await this.client.from('perfiles').select('nombre,rol,habilitado').eq('id', uid).limit(1));
+    let filas: unknown[];
+    try {
+      filas = interpretar(await this.client.from('perfiles').select('nombre,rol,habilitado').eq('id', uid).limit(1)) as unknown[];
+    } catch (e) {
+      // Sin conexión: se abre con el perfil guardado de ESTA misma sesión (modo sin conexión)
+      const guardado = this.almacen.perfilGuardado;
+      if (e instanceof ErrorDeRed && guardado?.uid === uid) {
+        return (this.perfil = { uid, nombre: guardado.nombre, rol: guardado.rol as Rol, email: guardado.email });
+      }
+      throw e;
+    }
     const p = (filas as { nombre: string; rol: Rol; habilitado: boolean }[])[0];
-    if (p && p.habilitado === false) return (this.perfil = null);
-    return (this.perfil = { uid, nombre: p?.nombre ?? '', rol: p?.rol ?? 'usuario', email: email ?? '' });
+    if (p && p.habilitado === false) { this.almacen.borrarDatosDeSesion(); return (this.perfil = null); }
+    this.perfil = { uid, nombre: p?.nombre ?? '', rol: p?.rol ?? 'usuario', email: email ?? '' };
+    this.almacen.perfilGuardado = this.perfil;
+    return this.perfil;
   }
 
   async cerrarSesion(): Promise<void> {
     try { await this.client.rpc('desconectar'); } catch { /* sin conexión: se cierra igual */ }
     await this.client.auth.signOut();
+    this.almacen.borrarDatosDeSesion();
     this.perfil = null;
   }
 

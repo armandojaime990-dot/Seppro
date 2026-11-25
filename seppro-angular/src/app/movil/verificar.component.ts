@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovilApi } from './movil-api.service';
@@ -30,6 +30,7 @@ import {
     <div class="m-estado" [style.color]="btDisponible ? 'var(--m-suave)' : '#E65100'">
       {{ btDisponible === null ? 'Revisando Bluetooth...' : btDisponible
           ? 'Bluetooth disponible. Toca Buscar para elegir el Smart Tag de la caja.'
+          : btApi ? 'El Bluetooth está apagado. Enciéndelo y vuelve a entrar a Verificar, o confirma abajo cómo recibiste tu equipo.'
           : 'Este dispositivo no puede leer el Smart Tag. Confirma abajo cómo recibiste tu equipo.' }}
     </div>
     <button class="m-btn" type="button" [disabled]="!btDisponible || store.ocupado" (click)="buscar()" style="min-height:52px">
@@ -96,6 +97,8 @@ export class MovilVerificarComponent implements OnInit {
   readonly colorPuerta = colorEstado('en_puerta');
   pedidoId = 0;
   btDisponible: boolean | null = null;
+  /** El navegador tiene Web Bluetooth (Chrome/Edge); Safari en iPhone no. */
+  readonly btApi = typeof navigator !== 'undefined' && 'bluetooth' in navigator;
   dispositivo: DispositivoBt | null = null;
   seleccionado: string | null = this.almacen.ultimoDispositivo?.nombre ?? null;
   rechazando = false;
@@ -103,6 +106,18 @@ export class MovilVerificarComponent implements OnInit {
   motivo = '';
 
   get estado(): EstadoVerificacion { return this.store.estado(); }
+
+  constructor() {
+    // Aviso físico con el vibrador del teléfono (Vibration API; en iPhone no existe y se omite):
+    // corta = entrega verificada, larga = golpe fuerte / equipo rechazado
+    effect(() => {
+      const e = this.store.estado();
+      const patron = e.tipo === 'alerta' ? [400, 150, 400, 150, 400]
+        : e.tipo === 'verificado' && e.correoEnviado === null ? [120]
+        : e.tipo === 'resuelto' && e.resultado.estado === 'rechazado' ? [400, 150, 400] : null;
+      if (patron && typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(patron);
+    });
+  }
 
   ngOnInit(): void {
     this.pedidoId = Number(this.ruta.snapshot.queryParamMap.get('pedido')) || 0;

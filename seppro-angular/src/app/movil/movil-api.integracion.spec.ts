@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { MovilApi, SesionExpiradaError } from './movil-api.service';
+import { interpretar, MovilApi, SesionExpiradaError } from './movil-api.service';
 import { ErrorDelServidor, ErrorDeRed } from './nucleo/reintento';
 import { SupabaseService } from '../services/supabase.service';
 
@@ -90,5 +90,15 @@ describe('MovilApi + supabase-js (integración)', () => {
     expect(posts.length).toBe(2);
     expect(posts.every((p) => (p.cuerpo as { id_cliente: string }).id_cliente === '11111111-2222-3333-4444-555555555555')).toBeTrue();
     expect(decodeURIComponent(peticiones[2].url)).toContain('id_cliente=eq.11111111-2222-3333-4444-555555555555');
+  });
+});
+
+/** Rúbrica C3: sin red, el service worker de Angular responde 504; se trata como "sin conexión". */
+describe('interpretar (errores de red)', () => {
+  it('504 del service worker y status 0 -> ErrorDeRed; 500 -> ErrorDelServidor', () => {
+    expect(() => interpretar({ data: null, error: { message: 'Gateway Timeout' }, status: 504 })).toThrowError(ErrorDeRed);
+    expect(() => interpretar({ data: null, error: { message: 'TypeError: Failed to fetch' }, status: 0 })).toThrowError(ErrorDeRed);
+    expect(() => interpretar({ data: null, error: { message: 'boom' }, status: 500 })).toThrowError(ErrorDelServidor);
+    expect(interpretar({ data: [1], error: null, status: 200 })).toEqual([1]);
   });
 });

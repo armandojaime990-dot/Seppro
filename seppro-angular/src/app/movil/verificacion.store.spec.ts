@@ -80,6 +80,15 @@ describe('VerificacionStore (AUT-02)', () => {
     expect(e.tipo === 'error' && e.sesionExpirada).toBeTrue();
   });
 
+  it('Smart Tag apagado o lejos -> mensaje en español (no el del navegador)', async () => {
+    const e = new Error('GATT Server is disconnected. Cannot retrieve services.'); e.name = 'NetworkError';
+    await store.verificar(42, lector(e), 'Tag');
+    expect(store.estado()).toEqual({ tipo: 'error', mensaje: 'No se pudo conectar con el Smart Tag. Verifica que esté encendido y cerca.' });
+    const t = new Error('x'); t.name = 'TimeoutError';
+    await store.verificar(42, lector(t), 'Tag');
+    expect(store.estado()).toEqual({ tipo: 'error', mensaje: 'El Smart Tag no respondió. Acércate a la caja e intenta de nuevo.' });
+  });
+
   it('correo no disponible -> la garantía sigue activa', async () => {
     repo.correo = false;
     await store.verificar(42, lector({ paqueteId: 'SEPPRO-42', estatus: 0 }), 'Tag');

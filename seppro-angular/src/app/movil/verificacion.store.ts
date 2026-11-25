@@ -113,6 +113,10 @@ export class VerificacionStore {
       return { tipo: 'error', mensaje: 'El Smart Tag no respondió. Acércate a la caja e intenta de nuevo.' };
     }
     if (e instanceof Error && e.name === 'NotFoundError') return { tipo: 'error', mensaje: 'No elegiste ningún Smart Tag' };
+    // Web Bluetooth: el sensor se apagó o se alejó (los mensajes del navegador vienen en inglés)
+    if (e instanceof Error && (e.name === 'NetworkError' || e.name === 'NotSupportedError' || e.name === 'InvalidStateError')) {
+      return { tipo: 'error', mensaje: 'No se pudo conectar con el Smart Tag. Verifica que esté encendido y cerca.' };
+    }
     return { tipo: 'error', mensaje: e instanceof Error && e.message ? e.message : 'Algo salió mal' };
   }
 }

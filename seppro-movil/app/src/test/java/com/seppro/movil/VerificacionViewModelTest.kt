@@ -46,30 +46,30 @@ class VerificacionViewModelTest {
     }
 
     private lateinit var repo: RepoFalso
-    private val avisosReloj = mutableListOf<String>()
+    private val avisos = mutableListOf<String>()
     private lateinit var vm: VerificacionViewModel
 
     @Before fun preparar() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         repo = RepoFalso()
-        vm = VerificacionViewModel(repo) { pedido, estado, _ -> avisosReloj += "$pedido:$estado" }
+        vm = VerificacionViewModel(repo) { pedido, estado, _ -> avisos += "$pedido:$estado" }
     }
 
     @After fun limpiar() = Dispatchers.resetMain()
 
-    // Entrada válida -> resultado esperado (garantía y aviso al reloj)
-    @Test fun sinGolpe_verificaActivaGarantiaYAvisaAlReloj() {
+    // Entrada válida -> resultado esperado (garantía y aviso con vibración)
+    @Test fun sinGolpe_verificaActivaGarantiaYAvisa() {
         vm.verificar(42, Lector(Telemetria("SEPPRO-42", 0)), "AA:BB", "Tag")
         val e = vm.estado.value as EstadoVerificacion.Verificado
         assertEquals("GAR-00001", e.resultado.garantiaFolio)
         assertEquals(true, e.correoEnviado)
-        assertEquals(listOf("42:entregado_verificado"), avisosReloj)
+        assertEquals(listOf("42:entregado_verificado"), avisos)
     }
 
     @Test fun conGolpe_pasaAAlertaDeIntegridad() {
         vm.verificar(42, Lector(Telemetria("SEPPRO-42", 1)), "AA:BB", "Tag")
         assertEquals(EstadoVerificacion.Alerta(42, Telemetria("SEPPRO-42", 1)), vm.estado.value)
-        assertEquals(listOf("42:alerta_integridad"), avisosReloj)
+        assertEquals(listOf("42:alerta_integridad"), avisos)
     }
 
     @Test fun rechazarEquipo_abreReporteYRecortaMotivo() {

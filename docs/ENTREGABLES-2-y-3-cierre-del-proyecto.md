@@ -10,12 +10,12 @@
 |---|---|---|---|
 | 2.1 | Conexión del teléfono con el Smart Tag y lectura de telemetría por GATT (identificador del paquete + estatus 0/1) | ✅ Hecho | `seppro-movil/.../GattLector.kt`, `Telemetria.kt`; PWA: `verificacion.store.ts` (Web Bluetooth) |
 | 2.2 | Actualización del estado del pedido por la API REST de Supabase (`verificar_entrega`) | ✅ Hecho | `seppro-angular/supabase-entregable3.sql` + `Verificacion.kt` (`VerificacionApi`) |
-| 2.3 | Manejo de estado con ViewModel + StateFlow y aviso del resultado al reloj | ✅ Hecho | `VerificacionViewModel` (Kotlin); reloj: `VerificacionListenerService.kt` (Wear OS Data Layer) |
+| 2.3 | Manejo de estado con ViewModel + StateFlow y aviso del resultado | ✅ Hecho | `VerificacionViewModel` (Kotlin) y `VerificacionStore` con signals (PWA); aviso con vibración del teléfono. El reloj se retiró del alcance (ver sección 9) |
 | 3.1 | Sincronización bidireccional con el e-commerce y garantía automática con certificado por correo | ✅ Hecho (el correo requiere configurar una llave, ver abajo) | Realtime en `pedidos`; tabla `garantias`; Edge Function `enviar-certificado`; página `/garantia/:pedido` |
 | 3.2 | Excepciones: estado "Alerta de integridad" y opción de rechazar el equipo | ✅ Hecho | `resolver_alerta` (SQL) + botones en Kotlin y PWA; estado nuevo `rechazado` |
 | 3.3 | Pruebas de integración, rendimiento y usabilidad en dispositivos físicos | ⚠️ Parcial | Integración y rendimiento automatizados (Prácticas 12 a 14). Falta la prueba con el Smart Tag y el teléfono físicos, porque no hay hardware disponible (checklist abajo) |
 | 3.4 | Refinamiento de la interfaz y la experiencia de usuario | ✅ Hecho | Paginación, mensajes claros, estados con color e ícono, íconos de la marca, PWA para iPhone |
-| 3.5 | Generación del ejecutable (APK) para teléfono y reloj | ✅ Hecho | `entregables/apk/SEPPRO-telefono-v3.0.apk` y `SEPPRO-reloj-v3.0.apk` (firmados) |
+| 3.5 | Generación del ejecutable | ✅ Hecho | PWA instalable en `/app` (iPhone y Android) y `entregables/apk/SEPPRO-telefono-v3.0.apk` (firmado) |
 | Extra | App para iPhone | ✅ Hecho | PWA en `/app` de la web Angular (misma interfaz y funciones que la app Kotlin) |
 
 ---
@@ -50,14 +50,14 @@ Hay que ejecutarlo **una vez** en el SQL Editor. Es idempotente, así que repeti
 | `verificar_entrega(p_pedido, p_paquete, p_estatus, p_sensor)` | Comprueba que el pedido sea del usuario, que esté "En puerta" y que el paquete coincida. Si el estatus es 0, pasa el pedido a `entregado_verificado` y crea la garantía. Si es 1, lo pasa a `alerta_integridad`. Es idempotente: repetir la misma lectura no duplica nada |
 | `resolver_alerta(p_pedido, 'aceptar' \| 'rechazar', motivo)` | Con "aceptar" el pedido pasa a `entregado_con_danos`. Con "rechazar" pasa a `rechazado` y se crea un reporte de falla con prioridad alta, que se asigna solo a un agente conectado |
 | `garantias` | Folio `GAR-00001`, vigencia de 12 meses y correo de la cuenta. Solo la leen el dueño y el admin; nadie puede editarla por la API |
-| Realtime en `pedidos` y `garantias` | La tienda web (Mis pedidos), la PWA y el reloj ven el cambio al instante |
+| Realtime en `pedidos` y `garantias` | La tienda web (Mis pedidos), la PWA y la app Android ven el cambio al instante |
 
-## 3. ViewModel + StateFlow y aviso al reloj
+## 3. ViewModel + StateFlow y aviso del resultado
 
 - `VerificacionViewModel` publica los estados `Inactivo → Conectando → Registrando → Verificado | Alerta → Resolviendo → Resuelto | Error`.
 - La pantalla los observa con `repeatOnLifecycle(STARTED)`. Si se rota el teléfono, la lectura no se repite.
-- El resultado se envía al reloj por **Wear OS Data Layer** (`MessageClient`, ruta `/seppro/verificacion`) y el reloj muestra una notificación con vibración.
-- Data Layer exige que el teléfono y el reloj tengan **el mismo applicationId y la misma firma**. Por eso el reloj ahora usa `com.seppro.movil` y los dos APK se firman con la misma llave.
+- El resultado se avisa con el **vibrador del teléfono**: corto si la entrega quedó verificada y largo si hubo golpe fuerte. Así el cliente lo nota aunque esté atendiendo al repartidor. En Kotlin es `AvisoVibracion`; en la PWA es la Vibration API, que no existe en iPhone.
+- En la PWA, el equivalente al ViewModel es `VerificacionStore`, con **signals** de Angular. Tiene los mismos estados y los mismos mensajes.
 
 ## 4. Garantía y certificado por correo
 
@@ -108,7 +108,7 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 | Un cliente podía insertar por la API un pedido ya "entregado_verificado" o con precio de $0.01 | Triggers `pedidos_al_crear` y `pedido_items_al_crear`: el estado, los precios y el total los pone el servidor |
 | Las RPC se podían invocar sin sesión | `REVOKE EXECUTE ... FROM PUBLIC, anon` |
 | Un usuario podía cambiar el correo de su perfil (y desviar el certificado) | `perfiles_proteger_rol` bloquea el cambio de correo; el certificado usa el correo de `auth.users` |
-| El reloj permitía tráfico HTTP sin cifrar | `usesCleartextTraffic=false` + `network_security_config` (solo HTTPS) en teléfono y reloj |
+| Tráfico HTTP sin cifrar permitido en Android | `usesCleartextTraffic=false` + `network_security_config` (solo HTTPS) |
 | Copias de seguridad de Android con preferencias del usuario | `allowBackup=false` y reglas de extracción de datos |
 | Rutas profundas de la web en blanco (sin `<base href>`) | Corregido en `index.html` |
 | Llave de firma de los APK | En `firma/`, fuera de Git (`.gitignore`) |
@@ -132,11 +132,11 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 ## 8. Prueba en dispositivos físicos (checklist para la presentación)
 
 1. Ejecutar `supabase-entregable3.sql` en Supabase.
-2. Instalar `SEPPRO-telefono-v3.0.apk` en el teléfono Android y `SEPPRO-reloj-v3.0.apk` en el reloj. Los dos usan la misma firma.
+2. Abrir la PWA (`/app`) en el teléfono y agregarla a la pantalla de inicio. Opcionalmente, instalar `SEPPRO-telefono-v3.0.apk` en Android.
 3. En la web (Dashboard del admin), poner un pedido del cliente en **En puerta**.
 4. En el teléfono: Pedidos → Verificar paquete → Escanear → tocar el Smart Tag → Leer. Sin Smart Tag, tocar "¿No encuentras el Smart Tag?" y usar la confirmación manual.
 5. Comprobar:
-   - la notificación en el reloj;
+   - la vibración del teléfono;
    - el estado nuevo en la web (Mis pedidos), sin recargar;
    - la garantía y el certificado.
 6. Repetir con "golpe fuerte" y rechazar: debe aparecer un reporte nuevo en Soporte, con el agente asignado.
@@ -146,3 +146,20 @@ Sin la llave, la app muestra: "El correo se enviará cuando el servicio esté di
 - Servicio y característica con los UUID de la sección 1.
 - Valor `SEPPRO-<número de pedido>;0` o `;1`.
 - Nombre anunciado `SEPPRO-Tag`.
+
+## 9. Cambios finales de alcance y ajustes por la rúbrica
+
+| Cambio | Motivo |
+|---|---|
+| **Se retiró la app del reloj (Wear OS)** y su trabajo del CI | La evaluación final califica la app móvil. El aviso al reloj se sustituyó por la vibración del teléfono |
+| **Modo sin conexión en la PWA** | Rúbrica C3. Sin Internet, la app abre (service worker), entra con el perfil guardado y muestra la última lista de pedidos con el aviso "Sin conexión". Al cerrar sesión se borra todo. El service worker de Angular responde 504 sin red, y se trata como "sin conexión" |
+| **Mensajes claros de Bluetooth** | "El Bluetooth está apagado…", "No se pudo conectar con el Smart Tag…" en lugar de los mensajes en inglés del navegador |
+| **Promoción de la app en la tienda** | El inicio y el pie de página ya no anuncian la app del reloj: llevan a la app móvil `/app` |
+| **Llave de producción** | `environment.prod.ts` tenía la llave pública con un carácter de más y no se usaba. Se corrigió y se activó `fileReplacements` en `angular.json` |
+| **Contraseña visible en Android** | `setSingleLine()` después de `inputType` quitaba el enmascarado. Ahora se aplica `PasswordTransformationMethod` |
+| **Dashboard** | Al abrir o recargar `/dashboard` directamente se evaluaba el perfil antes de cargarlo y el admin era enviado al inicio |
+| **Usuarios y datos** | `supabase-reinicio-usuarios.sql` borra todos los usuarios y crea 6 cuentas nuevas con datos simulados y una contraseña nueva (ya no `123456`) |
+| **Smart Tag sin ESP32** | `docs/GUIA-SMART-TAG-BLUETOOTH.md`: un segundo Android con nRF Connect hace de Smart Tag real (servidor GATT) |
+| **Diagrama de arquitectura** | `docs/diagramas/arquitectura.png` |
+
+**Pruebas después de estos cambios:** 80 en Kotlin y 34 en Angular, **114 en total**, todas aprobadas. El modo sin conexión se comprobó en Chrome sin ninguna resolución de red.

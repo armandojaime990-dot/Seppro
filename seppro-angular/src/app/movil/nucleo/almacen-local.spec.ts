@@ -49,3 +49,46 @@ describe('AlmacenLocal (AUT-06, persistencia)', () => {
     expect(a.ultimoEmail).toBeNull();
   });
 });
+
+/** Rúbrica C3 — modo sin conexión: última lista de pedidos y perfil guardados en el dispositivo. */
+describe('AlmacenLocal (modo sin conexión)', () => {
+  beforeEach(() => localStorage.clear());
+  afterAll(() => localStorage.clear());
+  const pedido = { id: 7, total: 1500, estado: 'en_puerta', created_at: '2026-11-24', pedido_items: null };
+
+  it('guarda la lista y la devuelve solo al mismo usuario y filtro', () => {
+    const a = new AlmacenLocal();
+    a.guardarPedidos('uid-1', 'activos', [pedido], 1, 1_000);
+    expect(new AlmacenLocal().pedidosGuardados('uid-1', 'activos')).toEqual({ pedidos: [pedido], total: 1, fecha: 1_000 });
+    expect(a.pedidosGuardados('uid-2', 'activos')).toBeNull();     // otro usuario no ve la copia
+    expect(a.pedidosGuardados('uid-1', 'historial')).toBeNull();
+  });
+
+  it('guarda como máximo 50 pedidos', () => {
+    const a = new AlmacenLocal();
+    a.guardarPedidos('u', 'activos', Array.from({ length: 80 }, (_, i) => ({ ...pedido, id: i })), 80);
+    expect(a.pedidosGuardados('u', 'activos')!.pedidos.length).toBe(50);
+  });
+
+  it('dato dañado -> se ignora sin fallar', () => {
+    localStorage.setItem('seppro_prefs.cache_pedidos_activos', '{roto');
+    localStorage.setItem('seppro_prefs.perfil', '[1,2]');
+    const a = new AlmacenLocal();
+    expect(a.pedidosGuardados('u', 'activos')).toBeNull();
+    expect(a.perfilGuardado).toBeNull();
+  });
+
+  it('cerrar sesión borra el perfil y las copias, pero conserva el último correo', () => {
+    const a = new AlmacenLocal();
+    a.ultimoEmail = 'cliente@seppro.com';
+    a.perfilGuardado = { uid: 'u', nombre: 'Luis', rol: 'usuario', email: 'cliente@seppro.com' };
+    a.guardarPedidos('u', 'activos', [pedido], 1);
+    a.guardarPedidos('u', 'historial', [pedido], 1);
+    a.borrarDatosDeSesion();
+    expect(a.perfilGuardado).toBeNull();
+    expect(a.pedidosGuardados('u', 'activos')).toBeNull();
+    expect(a.pedidosGuardados('u', 'historial')).toBeNull();
+    expect(a.ultimoEmail).toBe('cliente@seppro.com');
+    expect(Object.keys(localStorage).some((k) => k.includes('token') || k.includes('password'))).toBeFalse();
+  });
+});

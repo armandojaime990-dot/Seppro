@@ -122,6 +122,7 @@ export const sesionGuard: CanActivateFn = async () => {
       display: block; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid #E2E8F0;
       padding: 14px 4px; font-size: 15px; color: var(--m-texto); cursor: pointer; font-family: inherit;
     }
+    .m-sin-red { background: #FFF3E0; color: #E65100; font-size: 13px; text-align: center; padding: 6px 12px; }
     .m-fila { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .enlace { background: none; border: 0; padding: 16px 0 4px; color: var(--m-primary); font-size: 14px; text-decoration: underline; cursor: pointer; }
     .m-fila > .m-btn { flex: 1; }

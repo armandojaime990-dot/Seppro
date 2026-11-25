@@ -18,7 +18,7 @@ import java.io.IOException
 // Entregable 2: verificación de la entrega con el Smart Tag.
 //   1. El teléfono se conecta al Smart Tag por GATT y lee la telemetría (paquete + estatus).
 //   2. Llama a la RPC verificar_entrega de Supabase (API REST del backend existente).
-//   3. El ViewModel publica cada paso en un StateFlow y avisa el resultado al reloj.
+//   3. El ViewModel publica cada paso en un StateFlow y avisa el resultado con vibración.
 // Entregable 3: si hubo golpe -> "Alerta de integridad" con opción de rechazar el equipo;
 // si no -> garantía activada y certificado enviado al correo del cliente.
 // =====================================================================================
@@ -69,8 +69,8 @@ interface RepositorioVerificacion {
     suspend fun enviarCertificado(pedidoId: Int): Boolean
 }
 
-/** Aviso del resultado al reloj (Wear OS Data Layer). */
-fun interface NotificadorReloj {
+/** Aviso físico del resultado en el teléfono (vibración: corta = verificado, larga = golpe). */
+fun interface AvisoResultado {
     fun notificar(pedidoId: Int, estado: String, detalle: String)
 }
 
@@ -130,7 +130,7 @@ sealed class EstadoVerificacion {
  */
 class VerificacionViewModel(
     private val repositorio: RepositorioVerificacion,
-    private val reloj: NotificadorReloj
+    private val aviso: AvisoResultado
 ) : ViewModel() {
 
     private val _estado = MutableStateFlow<EstadoVerificacion>(EstadoVerificacion.Inactivo)
@@ -162,10 +162,10 @@ class VerificacionViewModel(
                 val r = repositorio.verificar(pedidoId, t, nombreSensor ?: direccion)
                 if (r.golpe) {
                     _estado.value = EstadoVerificacion.Alerta(pedidoId, t)
-                    reloj.notificar(pedidoId, r.estado, "Golpe fuerte detectado: revisa el equipo antes de aceptarlo")
+                    aviso.notificar(pedidoId, r.estado, "Golpe fuerte detectado: revisa el equipo antes de aceptarlo")
                 } else {
                     _estado.value = EstadoVerificacion.Verificado(r, correoEnviado = null)
-                    reloj.notificar(pedidoId, r.estado, "Entrega verificada. Garantía ${r.garantiaFolio ?: "activada"}")
+                    aviso.notificar(pedidoId, r.estado, "Entrega verificada. Garantía ${r.garantiaFolio ?: "activada"}")
                     val enviado = try { repositorio.enviarCertificado(pedidoId) } catch (e: IOException) { false }
                     _estado.value = EstadoVerificacion.Verificado(r, correoEnviado = enviado)
                 }
@@ -193,7 +193,7 @@ class VerificacionViewModel(
             try {
                 val r = repositorio.resolverAlerta(pedidoId, accion, motivo)
                 _estado.value = EstadoVerificacion.Resuelto(r)
-                reloj.notificar(pedidoId, r.estado,
+                aviso.notificar(pedidoId, r.estado,
                     if (accion == "rechazar") "Equipo rechazado. Reporte ${r.reporteFolio ?: "creado"}"
                     else "Equipo aceptado con daños")
             } catch (e: Exception) {

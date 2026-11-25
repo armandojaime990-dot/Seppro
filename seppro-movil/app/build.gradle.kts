@@ -22,8 +22,7 @@ android {
         versionName = "3.0"
     }
 
-    // Firma de los APK de release (teléfono y reloj usan la MISMA llave: Wear OS Data Layer
-    // solo comunica apps con el mismo applicationId y la misma firma). La llave vive en
+    // Firma del APK de release. La llave vive en
     // ../firma (fuera de Git). Sin ella, release se firma con la llave de depuración.
     val firma = rootProject.file("../firma/keystore.properties")
     signingConfigs {
@@ -87,11 +86,10 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     // HTTP (PATCH, subida de archivos) y WebSocket de Supabase Realtime (Práctica 7)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    // Entregable 2: ViewModel + StateFlow, corrutinas y aviso al reloj (Wear OS Data Layer)
+    // Entregable 2: ViewModel + StateFlow y corrutinas
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("com.google.android.gms:play-services-wearable:18.1.0")
 
     // Práctica 11: pruebas unitarias de caja blanca
     testImplementation("junit:junit:4.13.2")

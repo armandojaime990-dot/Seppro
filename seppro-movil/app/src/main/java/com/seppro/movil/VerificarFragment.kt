@@ -55,7 +55,7 @@ class VerificarFragment : Fragment(), BleScanner.Listener {
 
     // Verificación (Entregables 2 y 3)
     private val vm: VerificacionViewModel by viewModels {
-        viewModelFactory { initializer { VerificacionViewModel(VerificacionApi, RelojDataLayer(requireContext())) } }
+        viewModelFactory { initializer { VerificacionViewModel(VerificacionApi, AvisoVibracion(requireContext())) } }
     }
     private var tarjetaVerificacion: TextView? = null
     private var botonLeer: Button? = null

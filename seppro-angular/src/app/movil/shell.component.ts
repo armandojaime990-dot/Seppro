@@ -17,6 +17,9 @@ import { esStaff, etiquetaRol } from './nucleo/estados';
       <button class="m-icono-btn" type="button" aria-label="Menú" (click)="menu = true">⋮</button>
     </header>
 
+    @if (sinConexion) {
+      <div class="m-sin-red" role="status">📴 Sin conexión. Verás tus últimos datos guardados.</div>
+    }
     <div class="m-contenido"><router-outlet></router-outlet></div>
 
     <nav class="m-nav" aria-label="Secciones">
@@ -57,6 +60,8 @@ export class MovilShellComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private latido?: ReturnType<typeof setInterval>;
   menu = false;
+  sinConexion = typeof navigator !== 'undefined' && navigator.onLine === false;
+  private readonly cambioDeRed = () => { this.sinConexion = !navigator.onLine; };
 
   get subtitulo(): string {
     const p = this.api.perfil;
@@ -64,6 +69,8 @@ export class MovilShellComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    window.addEventListener('online', this.cambioDeRed);
+    window.addEventListener('offline', this.cambioDeRed);
     // Presencia del agente/admin: latido cada minuto mientras la app está abierta (igual que Presencia.kt)
     if (esStaff(this.api.perfil?.rol ?? '')) {
       const latir = () => { if (document.visibilityState === 'visible') void this.api.latido().catch(() => undefined); };
@@ -74,6 +81,8 @@ export class MovilShellComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.latido);
+    window.removeEventListener('online', this.cambioDeRed);
+    window.removeEventListener('offline', this.cambioDeRed);
   }
 
   async salir(): Promise<void> {

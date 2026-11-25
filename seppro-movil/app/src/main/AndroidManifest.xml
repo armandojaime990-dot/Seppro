@@ -4,6 +4,8 @@
 
     <!-- Red: toda la comunicación con Supabase es HTTPS -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Aviso del resultado de la verificación con vibración (permiso normal, no se pide al usuario) -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Bluetooth LE en Android 12+ (API 31+). Sin neverForLocation: el sensor
          (Smart Tag) puede anunciarse como beacon y no queremos que se filtre -->

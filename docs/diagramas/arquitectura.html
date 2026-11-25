@@ -1,0 +1,92 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Arquitectura SEPPRO</title>
+<style>body{margin:0;background:#fff;font-family:Segoe UI,Arial,sans-serif}</style></head><body>
+<svg id="d" xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+    <style>
+      .caja{fill:#F1F5F9;stroke:#0F3D7A;stroke-width:2;rx:14}
+      .t{font-size:20px;font-weight:700;fill:#0F3D7A}
+      .s{font-size:14px;fill:#334155}
+      .l{font-size:13px;fill:#0F172A;font-weight:600}
+      .linea{stroke:#334155;stroke-width:2;fill:none;marker-end:url(#f)}
+      .doble{stroke:#334155;stroke-width:2;fill:none;marker-end:url(#f);marker-start:url(#f)}
+      .grupo{fill:none;stroke:#94A3B8;stroke-dasharray:6 6;stroke-width:1.5}
+    </style>
+  </defs>
+  <text x="700" y="40" text-anchor="middle" font-size="26" font-weight="700" fill="#0F172A">SEPPRO — Arquitectura cliente-servidor con backend como servicio (BaaS)</text>
+
+  <!-- Periférico -->
+  <rect class="caja" x="40" y="300" width="250" height="190" style="fill:#FFF7ED;stroke:#C2410C"/>
+  <text class="t" x="165" y="335" text-anchor="middle" style="fill:#C2410C">Smart Tag (IoT)</text>
+  <text class="s" x="60" y="365">Sensor BLE en la caja</text>
+  <text class="s" x="60" y="388">Servidor GATT</text>
+  <text class="s" x="60" y="411">Servicio 5e1a0001-…</text>
+  <text class="s" x="60" y="434">Característica 5e1a0002-…</text>
+  <text class="s" x="60" y="457">Valor: SEPPRO-42;0 | ;1</text>
+  <text class="s" x="60" y="478">(0 sin golpes · 1 golpe fuerte)</text>
+
+  <!-- Clientes -->
+  <rect class="grupo" x="380" y="80" width="400" height="660" rx="16"/>
+  <text x="580" y="105" text-anchor="middle" class="l">CLIENTES</text>
+
+  <rect class="caja" x="405" y="125" width="350" height="220"/>
+  <text class="t" x="580" y="158" text-anchor="middle">App móvil PWA (/app)</text>
+  <text class="s" x="425" y="186">Angular 21 · iPhone y Android (instalable)</text>
+  <text class="s" x="425" y="209">Manifest + Service Worker (sin conexión)</text>
+  <text class="s" x="425" y="232">Web Bluetooth (GATT) · vibración</text>
+  <text class="s" x="425" y="255">Pedidos · Verificar · Historial · Soporte</text>
+  <text class="s" x="425" y="278">Signals (estado) · localStorage (caché)</text>
+  <text class="s" x="425" y="301">supabase-js: REST, Auth, Realtime, Storage</text>
+  <text class="s" x="425" y="324">En iPhone: confirmación manual</text>
+
+  <rect class="caja" x="405" y="365" width="350" height="170"/>
+  <text class="t" x="580" y="398" text-anchor="middle">App Android nativa (Kotlin)</text>
+  <text class="s" x="425" y="426">BluetoothLeScanner + BluetoothGatt</text>
+  <text class="s" x="425" y="449">ViewModel + StateFlow · vibración</text>
+  <text class="s" x="425" y="472">OkHttp: HTTPS (JSON) y WebSocket</text>
+  <text class="s" x="425" y="495">SharedPreferences · APK firmado</text>
+  <text class="s" x="425" y="518">Mismas funciones que la PWA</text>
+
+  <rect class="caja" x="405" y="555" width="350" height="165"/>
+  <text class="t" x="580" y="588" text-anchor="middle">Tienda web (e-commerce)</text>
+  <text class="s" x="425" y="616">Angular 21 · Vercel (HTTPS, CSP)</text>
+  <text class="s" x="425" y="639">Catálogo · carrito · pago · Mis pedidos</text>
+  <text class="s" x="425" y="662">Certificado de garantía imprimible</text>
+  <text class="s" x="425" y="685">Dashboard admin · usuarios y roles</text>
+  <text class="s" x="425" y="708">Actualización en vivo (Realtime)</text>
+
+  <!-- Supabase -->
+  <rect class="caja" x="900" y="125" width="460" height="595" style="fill:#ECFDF5;stroke:#047857"/>
+  <text class="t" x="1130" y="160" text-anchor="middle" style="fill:#047857">Supabase (backend)</text>
+  <text class="l" x="925" y="198">Auth</text><text class="s" x="1010" y="198">correo + contraseña → JWT</text>
+  <text class="l" x="925" y="230">PostgreSQL</text><text class="s" x="1030" y="230">perfiles, productos, categorias,</text>
+  <text class="s" x="1030" y="252">carrito, lista_deseos, pedidos,</text>
+  <text class="s" x="1030" y="274">pedido_items, reportes, mensajes,</text>
+  <text class="s" x="1030" y="296">garantias</text>
+  <text class="l" x="925" y="330">RLS</text><text class="s" x="1010" y="330">cada usuario solo ve lo suyo; is_admin()</text>
+  <text class="l" x="925" y="362">RPC</text><text class="s" x="1010" y="362">verificar_entrega(pedido, paquete,</text>
+  <text class="s" x="1010" y="384">  estatus, sensor) → estado + garantía</text>
+  <text class="s" x="1010" y="406">resolver_alerta(aceptar | rechazar)</text>
+  <text class="s" x="1010" y="428">reasignar_reporte · latido</text>
+  <text class="l" x="925" y="462">Triggers</text><text class="s" x="1010" y="462">precios/estado por el servidor,</text>
+  <text class="s" x="1010" y="484">protección de rol, asignar agente</text>
+  <text class="l" x="925" y="518">Realtime</text><text class="s" x="1010" y="518">pedidos, garantias, mensajes (WebSocket)</text>
+  <text class="l" x="925" y="552">Storage</text><text class="s" x="1010" y="552">bucket privado "evidencias"</text>
+  <text class="s" x="1010" y="574">URL firmada de 10 minutos</text>
+  <text class="l" x="925" y="608">Edge Function</text><text class="s" x="1040" y="608">enviar-certificado (correo)</text>
+  <text class="l" x="925" y="650">CI</text><text class="s" x="1010" y="650">GitHub Actions: pruebas, lint,</text>
+  <text class="s" x="1010" y="672">npm audit y build en cada push</text>
+
+  <!-- Flechas -->
+  <path class="linea" d="M405 235 C340 240 330 330 292 360"/>
+  <text class="l" x="330" y="300" text-anchor="end">1. BLE / GATT</text><text class="s" x="330" y="318" text-anchor="end">lectura</text>
+  <path class="linea" d="M405 450 C350 450 330 440 292 430"/>
+  <text class="l" x="370" y="475" text-anchor="end">BLE / GATT</text>
+  <path class="doble" d="M757 235 L898 235"/>
+  <text class="l" x="770" y="222">2. HTTPS + JWT</text>
+  <path class="doble" d="M757 450 L898 450"/>
+  <text class="l" x="770" y="437">HTTPS + JWT</text>
+  <path class="doble" d="M757 640 L898 640"/>
+  <text class="l" x="770" y="627">3. Realtime</text>
+  <text x="700" y="790" text-anchor="middle" class="s">1) El teléfono lee el Smart Tag · 2) registra la verificación en Supabase (RLS + RPC) · 3) la tienda web y las apps reciben el cambio al instante</text>
+</svg></body></html>

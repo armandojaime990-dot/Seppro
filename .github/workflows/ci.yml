@@ -1,9 +1,8 @@
 # Prácticas 13 y 14 — Integración continua de SEPPRO.
 # Se ejecuta en cada push y pull request a main (y a mano desde la pestaña Actions).
-# Tres trabajos en paralelo:
+# Dos trabajos en paralelo:
 #   1. Teléfono (Kotlin): pruebas unitarias + integración (JUnit/MockWebServer), cobertura JaCoCo, lint y APK.
-#   2. Reloj (Wear OS): lint y APK.
-#   3. Web y PWA (Angular): pruebas (Jasmine/Karma en Chrome sin ventana), cobertura, build y auditoría de seguridad.
+#   2. Web y PWA (Angular): pruebas (Jasmine/Karma en Chrome sin ventana), cobertura, build y auditoría de seguridad.
 name: CI SEPPRO
 
 on:
@@ -59,30 +58,6 @@ jobs:
           path: |
             seppro-movil/app/build/test-results/
             seppro-movil/app/build/reports/
-          retention-days: 14
-
-  reloj:
-    name: Reloj (Wear OS) · lint y compilación
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    defaults:
-      run:
-        working-directory: seppro-wearos
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
-      - run: chmod +x gradlew
-      - name: Lint y APK
-        run: ./gradlew lintDebug assembleDebug --no-daemon
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: reportes-reloj
-          path: seppro-wearos/app/build/reports/
           retention-days: 14
 
   web:
