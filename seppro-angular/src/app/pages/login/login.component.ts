@@ -42,15 +42,6 @@ import { SupabaseService } from '../../services/supabase.service';
           </p>
         </div>
 
-        <!-- Security Info -->
-        <div class="security-info">
-          <h3>🛡️ Seguridad</h3>
-          <ul>
-            <li>✅ Tu contraseña viaja y se guarda cifrada</li>
-            <li>✅ Conexión segura (HTTPS)</li>
-            <li>✅ Cierre de sesión seguro</li>
-          </ul>
-        </div>
       </div>
     </section>
   `,
@@ -65,9 +56,8 @@ import { SupabaseService } from '../../services/supabase.service';
     }
     .auth-container {
       display: flex;
-      gap: 40px;
-      align-items: start;
-      max-width: 900px;
+      justify-content: center;
+      max-width: 440px;
       width: 100%;
     }
     .auth-card {
@@ -75,6 +65,7 @@ import { SupabaseService } from '../../services/supabase.service';
       max-width: 440px;
       padding: 40px;
     }
+    @media (max-width: 480px) { .auth-card { padding: 28px 20px; } }
     .auth-header {
       text-align: center;
       margin-bottom: 32px;
@@ -122,28 +113,6 @@ import { SupabaseService } from '../../services/supabase.service';
     .auth-footer a { color: #0072c6; text-decoration: none; font-weight: 600; }
 
 
-    /* Security Info */
-    .security-info {
-      max-width: 300px;
-      padding: 28px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-    }
-    .security-info h3 { color: #0F172A; margin-bottom: 16px; font-size: 1rem; }
-    .security-info ul { list-style: none; }
-    .security-info li {
-      padding: 8px 0;
-      color: #64748B;
-      font-size: 0.85rem;
-      border-bottom: 1px solid rgba(0,0,0,0.04);
-    }
-    .security-info li:last-child { border: none; }
-
-    @media (max-width: 768px) {
-      .auth-container { flex-direction: column; align-items: center; }
-      .security-info { max-width: 440px; width: 100%; }
-    }
   `]
 })
 export class LoginComponent {

@@ -5,7 +5,7 @@ import { AgenteEstado, ConflictoError, Mensaje, MovilApi, Reporte, SesionExpirad
 import { Toast } from './movil-root.component';
 import { AlmacenLocal } from './nucleo/almacen-local';
 import {
-  COLOR_PRIMARY, colorEstadoReporte, colorPrioridad, ESTADOS_REPORTE, etiquetaEstadoReporte, etiquetaPrioridad, etiquetaRol,
+  colorEstadoReporte, colorPrioridad, ESTADOS_REPORTE, etiquetaEstadoReporte, etiquetaPrioridad,
   etiquetaTipo, fondoSuave, MAX_DESC, MIN_DESC, PRIORIDADES, reporteActivo,
 } from './nucleo/estados';
 import { horaLocal } from './nucleo/fechas';
@@ -16,7 +16,7 @@ const MAX_MENSAJE = 1000;
 
 /**
  * Detalle del reporte y chat en tiempo real (igual que ReporteActivity.kt):
- * Realtime, contador por dispositivo, Toast al enviar/recibir, "Limpiar historial" local,
+ * Realtime, Toast al enviar/recibir, "Limpiar historial" local,
  * fotos con URL firmada que expira, envío idempotente y acciones según el rol.
  */
 @Component({
@@ -35,7 +35,6 @@ const MAX_MENSAJE = 1000;
         <div class="m-tarjeta" style="margin-bottom:0;padding:12px 14px">
           <span class="m-insignia" [style.color]="colorEst(r.estado)" [style.background]="fondo(colorEst(r.estado))">{{ estadoTxt(r.estado) }}</span>
           <span class="m-insignia" [style.color]="colorPri(r.prioridad)" [style.background]="fondo(colorPri(r.prioridad))">Prioridad {{ prioridadTxt(r.prioridad) }}</span>
-          @if (r.para_admin) { <span class="m-insignia" [style.color]="primary" [style.background]="fondo(primary)">Directo al admin</span> }
           <h3 style="margin-top:8px">{{ r.folio }} · {{ tipo(r.tipo) }}</h3>
           <p class="m-suave" style="white-space:pre-line;margin:2px 0">{{ detalles(r) }}</p>
           <p style="margin:6px 0 0;font-size:14px">{{ r.descripcion }}</p>
@@ -57,7 +56,7 @@ const MAX_MENSAJE = 1000;
       @for (m of visibles; track m.id) {
         <div class="fila" [class.propio]="m.emisor_id === uid">
           <div class="burbuja" [class.propio]="m.emisor_id === uid" (click)="m.adjunto_path && abrirAdjunto(m.adjunto_path)">
-            <small class="quien">{{ m.emisor_id === uid ? 'Tú' : (m.emisor_nombre ?? 'Usuario') }} · {{ rol(m.emisor_rol ?? 'usuario') }}</small>
+            <small class="quien">{{ m.emisor_id === uid ? 'Tú' : (m.emisor_nombre ?? 'Usuario') }}</small>
             <span>{{ m.texto }}</span>
             @if (m.adjunto_path) { <u class="foto">Ver foto</u> }
             <small class="hora">{{ hora(m.created_at) }}</small>
@@ -153,7 +152,6 @@ export class MovilReporteComponent implements OnInit, OnDestroy {
   @ViewChild('scroll') scroll?: ElementRef<HTMLDivElement>;
 
   readonly uid = this.api.uid;
-  readonly primary = COLOR_PRIMARY;
   readonly estadosReporte = ESTADOS_REPORTE;
   readonly prioridades = PRIORIDADES;
   readonly MAX_MENSAJE = MAX_MENSAJE;
@@ -164,7 +162,6 @@ export class MovilReporteComponent implements OnInit, OnDestroy {
   readonly prioridadTxt = etiquetaPrioridad;
   readonly colorPri = colorPrioridad;
   readonly fondo = fondoSuave;
-  readonly rol = etiquetaRol;
   readonly hora = (iso: string) => horaLocal(iso);
 
   reporteId = 0;
@@ -194,7 +191,8 @@ export class MovilReporteComponent implements OnInit, OnDestroy {
     const esAdmin = this.api.perfil?.rol === 'admin';
     const lista: { texto: string; accion: () => void }[] = [];
     if (esAdmin || r.agente_id === this.uid) lista.push({ texto: 'Cambiar estado', accion: () => (this.hoja = 'estado') });
-    if (esAdmin) lista.push({ texto: 'Reasignar', accion: () => this.abrirReasignar() });
+    // Las consultas de los agentes las atiende el administrador: no se reasignan
+    if (esAdmin && !r.para_admin) lista.push({ texto: 'Reasignar', accion: () => this.abrirReasignar() });
     if (r.cliente_id === this.uid && !esAdmin && reporteActivo(r.estado)) {
       lista.push({ texto: 'Editar', accion: () => this.abrirEditar() });
       lista.push({ texto: 'Cerrar reporte', accion: () => (this.hoja = 'cerrar') });
@@ -244,8 +242,13 @@ export class MovilReporteComponent implements OnInit, OnDestroy {
     const d: string[] = [];
     if (r.pedido_id) d.push(`Pedido #${r.pedido_id}`);
     if (r.equipo) d.push(`Equipo: ${r.equipo}`);
-    d.push(`Cliente: ${r.cliente?.nombre || '—'}`);
-    d.push('Atiende: ' + (r.agente?.nombre ?? (r.para_admin ? 'Administrador' : 'Sin asignar')));
+    if (r.para_admin) {
+      d.push(`De: ${r.cliente?.nombre || '—'}`);
+      d.push('Atiende: Administrador');
+    } else {
+      d.push(`Cliente: ${r.cliente?.nombre || '—'}`);
+      d.push('Atiende: ' + (r.agente?.nombre ?? 'Sin asignar'));
+    }
     d.push(`Creado: ${horaLocal(r.created_at, true)}`);
     return d.join('\n');
   }

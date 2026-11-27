@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AgenteEstado, MovilApi, Reporte, SesionExpiradaError } from './movil-api.service';
 import {
-  colorEstadoReporte, colorPrioridad, esStaff, etiquetaEstadoReporte, etiquetaPrioridad, etiquetaRol, etiquetaTipo,
+  colorEstadoReporte, colorPrioridad, esStaff, etiquetaEstadoReporte, etiquetaPrioridad, etiquetaTipo,
   fondoSuave, reporteActivo,
 } from './nucleo/estados';
 import { ErrorDelServidor } from './nucleo/reintento';
@@ -18,11 +18,11 @@ interface Seccion { titulo: string; reportes: Reporte[]; }
       <h2 class="m-titulo">{{ titulo }}</h2>
       <button class="m-btn m-sec m-chico" type="button" (click)="cargar()">Actualizar</button>
     </div>
-    <p class="m-suave" style="margin:4px 0 12px">Sesión: {{ nombre }} · {{ rolTexto }}</p>
-
+    <!-- Cliente: reporta a un agente. Agente: consulta al administrador. Administrador: no crea reportes. -->
     @if (!staff) {
-      <button class="m-btn" type="button" (click)="nuevo(false)">Nuevo reporte</button>
-      <button class="m-btn m-sec" type="button" style="margin-top:8px" (click)="nuevo(true)">Solicitud directa al administrador</button>
+      <button class="m-btn" type="button" style="margin-top:12px" (click)="nuevo(false)">Nuevo reporte</button>
+    } @else if (rol === 'agente') {
+      <button class="m-btn" type="button" style="margin-top:12px" (click)="nuevo(true)">Consultar al administrador</button>
     }
 
     @if (mensaje) { <p class="m-vacio">{{ mensaje }}</p> }
@@ -61,9 +61,8 @@ export class MovilSoporteComponent implements OnInit {
 
   readonly rol = this.api.perfil?.rol ?? 'usuario';
   readonly staff = esStaff(this.rol);
-  readonly nombre = this.api.perfil?.nombre || 'usuario';
-  readonly rolTexto = etiquetaRol(this.rol);
-  readonly titulo = this.rol === 'admin' ? 'Soporte · Administración' : this.rol === 'agente' ? 'Soporte · Mis asignados' : 'Soporte';
+  private readonly uid = this.api.uid;
+  readonly titulo = this.rol === 'admin' ? 'Soporte · Administración' : this.rol === 'agente' ? 'Soporte · Mis reportes' : 'Soporte';
   mensaje = '';
   secciones: Seccion[] = [];
   soloAgentes: AgenteEstado[] = [];
@@ -102,13 +101,15 @@ export class MovilSoporteComponent implements OnInit {
       this.secciones = [
         { titulo: 'Sin asignar o con agente desconectado', reportes: reportes.filter((r) =>
           reporteActivo(r.estado) && !r.para_admin && (!r.agente_id || desconectados.has(r.agente_id))) },
-        { titulo: 'Solicitudes directas al administrador', reportes: reportes.filter((r) => r.para_admin && reporteActivo(r.estado)) },
+        { titulo: 'Consultas de los agentes', reportes: reportes.filter((r) => r.para_admin && reporteActivo(r.estado)) },
         { titulo: 'Todos los reportes', reportes },
       ];
     } else if (this.rol === 'agente') {
+      const asignados = reportes.filter((r) => r.agente_id === this.uid);
       this.secciones = [
-        { titulo: 'Activos', reportes: reportes.filter((r) => reporteActivo(r.estado)) },
-        { titulo: 'Resueltos y cerrados', reportes: reportes.filter((r) => !reporteActivo(r.estado)) },
+        { titulo: 'Activos', reportes: asignados.filter((r) => reporteActivo(r.estado)) },
+        { titulo: 'Resueltos y cerrados', reportes: asignados.filter((r) => !reporteActivo(r.estado)) },
+        { titulo: 'Mis consultas al administrador', reportes: reportes.filter((r) => r.cliente_id === this.uid) },
       ];
     } else {
       this.reportesCliente = reportes;
@@ -120,8 +121,12 @@ export class MovilSoporteComponent implements OnInit {
     const partes: string[] = [];
     if (r.pedido_id) partes.push(`Pedido #${r.pedido_id}`);
     if (r.equipo) partes.push(r.equipo);
+    if (r.tipo === 'consulta') {
+      if (this.rol === 'admin') partes.push(`De: ${r.cliente?.nombre || '—'}`);
+      return partes.join(' · ');
+    }
     if (this.staff) partes.push(`Cliente: ${r.cliente?.nombre || '—'}`);
-    partes.push('Atiende: ' + (r.agente?.nombre ?? (r.para_admin ? 'Administrador' : 'Sin asignar')));
+    partes.push('Atiende: ' + (r.agente?.nombre ?? 'Sin asignar'));
     return partes.join(' · ');
   }
 
@@ -129,7 +134,7 @@ export class MovilSoporteComponent implements OnInit {
 
   nuevo(paraAdmin: boolean): void {
     void this.router.navigate(['/app/reporte/nuevo'], {
-      queryParams: paraAdmin ? { tipo: 'seguimiento', admin: 1 } : { tipo: 'falla' },
+      queryParams: paraAdmin ? { tipo: 'consulta', admin: 1 } : { tipo: 'falla' },
     });
   }
 }

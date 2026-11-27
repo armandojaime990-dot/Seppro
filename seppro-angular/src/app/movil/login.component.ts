@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MovilApi } from './movil-api.service';
 import { AlmacenLocal } from './nucleo/almacen-local';
+import { inicioPorRol } from './nucleo/estados';
 import { correoValido, MAX_EMAIL, MAX_PASSWORD, validarLogin } from './nucleo/validacion-login';
 import { ErrorDeRed } from './nucleo/reintento';
 
@@ -54,10 +55,10 @@ export class MovilLoginComponent {
     this.cargando = true;
     this.mostrar('Iniciando sesión...', false);
     try {
-      await this.api.iniciarSesion(email, this.password);
+      const perfil = await this.api.iniciarSesion(email, this.password);
       this.almacen.ultimoEmail = email; // nunca la contraseña
       this.mostrar('¡Conectado!', false);
-      await this.router.navigateByUrl('/app/pedidos', { replaceUrl: true });
+      await this.router.navigateByUrl(inicioPorRol(perfil.rol), { replaceUrl: true });
     } catch (e) {
       this.password = '';
       this.mostrar(e instanceof ErrorDeRed ? 'Error de conexión' : (e as Error).message, true);

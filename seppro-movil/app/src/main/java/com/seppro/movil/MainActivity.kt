@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         val toolbar = Toolbar(this).apply {
             title = "SEPPRO"
             setTitleTextColor(0xFFFFFFFF.toInt())
-            // Quién inició sesión y con qué rol (Práctica 7)
-            subtitle = "${SupabaseClient.nombre.ifBlank { "Mi cuenta" }} · ${Roles.etiqueta(SupabaseClient.rol)}"
+            // Solo el nombre de quien inició sesión
+            subtitle = SupabaseClient.nombre.ifBlank { "Mi cuenta" }
             setSubtitleTextColor(0xFFDBEAFE.toInt())
             setBackgroundColor(COLOR_PRIMARY)
         }
@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity() {
             LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
         ))
 
-        // Barra inferior con 4 pestañas: Pedidos, Verificar, Historial y Soporte
+        // Barra inferior con 4 pestañas para el cliente: Pedidos, Verificar, Historial y Soporte.
+        // Agente y administrador solo usan Soporte: no se muestra la barra.
         val colores = ColorStateList(
             arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
             intArrayOf(COLOR_ACCENT, 0xFF94A3B8.toInt())
@@ -87,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
         }
+        if (!cliente) bottomNav.visibility = android.view.View.GONE
         root.addView(bottomNav, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -96,12 +98,14 @@ class MainActivity : AppCompatActivity() {
 
         // Al rotar, FragmentManager restaura el Fragment actual por sí solo
         if (savedInstanceState == null) {
-            mostrarPestana(TAB_PEDIDOS)
+            mostrarPestana(if (cliente) TAB_PEDIDOS else TAB_SOPORTE)
         }
     }
 
+    private val cliente get() = Roles.puedeVerificar(SupabaseClient.rol)
+
     private fun mostrarPestana(itemId: Int) {
-        val fragment: Fragment = when (itemId) {
+        val fragment: Fragment = if (!cliente) SoporteFragment() else when (itemId) {
             TAB_VERIFICAR -> VerificarFragment.newInstance(pedidoSeleccionadoId)
             TAB_HISTORIAL -> HistorialFragment()
             TAB_SOPORTE -> SoporteFragment()
@@ -142,6 +146,7 @@ class MainActivity : AppCompatActivity() {
 
     /** Llamado desde PedidosFragment con el botón "Verificar paquete". */
     fun abrirVerificar(pedidoId: Int) {
+        if (!cliente) return
         pedidoSeleccionadoId = pedidoId
         bottomNav.selectedItemId = TAB_VERIFICAR
     }

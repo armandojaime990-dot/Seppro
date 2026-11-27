@@ -23,6 +23,7 @@ Este documento indica, para cada criterio, dónde está la evidencia en el proye
 | Se retiró la app del reloj (Wear OS) | La evaluación califica la app móvil. El aviso del resultado pasó a ser la vibración del teléfono |
 | Smart Tag físico con **ESP32 + MPU6050** | Demuestra el sistema completo con hardware real: el acelerómetro detecta el golpe, lo guarda en flash y lo entrega por GATT. nRF Connect queda solo como respaldo |
 | Modo sin conexión | Criterio C3: la app se usa en la puerta del domicilio, donde la señal puede fallar |
+| Permisos por rol en la app | El cliente y el invitado ven Pedidos, Verificar, Historial y Soporte. El agente y el administrador solo ven Soporte, porque verificar el paquete le toca a quien lo recibe. El cliente ya no escribe directo al administrador: lo atiende un agente, y el agente puede consultar al administrador. El servidor lo aplica también (`supabase-permisos-roles.sql`) |
 
 ## B. Diseño y arquitectura
 

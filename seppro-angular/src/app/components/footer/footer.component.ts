@@ -39,7 +39,6 @@ import { RouterLink } from '@angular/router';
             <a routerLink="/catalogo">Catálogo</a>
             <a routerLink="/nosotros">Nosotros</a>
             <a routerLink="/contacto">Contacto</a>
-            <a routerLink="/dashboard">Dashboard</a>
           </div>
 
           <!-- Services -->

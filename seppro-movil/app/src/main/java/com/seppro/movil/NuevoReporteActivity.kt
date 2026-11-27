@@ -19,7 +19,7 @@ import kotlin.concurrent.thread
 /**
  * Práctica 7: formulario para abrir un reporte de soporte.
  * Casos: falla (bomba dañada / Alerta de integridad), seguimiento de la entrega
- * y recuperación de acceso. Con para_admin = true es una solicitud directa al administrador.
+ * y recuperación de acceso. Si quien lo abre es un agente, es una consulta al administrador.
  */
 class NuevoReporteActivity : AppCompatActivity() {
 
@@ -42,7 +42,9 @@ class NuevoReporteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         if (SupabaseClient.accessToken == null) { irAlLogin(); return }
 
-        paraAdmin = intent.getBooleanExtra(EXTRA_PARA_ADMIN, false)
+        // El administrador no crea reportes; el agente solo consulta al administrador
+        if (SupabaseClient.rol == Roles.ADMIN) { finish(); return }
+        paraAdmin = SupabaseClient.rol == Roles.AGENTE
         val tipoInicial = intent.getStringExtra(EXTRA_TIPO) ?: "falla"
 
         val contenido = LinearLayout(this).apply {
@@ -52,28 +54,34 @@ class NuevoReporteActivity : AppCompatActivity() {
 
         contenido.addView(TextView(this).apply {
             text = if (paraAdmin)
-                "Tu solicitud llegará directamente al administrador."
+                "Tu consulta llegará directamente al administrador y te responderá en el chat."
             else
                 "Un agente de atención revisará tu reporte y te responderá en el chat."
             textSize = 14f
             setTextColor(COLOR_TEXTO_SUAVE)
         })
 
-        contenido.addView(etiqueta("Tipo de reporte"))
+        // Tipo, pedido y equipo solo aplican al cliente (la consulta del agente no lleva pedido)
+        val camposCliente = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        camposCliente.addView(etiqueta("Tipo de reporte"))
         tipoSpinner = selector(TIPOS.map { SoporteApi.etiquetaTipo(it) })
         tipoSpinner.setSelection(TIPOS.indexOf(tipoInicial).coerceAtLeast(0))
-        contenido.addView(tipoSpinner, anchoCompleto())
+        camposCliente.addView(tipoSpinner, anchoCompleto())
 
-        contenido.addView(etiqueta("Pedido relacionado"))
+        camposCliente.addView(etiqueta("Pedido relacionado"))
         pedidoSpinner = selector(listOf("Cargando pedidos..."))
-        contenido.addView(pedidoSpinner, anchoCompleto())
+        camposCliente.addView(pedidoSpinner, anchoCompleto())
 
-        contenido.addView(etiqueta("Equipo (obligatorio en reportes de falla)"))
+        camposCliente.addView(etiqueta("Equipo (obligatorio en reportes de falla)"))
         equipoInput = campo("Ej. Bomba Altamira KOR10", 120)
-        contenido.addView(equipoInput, anchoCompleto())
+        camposCliente.addView(equipoInput, anchoCompleto())
+        if (paraAdmin) camposCliente.visibility = View.GONE
+        contenido.addView(camposCliente, anchoCompleto())
 
-        contenido.addView(etiqueta("Descripción (mínimo $MIN_DESC caracteres)"))
-        descripcionInput = campo("Describe qué pasó: estado de la caja, ruidos, golpes visibles...", MAX_DESC, multilinea = true)
+        contenido.addView(etiqueta(if (paraAdmin) "Tu pregunta (mínimo $MIN_DESC caracteres)"
+            else "Descripción (mínimo $MIN_DESC caracteres)"))
+        descripcionInput = campo(if (paraAdmin) "Ej. ¿Autorizo el cambio de equipo del pedido #16?"
+            else "Describe qué pasó: estado de la caja, ruidos, golpes visibles...", MAX_DESC, multilinea = true)
         contenido.addView(descripcionInput, anchoCompleto())
 
         contenido.addView(etiqueta("Prioridad"))
@@ -88,7 +96,7 @@ class NuevoReporteActivity : AppCompatActivity() {
         }
         contenido.addView(errorText)
 
-        enviarBtn = botonPrincipal(if (paraAdmin) "Enviar solicitud" else "Crear reporte") { enviar() }
+        enviarBtn = botonPrincipal(if (paraAdmin) "Enviar consulta" else "Crear reporte") { enviar() }
         contenido.addView(enviarBtn, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, dp(52)).apply { topMargin = dp(12) })
 
@@ -96,13 +104,13 @@ class NuevoReporteActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(0xFFFFFFFF.toInt())
         }
-        root.addView(barraConRegreso(if (paraAdmin) "Solicitud al administrador" else "Nuevo reporte"),
+        root.addView(barraConRegreso(if (paraAdmin) "Consulta al administrador" else "Nuevo reporte"),
             anchoCompleto())
         root.addView(ScrollView(this).apply { addView(contenido) },
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f))
         setContentView(root)
 
-        cargarPedidos(intent.getIntExtra(EXTRA_PEDIDO, 0))
+        if (!paraAdmin) cargarPedidos(intent.getIntExtra(EXTRA_PEDIDO, 0))
     }
 
     override fun onStart() { super.onStart(); Presencia.activar() }
@@ -155,9 +163,9 @@ class NuevoReporteActivity : AppCompatActivity() {
     }
 
     private fun enviar() {
-        val tipo = TIPOS[tipoSpinner.selectedItemPosition]
-        val pedido = pedidos.getOrNull(pedidoSpinner.selectedItemPosition)
-        val equipo = equipoInput.text.toString().trim()
+        val tipo = if (paraAdmin) "consulta" else TIPOS[tipoSpinner.selectedItemPosition]
+        val pedido = if (paraAdmin) null else pedidos.getOrNull(pedidoSpinner.selectedItemPosition)
+        val equipo = if (paraAdmin) "" else equipoInput.text.toString().trim()
         val descripcion = descripcionInput.text.toString().trim()
         val prioridad = PRIORIDADES[prioridadSpinner.selectedItemPosition]
 
@@ -182,7 +190,7 @@ class NuevoReporteActivity : AppCompatActivity() {
                 Log.i(TAG, "Reporte creado ${reporte.folio}")
                 runOnUiThread {
                     val aviso = when {
-                        paraAdmin -> "Solicitud ${reporte.folio} enviada al administrador"
+                        paraAdmin -> "Consulta ${reporte.folio} enviada al administrador"
                         reporte.agenteId == null -> "Reporte ${reporte.folio} creado. No hay agentes conectados: el administrador lo asignará."
                         else -> "Reporte ${reporte.folio} creado y asignado a ${reporte.agenteNombre ?: "un agente"}"
                     }

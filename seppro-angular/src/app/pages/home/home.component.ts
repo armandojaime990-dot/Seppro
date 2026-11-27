@@ -588,8 +588,15 @@ export class HomeComponent implements OnInit {
   constructor(private supabase: SupabaseService) {}
 
   async ngOnInit() {
-    // Show popup after 2 seconds
-    setTimeout(() => this.showPopup = true, 2000);
+    // Bienvenida: una sola vez por visita (no en cada regreso al inicio)
+    let yaVisto = false;
+    try { yaVisto = sessionStorage.getItem('seppro_bienvenida') === '1'; } catch { /* sin almacenamiento */ }
+    if (!yaVisto) {
+      setTimeout(() => {
+        this.showPopup = true;
+        try { sessionStorage.setItem('seppro_bienvenida', '1'); } catch { /* sin almacenamiento */ }
+      }, 2000);
+    }
 
     // Auto-rotate carousel
     setInterval(() => {

@@ -30,6 +30,12 @@ object Roles {
 
     fun esStaff(rol: String) = rol == ADMIN || rol == AGENTE
 
+    /**
+     * Permisos por rol: cliente e invitado usan Pedidos, Verificar, Historial y Soporte;
+     * agente y administrador solo Soporte. El servidor aplica lo mismo (supabase-permisos-roles.sql).
+     */
+    fun puedeVerificar(rol: String) = !esStaff(rol)
+
     fun etiqueta(rol: String) = when (rol) {
         ADMIN -> "Administrador"
         AGENTE -> "Agente"

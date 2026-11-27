@@ -45,6 +45,15 @@ export function nombrePedido(p: { id: number; pedido_items?: { nombre_producto: 
 // ===== Roles (perfiles.rol) =====
 export type Rol = 'admin' | 'agente' | 'usuario' | 'invitado';
 export const esStaff = (rol: string) => rol === 'admin' || rol === 'agente';
+/**
+ * Permisos por rol en la app:
+ *  - Cliente e invitado: Pedidos, Verificar, Historial y Soporte (reportes con un agente).
+ *  - Agente: solo Soporte (atiende reportes y puede consultar al administrador).
+ *  - Administrador: solo Soporte (asigna reportes, ve agentes y responde consultas).
+ * El servidor aplica las mismas reglas (supabase-permisos-roles.sql).
+ */
+export const puedeVerificar = (rol: string) => !esStaff(rol);
+export const inicioPorRol = (rol: string) => (esStaff(rol) ? '/app/soporte' : '/app/pedidos');
 export function etiquetaRol(rol: string): string {
   return rol === 'admin' ? 'Administrador' : rol === 'agente' ? 'Agente' : rol === 'invitado' ? 'Invitado' : 'Cliente';
 }
@@ -56,7 +65,7 @@ export const ESTADOS_REPORTE = ['abierto', 'en_proceso', 'resuelto', 'cerrado'] 
 
 export function etiquetaTipo(t: string): string {
   return t === 'falla' ? 'Reporte de falla' : t === 'seguimiento' ? 'Seguimiento de entrega'
-    : t === 'acceso' ? 'Recuperación de acceso' : t;
+    : t === 'acceso' ? 'Recuperación de acceso' : t === 'consulta' ? 'Consulta al administrador' : t;
 }
 export function etiquetaEstadoReporte(e: string): string {
   return ({ abierto: 'Abierto', en_proceso: 'En proceso', resuelto: 'Resuelto', cerrado: 'Cerrado' } as Record<string, string>)[e] ?? e;

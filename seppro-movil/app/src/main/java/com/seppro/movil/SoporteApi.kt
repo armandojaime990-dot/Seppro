@@ -261,6 +261,7 @@ object SoporteApi {
         "falla" -> "Reporte de falla"
         "seguimiento" -> "Seguimiento de entrega"
         "acceso" -> "Recuperación de acceso"
+        "consulta" -> "Consulta al administrador"
         else -> tipo
     }
 

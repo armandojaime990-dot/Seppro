@@ -244,7 +244,6 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         val fila = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
         fila.addView(insignia(SoporteApi.etiquetaEstado(r.estado), SoporteApi.colorEstado(r.estado)), ajustado(dp(6)))
         fila.addView(insignia("Prioridad ${SoporteApi.etiquetaPrioridad(r.prioridad)}", SoporteApi.colorPrioridad(r.prioridad)), ajustado(dp(6)))
-        if (r.paraAdmin) fila.addView(insignia("Directo al admin", COLOR_PRIMARY), ajustado())
         cabecera.addView(fila)
 
         cabecera.addView(TextView(this).apply {
@@ -257,12 +256,13 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         val detalles = buildList {
             if (r.pedidoId != null) add("Pedido #${r.pedidoId}")
             if (r.equipo.isNotBlank()) add("Equipo: ${r.equipo}")
-            add("Cliente: ${r.clienteNombre.ifBlank { "—" }}")
-            add("Atiende: " + when {
-                r.agenteNombre != null -> r.agenteNombre
-                r.paraAdmin -> "Administrador"
-                else -> "Sin asignar"
-            })
+            if (r.paraAdmin) {
+                add("De: ${r.clienteNombre.ifBlank { "—" }}")
+                add("Atiende: Administrador")
+            } else {
+                add("Cliente: ${r.clienteNombre.ifBlank { "—" }}")
+                add("Atiende: " + (r.agenteNombre ?: "Sin asignar"))
+            }
             add("Creado: ${SoporteApi.horaLocal(r.creado, conFecha = true)}")
         }
         cabecera.addView(TextView(this).apply {
@@ -287,7 +287,7 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         if (esAdmin || esAgenteAsignado) {
             acciones.addView(botonSecundario("Cambiar estado") { elegirEstado() }, ajustado(dp(8)))
         }
-        if (esAdmin) {
+        if (esAdmin && !r.paraAdmin) { // las consultas de los agentes no se reasignan
             acciones.addView(botonSecundario("Reasignar") { elegirAgente() }, ajustado(dp(8)))
         }
         if (esCliente && !esAdmin && r.activo) {
@@ -550,7 +550,7 @@ class ReporteActivity : AppCompatActivity(), RealtimeCanal.Listener {
         val colorSuave = if (propio) 0xFFDBEAFE.toInt() else COLOR_TEXTO_SUAVE
 
         caja.addView(TextView(this).apply {
-            text = "${if (propio) "Tú" else m.emisorNombre} · ${Roles.etiqueta(m.emisorRol)}"
+            text = if (propio) "Tú" else m.emisorNombre
             textSize = 11f
             setTextColor(colorSuave)
             setTypeface(null, Typeface.BOLD)

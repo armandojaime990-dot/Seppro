@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MovilApi } from './movil-api.service';
-import { esStaff, etiquetaRol } from './nucleo/estados';
+import { esStaff } from './nucleo/estados';
 
-/** Barra superior + contenido + barra inferior con 4 pestañas (igual que MainActivity.kt). */
+/** Barra superior + contenido + barra inferior (4 pestañas para el cliente; el personal solo ve Soporte). */
 @Component({
   selector: 'app-movil-shell',
   standalone: true,
@@ -22,6 +22,8 @@ import { esStaff, etiquetaRol } from './nucleo/estados';
     }
     <div class="m-contenido"><router-outlet></router-outlet></div>
 
+    <!-- Agentes y administrador solo usan Soporte: no se muestra la barra de cliente -->
+    @if (cliente) {
     <nav class="m-nav" aria-label="Secciones">
       <a routerLink="pedidos" routerLinkActive="activo">
         <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
@@ -40,6 +42,7 @@ import { esStaff, etiquetaRol } from './nucleo/estados';
         Soporte
       </a>
     </nav>
+    }
 
     @if (menu) {
       <div class="m-velo" (click)="menu = false">
@@ -63,10 +66,9 @@ export class MovilShellComponent implements OnInit, OnDestroy {
   sinConexion = typeof navigator !== 'undefined' && navigator.onLine === false;
   private readonly cambioDeRed = () => { this.sinConexion = !navigator.onLine; };
 
-  get subtitulo(): string {
-    const p = this.api.perfil;
-    return `${p?.nombre || 'Mi cuenta'} · ${etiquetaRol(p?.rol ?? 'usuario')}`;
-  }
+  readonly cliente = !esStaff(this.api.perfil?.rol ?? 'usuario');
+
+  get subtitulo(): string { return this.api.perfil?.nombre || 'Mi cuenta'; }
 
   ngOnInit(): void {
     window.addEventListener('online', this.cambioDeRed);

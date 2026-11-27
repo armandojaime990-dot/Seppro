@@ -41,27 +41,22 @@ class SoporteFragment : Fragment() {
         }
         encabezado.addView(ctx.titulo(when (rol) {
             Roles.ADMIN -> "Soporte · Administración"
-            Roles.AGENTE -> "Soporte · Mis asignados"
+            Roles.AGENTE -> "Soporte · Mis reportes"
             else -> "Soporte"
         }), LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
         encabezado.addView(ctx.botonSecundario("Actualizar") { cargar() })
         contenido.addView(encabezado)
 
-        contenido.addView(TextView(ctx).apply {
-            text = "Sesión: ${SupabaseClient.nombre.ifBlank { "usuario" }} · ${Roles.etiqueta(rol)}"
-            textSize = 13f
-            setTextColor(COLOR_TEXTO_SUAVE)
-            setPadding(0, ctx.dp(4), 0, ctx.dp(12))
-        })
-
-        // Opciones del cliente
+        // Cliente: reporta a un agente. Agente: consulta al administrador. Administrador: no crea reportes.
+        val margen = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ctx.dp(48)).apply { topMargin = ctx.dp(12) }
         if (!Roles.esStaff(rol)) {
             contenido.addView(ctx.botonPrincipal("Nuevo reporte") {
                 startActivity(NuevoReporteActivity.intent(ctx))
-            }, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ctx.dp(48)))
-            contenido.addView(ctx.botonSecundario("Solicitud directa al administrador") {
-                startActivity(NuevoReporteActivity.intent(ctx, tipo = "seguimiento", paraAdmin = true))
-            }, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ctx.dp(48)).apply { topMargin = ctx.dp(8) })
+            }, margen)
+        } else if (rol == Roles.AGENTE) {
+            contenido.addView(ctx.botonPrincipal("Consultar al administrador") {
+                startActivity(NuevoReporteActivity.intent(ctx, tipo = "consulta", paraAdmin = true))
+            }, margen)
         }
 
         mensaje = TextView(ctx).apply {
@@ -143,12 +138,15 @@ class SoporteFragment : Fragment() {
                 seccion(l, "Sin asignar o con agente desconectado", reportes.filter {
                     it.activo && !it.paraAdmin && (it.agenteId == null || it.agenteId in agentesDesconectados)
                 })
-                seccion(l, "Solicitudes directas al administrador", reportes.filter { it.paraAdmin && it.activo })
+                seccion(l, "Consultas de los agentes", reportes.filter { it.paraAdmin && it.activo })
                 seccion(l, "Todos los reportes", reportes)
             }
             Roles.AGENTE -> {
-                seccion(l, "Activos", reportes.filter { it.activo })
-                seccion(l, "Resueltos y cerrados", reportes.filter { !it.activo })
+                val yo = SupabaseClient.userId
+                val asignados = reportes.filter { it.agenteId == yo }
+                seccion(l, "Activos", asignados.filter { it.activo })
+                seccion(l, "Resueltos y cerrados", asignados.filter { !it.activo })
+                seccion(l, "Mis consultas al administrador", reportes.filter { it.clienteId == yo })
             }
             else -> {
                 if (reportes.isEmpty()) {
@@ -189,8 +187,12 @@ class SoporteFragment : Fragment() {
         val partes = buildList {
             if (r.pedidoId != null) add("Pedido #${r.pedidoId}")
             if (r.equipo.isNotBlank()) add(r.equipo)
-            if (Roles.esStaff(rol)) add("Cliente: ${r.clienteNombre.ifBlank { "—" }}")
-            add("Atiende: " + (r.agenteNombre ?: if (r.paraAdmin) "Administrador" else "Sin asignar"))
+            if (r.paraAdmin) {
+                if (rol == Roles.ADMIN) add("De: ${r.clienteNombre.ifBlank { "—" }}")
+            } else {
+                if (Roles.esStaff(rol)) add("Cliente: ${r.clienteNombre.ifBlank { "—" }}")
+                add("Atiende: " + (r.agenteNombre ?: "Sin asignar"))
+            }
         }
         card.addView(TextView(ctx).apply {
             text = partes.joinToString(" · ")

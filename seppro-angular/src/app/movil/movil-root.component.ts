@@ -1,6 +1,7 @@
 import { Component, Injectable, ViewEncapsulation, inject, signal } from '@angular/core';
 import { CanActivateFn, Router, RouterOutlet } from '@angular/router';
 import { MovilApi } from './movil-api.service';
+import { inicioPorRol, puedeVerificar } from './nucleo/estados';
 
 /** Aviso corto en la parte inferior, como el Toast de Android. */
 @Injectable({ providedIn: 'root' })
@@ -23,6 +24,12 @@ export const sesionGuard: CanActivateFn = async () => {
     if (api.perfil || (await api.cargarPerfil())) return true;
   } catch { /* sin conexión: se pide iniciar sesión */ }
   return router.parseUrl('/app/login');
+};
+
+/** Pedidos, Verificar e Historial son solo para clientes; el personal va a Soporte. */
+export const soloClientesGuard: CanActivateFn = () => {
+  const rol = inject(MovilApi).perfil?.rol ?? 'usuario';
+  return puedeVerificar(rol) ? true : inject(Router).parseUrl(inicioPorRol(rol));
 };
 
 /**

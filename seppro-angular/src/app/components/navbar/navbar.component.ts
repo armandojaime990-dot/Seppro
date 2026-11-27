@@ -10,7 +10,7 @@ import { SearchService } from '../../services/search.service';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <nav class="navbar" [class.scrolled]="isScrolled">
+    <nav class="navbar" [class.scrolled]="isScrolled" [class.menu-abierto]="mobileOpen">
       <div class="container nav-container">
         <!-- Logo -->
         <a routerLink="/" class="logo">
@@ -54,13 +54,14 @@ import { SearchService } from '../../services/search.service';
 
           <ng-container *ngIf="user$ | async">
             <div class="user-menu" (click)="toggleMenu()">
-              <div class="user-avatar">
-                {{ (profile$ | async)?.nombre?.charAt(0)?.toUpperCase() || 'U' }}
+              <div class="user-chip">
+                <div class="user-avatar">{{ inicial(nombreUsuario(profile$ | async, user$ | async)) }}</div>
+                <span class="user-name">{{ nombreUsuario(profile$ | async, user$ | async) }}</span>
               </div>
               <div class="dropdown-menu" *ngIf="menuOpen">
                 <div class="dropdown-header">
-                  <strong>{{ (profile$ | async)?.nombre }}</strong>
-                  <span class="badge badge-info">{{ (profile$ | async)?.rol }}</span>
+                  <strong>{{ nombreUsuario(profile$ | async, user$ | async) }}</strong>
+                  <small>{{ (user$ | async)?.email }}</small>
                 </div>
                 <hr/>
                 <a routerLink="/carrito" (click)="menuOpen = false">🛒 Mi Carrito</a>
@@ -82,6 +83,10 @@ import { SearchService } from '../../services/search.service';
 
       <!-- Mobile Menu -->
       <div class="mobile-menu" [class.open]="mobileOpen">
+        <div class="mobile-usuario" *ngIf="user$ | async as u">
+          <div class="user-avatar">{{ inicial(nombreUsuario(profile$ | async, u)) }}</div>
+          <div><strong>{{ nombreUsuario(profile$ | async, u) }}</strong><small>{{ u.email }}</small></div>
+        </div>
         <a routerLink="/" (click)="mobileOpen = false">Inicio</a>
         <a routerLink="/catalogo" (click)="mobileOpen = false">Catálogo</a>
         <a routerLink="/nosotros" (click)="mobileOpen = false">Nosotros</a>
@@ -99,16 +104,21 @@ import { SearchService } from '../../services/search.service';
         <button *ngIf="user$ | async" (click)="logout()" class="mobile-logout">Cerrar Sesión</button>
       </div>
     </nav>
+    <!-- Fondo detrás del menú del celular: tapa la página y lo cierra al tocar fuera -->
+    <div class="nav-velo" *ngIf="mobileOpen" (click)="mobileOpen = false"></div>
   `,
   styles: [`
     .navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
       padding: 16px 0; transition: all 0.3s ease; background: transparent;
     }
+    .nav-velo { position: fixed; inset: 0; z-index: 999; background: rgba(15, 23, 42, 0.45); }
     .navbar.scrolled {
       background: var(--bg-glass); backdrop-filter: blur(12px);
       padding: 10px 0; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
+    /* Menú del celular abierto: barra sólida (va después de .scrolled para ganarle) */
+    .navbar.menu-abierto { background: #FFFFFF; backdrop-filter: none; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12); }
     .nav-container {
       display: flex; align-items: center; justify-content: space-between;
       max-width: 1200px; margin: 0 auto; padding: 0 20px;
@@ -139,6 +149,11 @@ import { SearchService } from '../../services/search.service';
       justify-content: center; padding: 0 4px;
     }
     .user-menu { position: relative; cursor: pointer; }
+    .user-chip { display: flex; align-items: center; gap: 8px; }
+    .user-name {
+      max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font-size: 0.9rem; font-weight: 600; color: #0F172A;
+    }
     .user-avatar {
       width: 38px; height: 38px; border-radius: 10px;
       background: var(--primary-light);
@@ -146,13 +161,14 @@ import { SearchService } from '../../services/search.service';
       font-weight: 700; font-size: 0.9rem; color: white;
     }
     .dropdown-menu {
-      position: absolute; top: 50px; right: 0;
-      background: var(--bg-card); border: 1px solid var(--border);
+      position: absolute; top: 50px; right: 0; z-index: 1001;
+      background: #FFFFFF; border: 1px solid var(--border);
       border-radius: 12px; padding: 8px; min-width: 220px;
       box-shadow: 0 16px 48px rgba(0,0,0,0.15); animation: fadeInUp 0.2s ease-out;
     }
-    .dropdown-header { padding: 12px; display: flex; align-items: center; gap: 8px; }
+    .dropdown-header { padding: 12px; display: flex; flex-direction: column; gap: 2px; }
     .dropdown-header strong { color: #0F172A; }
+    .dropdown-header small { color: #64748B; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; }
     .dropdown-menu hr { border: none; border-top: 1px solid rgba(0,0,0,0.06); margin: 4px 0; }
     .dropdown-menu a, .dropdown-menu button {
       display: block; width: 100%; padding: 10px 12px; color: #334155;
@@ -169,7 +185,15 @@ import { SearchService } from '../../services/search.service';
     .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-    .mobile-menu { display: none; flex-direction: column; padding: 0 20px 20px; gap: 4px; }
+    .mobile-menu {
+      display: none; flex-direction: column; padding: 8px 20px 20px; gap: 4px;
+      background: #FFFFFF; border-top: 1px solid rgba(0,0,0,0.06);
+      max-height: calc(100vh - 72px); overflow-y: auto;
+    }
+    .mobile-usuario { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+    .mobile-usuario div:last-child { display: flex; flex-direction: column; min-width: 0; }
+    .mobile-usuario strong { color: #0F172A; }
+    .mobile-usuario small { color: #64748B; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; }
     .mobile-menu.open { display: flex; }
     .mobile-menu a, .mobile-logout {
       padding: 12px 16px; color: #334155; text-decoration: none; border-radius: 8px;
@@ -182,6 +206,8 @@ import { SearchService } from '../../services/search.service';
       .nav-links { display: none; }
       .hamburger { display: flex; }
       .btn-primary.btn-sm { display: none; }
+      .user-name { display: none; }
+      .dropdown-menu { display: none; }
     }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(10px); }
@@ -218,7 +244,17 @@ export class NavbarComponent {
   }
 
   openSearch() { this.searchService.toggleSearch(); }
-  toggleMenu() { this.menuOpen = !this.menuOpen; }
+
+  /** Nombre del perfil; si aún no carga, el del registro o el correo. */
+  nombreUsuario(perfil: UserProfile | null, user: any): string {
+    return perfil?.nombre || user?.user_metadata?.nombre || user?.email?.split('@')[0] || 'Mi cuenta';
+  }
+  inicial(nombre: string): string { return (nombre.trim().charAt(0) || 'U').toUpperCase(); }
+  /** En el celular el avatar abre el menú completo; en la computadora, el menú del usuario. */
+  toggleMenu() {
+    if (window.innerWidth <= 768) { this.mobileOpen = !this.mobileOpen; return; }
+    this.menuOpen = !this.menuOpen;
+  }
 
   async logout() {
     await this.supabase.signOut();

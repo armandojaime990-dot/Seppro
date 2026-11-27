@@ -8,7 +8,11 @@
 --    se toca.
 --
 -- Después crea 6 cuentas nuevas, ya confirmadas, con datos simulados.
--- TODAS tienen pedidos activos, historial, garantía, carrito y lista de deseos:
+-- Ninguna queda vacía en lo que su rol puede ver:
+--   clientes e invitado -> pedidos, historial, garantía, reportes con chat
+--   agentes             -> reportes asignados y consultas al administrador
+--   administrador       -> todos los reportes y las consultas de los agentes
+--   todas               -> compras en la tienda web, carrito y lista de deseos
 --   admin@seppro.com     -> admin       (Administrador SEPPRO)
 --   agente@seppro.com    -> agente      (Agente Laura)
 --   agente2@seppro.com   -> agente      (Agente Carlos)
@@ -20,8 +24,8 @@
 --   Mínimo 6 caracteres. No uses 123456 en la presentación.
 --
 -- Requisitos (ya ejecutados en el proyecto): supabase-schema.sql,
--- supabase-update.sql, supabase-bluetooth.sql, supabase-soporte.sql y
--- supabase-entregable3.sql.
+-- supabase-update.sql, supabase-bluetooth.sql, supabase-soporte.sql,
+-- supabase-entregable3.sql y supabase-permisos-roles.sql (en ese orden).
 -- Ejecutar en: Supabase > SQL Editor > New query > Run.
 -- Las fotos que se hayan subido al bucket "evidencias" se pueden borrar desde
 -- Storage > evidencias (la base de datos ya no las referencia).
@@ -87,12 +91,15 @@ DECLARE
   v_admin UUID; v_laura UUID; v_carlos UUID; v_c1 UUID; v_c2 UUID; v_inv UUID;
   v_p_danos1 INTEGER; v_p_camino1 INTEGER; v_p_verif1 INTEGER;
   v_p_alerta2 INTEGER; v_p_danos2 INTEGER; v_p_rechazo2 INTEGER;
-  v_p_camino_inv INTEGER; v_p_verif_inv INTEGER; v_p_danos_laura INTEGER;
+  v_p_camino_inv INTEGER; v_p_verif_inv INTEGER;
   v_r INTEGER;
   v_usuario UUID; v_n INTEGER := 0;
 BEGIN
   IF length(v_password) < 6 THEN
     RAISE EXCEPTION 'La contraseña debe tener al menos 6 caracteres';
+  END IF;
+  IF to_regprocedure('public.rol_actual()') IS NULL THEN
+    RAISE EXCEPTION 'Ejecuta primero supabase-permisos-roles.sql';
   END IF;
   IF NOT EXISTS (SELECT 1 FROM productos) THEN
     RAISE EXCEPTION 'No hay productos: ejecuta primero supabase-schema.sql';
@@ -238,11 +245,15 @@ BEGIN
     (v_r, v_laura, 'Hola Luis, recibimos tu rechazo. Mañana pasa la paquetería por el equipo y te enviamos uno nuevo.'),
     (v_r, v_c2,    'Perfecto, gracias. Aquí estaré.');
 
-  -- F) Solicitud directa al administrador (recuperación de acceso)
+  -- F) Consulta de Laura al administrador (los clientes no escriben directo al admin)
   INSERT INTO reportes (cliente_id, tipo, descripcion, prioridad, estado, para_admin)
-  VALUES (v_c2, 'acceso',
-          'Cambié de teléfono y no puedo iniciar sesión con mi cuenta. Necesito ayuda para recuperar el acceso.',
-          'media', 'abierto', TRUE);
+  VALUES (v_laura, 'consulta',
+          'Luis rechazó la Grundfos SP 30-5 del pedido #16 por golpe en el traslado. ¿Autorizo el envío de un equipo nuevo?',
+          'alta', 'en_proceso', TRUE)
+  RETURNING id INTO v_r;
+  INSERT INTO mensajes (reporte_id, emisor_id, texto) VALUES
+    (v_r, v_laura, 'Hola, el Smart Tag registró golpe fuerte y el cliente ya rechazó el equipo. ¿Procedo con el reemplazo?'),
+    (v_r, v_admin, 'Sí, autorizado. Genera la guía de recolección y avísale al cliente.');
 
   -- G) Falla de Luis cerrada por el cliente
   INSERT INTO reportes (cliente_id, pedido_id, tipo, equipo, descripcion, prioridad, estado, agente_id)
@@ -254,25 +265,15 @@ BEGIN
   -- 5) Pedidos e historial para el resto de las cuentas (ninguna queda vacía)
   --    Van después de los de Ana y Luis: los pedidos 12 y 13 de la demo no cambian.
   -- -----------------------------------------------------------------------
-  -- Administrador
-  PERFORM pg_temp.crear_pedido(v_admin, 'pagado',    'Motor Neumann 10HP',     1, 1);
-  PERFORM pg_temp.crear_pedido(v_admin, 'en_camino', 'Cable 3x8 AWG (100m)',   1, 2);
-  PERFORM pg_temp.crear_pedido(v_admin, 'en_puerta', 'Válvula Check 6in',      1, 3);
-  PERFORM pg_temp.crear_pedido(v_admin, 'entregado_verificado', 'Bomba Altamira KOR10', 1, 25, FALSE);
-  PERFORM pg_temp.crear_pedido(v_admin, 'entregado', 'Tubería Acero 6in (6m)', 4, 40);
-
-  -- Agente Laura
-  PERFORM pg_temp.crear_pedido(v_laura, 'pagado',    'Arrancador Suave 15HP',  1, 1);
-  PERFORM pg_temp.crear_pedido(v_laura, 'enviado',   'Cable 3x10 AWG (100m)',  1, 2);
-  PERFORM pg_temp.crear_pedido(v_laura, 'entregado_verificado', 'Motor Franklin 5HP', 1, 18, FALSE);
-  v_p_danos_laura := pg_temp.crear_pedido(v_laura, 'entregado_con_danos', 'Bomba KSB UPA 150', 1, 30, TRUE);
-
-  -- Agente Carlos
-  PERFORM pg_temp.crear_pedido(v_carlos, 'en_camino', 'Motor BAMSA 7.5HP',     1, 2);
-  PERFORM pg_temp.crear_pedido(v_carlos, 'alerta_integridad', 'Bomba Grundfos SP 30-5', 1, 4, TRUE);
-  PERFORM pg_temp.crear_pedido(v_carlos, 'entregado_verificado', 'Válvula Check 6in', 2, 22, FALSE);
-  PERFORM pg_temp.crear_pedido(v_carlos, 'rechazado', 'Motor Neumann 10HP',    1, 35, TRUE,
-                               'El motor llegó con la flecha doblada.');
+  -- Personal (admin y agentes): compras en la tienda web. No verifican paquetes,
+  -- así que sus pedidos no pasan por el Smart Tag.
+  PERFORM pg_temp.crear_pedido(v_admin,  'pagado',    'Motor Neumann 10HP',     1, 1);
+  PERFORM pg_temp.crear_pedido(v_admin,  'en_camino', 'Cable 3x8 AWG (100m)',   1, 2);
+  PERFORM pg_temp.crear_pedido(v_admin,  'entregado', 'Tubería Acero 6in (6m)', 4, 40);
+  PERFORM pg_temp.crear_pedido(v_laura,  'pagado',    'Arrancador Suave 15HP',  1, 1);
+  PERFORM pg_temp.crear_pedido(v_laura,  'entregado', 'Cable 3x10 AWG (100m)',  1, 18);
+  PERFORM pg_temp.crear_pedido(v_carlos, 'enviado',   'Motor BAMSA 7.5HP',      1, 2);
+  PERFORM pg_temp.crear_pedido(v_carlos, 'entregado', 'Válvula Check 6in',      2, 22);
 
   -- Invitado
   PERFORM pg_temp.crear_pedido(v_inv, 'pendiente', 'Tubería Acero 4in (6m)',   2, 0);
@@ -302,11 +303,15 @@ BEGIN
     (v_r, v_inv,    '¿Dónde veo mi garantía?'),
     (v_r, v_carlos, 'En la tienda web, en Mis pedidos, toca Ver certificado. Vence en 12 meses.');
 
-  -- J) Falla de Laura como cliente (pedido con daños), cerrada
-  INSERT INTO reportes (cliente_id, pedido_id, tipo, equipo, descripcion, prioridad, estado, agente_id)
-  VALUES (v_laura, v_p_danos_laura, 'falla', 'Bomba KSB UPA 150',
-          'La bomba llegó con la caja golpeada; ya se cambió por una nueva.',
-          'alta', 'cerrado', v_carlos);
+  -- J) Consulta de Carlos al administrador, resuelta
+  INSERT INTO reportes (cliente_id, tipo, descripcion, prioridad, estado, para_admin)
+  VALUES (v_carlos, 'consulta',
+          '¿Cuánto tiempo tiene el cliente para reportar un daño después de la entrega?',
+          'baja', 'resuelto', TRUE)
+  RETURNING id INTO v_r;
+  INSERT INTO mensajes (reporte_id, emisor_id, texto) VALUES
+    (v_r, v_carlos, '¿Cuál es el plazo para reportar daños?'),
+    (v_r, v_admin,  'Se acepta en el momento de la entrega con la lectura del Smart Tag; después aplica la garantía de 12 meses.');
 
   -- Carrito y lista de deseos para todas las cuentas (tienda web)
   FOREACH v_usuario IN ARRAY ARRAY[v_admin, v_laura, v_carlos, v_c1, v_c2, v_inv] LOOP
@@ -322,7 +327,7 @@ BEGIN
   -- Agentes desconectados al inicio (se conectan al abrir la app)
   UPDATE perfiles SET ultima_conexion = NULL WHERE id IN (v_admin, v_laura, v_carlos);
 
-  RAISE NOTICE 'Listo: 6 cuentas nuevas con pedidos, garantías, reportes y conversaciones.';
+  RAISE NOTICE 'Listo: 6 cuentas nuevas con pedidos, garantías, reportes, consultas y conversaciones.';
 END $$;
 
 -- =========================================================================
@@ -334,7 +339,8 @@ SELECT p.email, p.nombre, p.rol, (u.email_confirmed_at IS NOT NULL) AS confirmad
        (SELECT count(*) FROM pedidos x WHERE x.usuario_id = p.id
           AND x.estado IN ('entregado', 'entregado_verificado', 'entregado_con_danos', 'rechazado')) AS historial,
        (SELECT count(*) FROM garantias g WHERE g.usuario_id = p.id) AS garantias,
-       (SELECT count(*) FROM reportes r WHERE r.cliente_id = p.id OR r.agente_id = p.id) AS reportes,
+       (SELECT count(*) FROM reportes r WHERE r.cliente_id = p.id OR r.agente_id = p.id
+          OR (p.rol = 'admin')) AS reportes_visibles,
        (SELECT count(*) FROM carrito c WHERE c.usuario_id = p.id) AS carrito,
        (SELECT count(*) FROM lista_deseos d WHERE d.usuario_id = p.id) AS deseos
 FROM perfiles p JOIN auth.users u ON u.id = p.id

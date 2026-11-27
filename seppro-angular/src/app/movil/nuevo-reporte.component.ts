@@ -17,13 +17,14 @@ import { ErrorDelServidor } from './nucleo/reintento';
   template: `
     <header class="m-barra">
       <button class="m-icono-btn" type="button" aria-label="Regresar" (click)="regresar()">←</button>
-      <div class="m-titulos"><h1>{{ paraAdmin ? 'Solicitud al administrador' : 'Nuevo reporte' }}</h1></div>
+      <div class="m-titulos"><h1>{{ paraAdmin ? 'Consulta al administrador' : 'Nuevo reporte' }}</h1></div>
     </header>
     <form class="m-contenido" (ngSubmit)="enviar()">
       <p class="m-suave" style="font-size:14px;margin-top:0">
-        {{ paraAdmin ? 'Tu solicitud llegará directamente al administrador.'
+        {{ paraAdmin ? 'Tu consulta llegará directamente al administrador y te responderá en el chat.'
                      : 'Un agente de atención revisará tu reporte y te responderá en el chat.' }}
       </p>
+      @if (!paraAdmin) {
       <label class="m-etiqueta" for="tipo">Tipo de reporte</label>
       <select id="tipo" class="m-campo" name="tipo" [(ngModel)]="tipo">
         @for (t of tipos; track t) { <option [value]="t">{{ etiquetaTipo(t) }}</option> }
@@ -39,10 +40,12 @@ import { ErrorDelServidor } from './nucleo/reintento';
 
       <label class="m-etiqueta" for="equipo">Equipo (obligatorio en reportes de falla)</label>
       <input id="equipo" class="m-campo" name="equipo" maxlength="120" placeholder="Ej. Bomba Altamira KOR10" [(ngModel)]="equipo">
+      }
 
-      <label class="m-etiqueta" for="desc">Descripción (mínimo {{ MIN_DESC }} caracteres)</label>
+      <label class="m-etiqueta" for="desc">{{ paraAdmin ? 'Tu pregunta' : 'Descripción' }} (mínimo {{ MIN_DESC }} caracteres)</label>
       <textarea id="desc" class="m-campo" name="descripcion" [maxlength]="MAX_DESC"
-                placeholder="Describe qué pasó: estado de la caja, ruidos, golpes visibles..." [(ngModel)]="descripcion"></textarea>
+                [placeholder]="paraAdmin ? 'Ej. ¿Autorizo el cambio de equipo del pedido #16?' : 'Describe qué pasó: estado de la caja, ruidos, golpes visibles...'"
+                [(ngModel)]="descripcion"></textarea>
 
       <label class="m-etiqueta" for="prioridad">Prioridad</label>
       <select id="prioridad" class="m-campo" name="prioridad" [(ngModel)]="prioridad">
@@ -51,7 +54,7 @@ import { ErrorDelServidor } from './nucleo/reintento';
 
       @if (error) { <p class="m-error">{{ error }}</p> }
       <button class="m-btn" type="submit" [disabled]="enviando" style="min-height:52px">
-        {{ paraAdmin ? 'Enviar solicitud' : 'Crear reporte' }}
+        {{ paraAdmin ? 'Enviar consulta' : 'Crear reporte' }}
       </button>
     </form>
   `,
@@ -83,7 +86,11 @@ export class MovilNuevoReporteComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const q = this.ruta.snapshot.queryParamMap;
-    this.paraAdmin = q.get('admin') === '1';
+    const rol = this.api.perfil?.rol ?? 'usuario';
+    // El administrador no crea reportes; el agente solo consulta al administrador; el cliente reporta a un agente
+    if (rol === 'admin') { await this.router.navigateByUrl('/app/soporte'); return; }
+    this.paraAdmin = rol === 'agente';
+    if (this.paraAdmin) { this.tipo = 'consulta'; this.cargandoPedidos = false; return; }
     const tipo = q.get('tipo');
     if (tipo && (TIPOS_REPORTE as readonly string[]).includes(tipo)) this.tipo = tipo;
     const preseleccion = Number(q.get('pedido')) || null;
@@ -110,6 +117,7 @@ export class MovilNuevoReporteComponent implements OnInit {
 
   async enviar(): Promise<void> {
     this.error = validarReporte({ tipo: this.tipo, descripcion: this.descripcion, equipo: this.equipo, pedidoId: this.pedidoId }) ?? '';
+    if (this.paraAdmin) { this.pedidoId = null; this.equipo = ''; }
     if (this.error) return;
     this.enviando = true;
     try {
@@ -117,7 +125,7 @@ export class MovilNuevoReporteComponent implements OnInit {
         tipo: this.tipo, pedidoId: this.pedidoId, equipo: this.equipo, descripcion: this.descripcion,
         prioridad: this.prioridad, paraAdmin: this.paraAdmin,
       });
-      this.toast.mostrar(this.paraAdmin ? `Solicitud ${r.folio} enviada al administrador`
+      this.toast.mostrar(this.paraAdmin ? `Consulta ${r.folio} enviada al administrador`
         : !r.agente_id ? `Reporte ${r.folio} creado. No hay agentes conectados: el administrador lo asignará.`
         : `Reporte ${r.folio} creado y asignado a ${r.agente?.nombre ?? 'un agente'}`, true);
       await this.router.navigate(['/app/reporte', r.id], { replaceUrl: true });
